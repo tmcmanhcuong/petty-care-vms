@@ -43,6 +43,14 @@ const routes = [
         component: ()=>import('../components/KhachHang/LichHen/index.vue'),
         meta: { layout: 'trangchu' } 
     },
+     {
+        path: '/khach-hang/thu-cung-cua-toi',
+        component: ()=>import('../components/KhachHang/ThuCungCuaToi/index.vue'),
+        meta: { layout: 'trangchu' } 
+    },
+   
+   
+    
     //********************** Admin ************************* */
      {
         path: '/admin/dang-nhap',
