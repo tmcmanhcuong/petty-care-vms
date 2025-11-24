@@ -1,16 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50 font-nunito">
+  <div class="min-h-screen font-nunito">
     <!-- ====================== DANH SÁCH THÚ CƯNG ====================== -->
-    <div class="container mx-auto px-12 py-7 max-w-6xl">
-      <!-- Breadcrumb -->
-      <nav class="flex items-center gap-1 mb-6 text-lg">
-        <svg class="w-5 h-5 text-gray-400 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-        <span class="font-semibold text-gray-400">Trang chủ</span>
-        <span class="font-bold text-black mx-1">/</span>
-        <span class="font-semibold underline">Thú cưng của tôi</span>
-      </nav>
+    <div class="container mx-auto px-12 py-7 max-w-7xl">
 
       <!-- Header -->
       <div class="flex justify-between items-center mb-12">
@@ -18,7 +9,7 @@
           <h1 class="text-xl font-bold">Thú cưng của tôi</h1>
           <p class="text-lg font-semibold text-gray-600">Quản lý thông tin và sức khỏe các bé</p>
         </div>
-        <button class="flex items-center gap-2 bg-[#5a9690] text-white rounded-xl px-5 py-3.5 font-semibold text-lg hover:bg-[#4a807a] transition">
+        <button @click="isAddPetOpen = true" class="flex items-center gap-2 bg-[#5a9690] text-white rounded-xl px-5 py-3.5 font-semibold text-lg hover:bg-[#4a807a] transition">
           <svg class="w-5 h-5" fill="none" stroke="white" viewBox="0 0 16 16">
             <path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round"/>
           </svg>
@@ -64,13 +55,13 @@
 
             <!-- Buttons -->
             <div class="mt-auto space-y-3">
-              <button class="w-full flex justify-center items-center gap-2 border border-black/15 rounded-lg py-3 font-bold hover:bg-gray-50 transition">
+              <!-- <button class="w-full flex justify-center items-center gap-2 border border-black/15 rounded-lg py-3 font-bold hover:bg-gray-50 transition">
                 Xem chi tiết
                 <svg class="w-4 h-4" fill="none" stroke="black" viewBox="0 0 16 16">
                   <path d="M6 12l4-4-4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-              </button>
-              <button class="w-full py-3 border border-[#eb8e90] rounded-lg hover:bg-red-50 transition">
+              </button> -->
+              <button @click.stop="openDeletePopup(pet)" class="w-full py-3 border border-[#eb8e90] rounded-lg hover:bg-red-50 transition">
                 <svg class="w-7 h-7 mx-auto" fill="none" stroke="#eb8e90" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14zM10 11v6M14 11v6"/>
@@ -82,112 +73,74 @@
       </div>
     </div>
 
-    <!-- ====================== MODAL CHI TIẾT (giống 100% file HTML cuối) ====================== -->
+    <!-- Modal Chi Tiết Thú Cưng -->
     <teleport to="body">
-      <div v-if="showDetail" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" @click="showDetail = false">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" @click.stop>
-          <div class="p-6">
-
-            <!-- Header Modal -->
-            <div class="text-center relative mb-4">
-              <h2 class="text-lg font-bold">Hồ sơ chi tiết</h2>
-              <button @click="showDetail = false" class="absolute right-0 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full transition">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 28 28">
-                  <path d="M21 7L7 21M7 7l14 14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-              <p class="text-gray-600 mt-1">Thông tin sức khỏe và lịch sử khám bệnh</p>
-            </div>
-
-            <!-- Pet Info -->
-            <div class="flex gap-4 mb-6">
-              <img :src="selectedPet.image" alt="Pet" class="w-24 h-24 rounded-xl object-cover">
-              <div>
-                <h3 class="text-amber-600 font-semibold text-lg">{{ selectedPet.name }}</h3>
-                <div class="grid grid-cols-2 gap-y-2 mt-2 text-sm">
-                  <div><span class="text-gray-500 font-medium">Giống:</span> <span class="font-semibold text-slate-900">{{ selectedPet.breed }}</span></div>
-                  <div><span class="text-gray-500 font-medium">Tuổi:</span> <span class="font-semibold text-slate-900">{{ selectedPet.age }}</span></div>
-                  <div><span class="text-gray-500 font-medium">Cân nặng:</span> <span class="font-semibold text-slate-900">{{ selectedPet.weight }}</span></div>
-                  <div><span class="text-gray-500 font-medium">Giới tính:</span> <span class="font-semibold text-slate-900">{{ selectedPet.gender }}</span></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Tabs -->
-            <div class="bg-gray-200 rounded-2xl p-1 mb-6 flex">
-              <button @click="tab = 'vaccination'" :class="{ 'bg-white shadow-sm': tab === 'vaccination' }" class="flex-1 py-2 rounded-2xl font-semibold text-sm transition">
-                Lịch tiêm phòng
-              </button>
-              <button @click="tab = 'medical'" :class="{ 'bg-white shadow-sm': tab === 'medical' }" class="flex-1 py-2 rounded-2xl font-semibold text-sm transition">
-                Bệnh án
-              </button>
-            </div>
-
-            <!-- Tab Vaccination -->
-            <div v-show="tab === 'vaccination'" class="space-y-4">
-              <div v-for="v in selectedPet.vaccinations" :key="v.date" class="border border-gray-300 rounded-xl p-4">
-                <div class="flex justify-between items-center">
-                  <span class="font-semibold text-slate-900">{{ v.name }}</span>
-                  <span class="text-sm font-medium">{{ v.date }}</span>
-                </div>
-                <p class="text-gray-600 text-sm mt-1">Bác sĩ: {{ v.doctor }}</p>
-              </div>
-
-              <div v-if="selectedPet.upcomingVaccination" class="bg-amber-50 border border-yellow-300 rounded-xl p-4">
-                <div class="flex items-center gap-2 mb-1">
-                  <svg class="w-5 h-5" fill="none" stroke="#bb4d00" viewBox="0 0 16 16">
-                    <circle cx="8" cy="8" r="6" stroke-width="2"/>
-                    <path d="M8 5v3l2 2" stroke-width="2" stroke-linecap="round"/>
-                  </svg>
-                  <span class="font-bold text-orange-900">Lịch tiêm sắp tới</span>
-                </div>
-                <p class="font-bold text-orange-700">{{ selectedPet.upcomingVaccination }}</p>
-              </div>
-            </div>
-
-            <!-- Tab Medical -->
-            <div v-show="tab === 'medical'" class="space-y-4">
-              <div v-for="m in selectedPet.medicalRecords" :key="m.date" class="border border-gray-300 rounded-xl p-4">
-                <div class="flex justify-between items-center mb-1">
-                  <span class="font-semibold text-slate-900">{{ m.title }}</span>
-                  <span class="text-sm font-medium">{{ m.date }}</span>
-                </div>
-                <p class="text-gray-600 text-sm">Bác sĩ: {{ m.doctor }}</p>
-                <p class="text-slate-700 font-medium text-sm">Ghi chú: {{ m.note }}</p>
-              </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex gap-3 mt-8">
-              <button class="flex-1 bg-[#5a9690] text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90 transition">
-                <svg class="w-5 h-5" fill="none" stroke="white" viewBox="0 0 16 16">
-                  <rect x="3" y="4" width="10" height="10" rx="1" stroke-width="2"/>
-                  <path d="M6 2v4M10 2v4M3 7h10" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-                Đặt lịch khám lại
-              </button>
-              <button class="flex-1 border border-gray-400 py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition">
-                <svg class="w-5 h-5" fill="none" stroke="black" viewBox="0 0 16 16">
-                  <path d="M11.333 2A2.667 2.667 0 0114 4.667v6.666A2.667 2.667 0 0111.333 14H4.667A2.667 2.667 0 012 11.333V4.667A2.667 2.667 0 014.667 2h6.666z" stroke-width="2"/>
-                  <path d="M10.667 6.667L7.333 10l-2-2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                Cập nhật thông tin
-              </button>
-            </div>
-
-          </div>
-        </div>
-      </div>
+      <ChiTietThuCung 
+        v-if="selectedPet"
+        :isOpen="showDetail" 
+        :pet="selectedPet"
+        @close="showDetail = false" 
+      />
     </teleport>
+
+
+
+
+    <!-- Modal Xóa Thú Cưng -->
+    <teleport to="body">
+      <XoaThuCung 
+        v-if="petToDelete"
+        :isOpen="isDeletePetOpen" 
+        :petData="petToDelete"
+        @close="isDeletePetOpen = false" 
+        @delete="handleDeletePet" 
+      />
+    </teleport>
+
+    <!-- Modal Thêm Thú Cưng -->
+    <teleport to="body">
+      <ThemThuCung 
+        :isOpen="isAddPetOpen" 
+        @close="isAddPetOpen = false" 
+        @submit="handleAddPet" 
+      />
+    </teleport>
+
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import ThemThuCung from './ThemThuCung/index.vue'
+import ChiTietThuCung from './ChiTietThuCung/index.vue'
+import XoaThuCung from './XoaThuCung/index.vue'
+import { showSuccessToast } from '@/utils/toast'
+
+const isAddPetOpen = ref(false)
+
+const handleAddPet = (data) => {
+  console.log('Thêm thú cưng mới:', data)
+  // Sau này sẽ gọi API để lưu vào database
+}
+
+const isDeletePetOpen = ref(false)
+const petToDelete = ref(null)
+
+const openDeletePopup = (pet) => {
+  petToDelete.value = pet
+  isDeletePetOpen.value = true
+}
+
+const handleDeletePet = (pet) => {
+  console.log('Xóa thú cưng:', pet)
+  // Logic xóa thú cưng khỏi danh sách
+  pets.value = pets.value.filter(p => p.id !== pet.id)
+  isDeletePetOpen.value = false
+  showSuccessToast('Xóa thành công', `Đã xóa thú cưng ${pet.name} khỏi danh sách`)
+}
 
 const showDetail = ref(false)
 const selectedPet = ref(null)
-const tab = ref('vaccination')
 
 const pets = ref([
   {
@@ -238,7 +191,6 @@ const pets = ref([
 
 const openDetail = (pet) => {
   selectedPet.value = pet
-  tab.value = 'vaccination'
   showDetail.value = true
 }
 </script>

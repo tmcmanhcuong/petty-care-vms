@@ -1,15 +1,6 @@
 <template>
-  <div class="min-h-screen font-nunito bg-gray-50">
+  <div class="min-h-screen font-nunitoSans">
     <div class="container mx-auto px-6 py-8 max-w-6xl">
-      <!-- Breadcrumb -->
-      <div class="flex items-center gap-1 mb-6 text-lg">
-        <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6.25 15L11.25 10L6.25 5" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-        <span class="text-gray-500 font-semibold">Trang chủ</span>
-        <span class="font-bold text-black">/</span>
-        <span class="font-semibold underline text-black">Lịch hẹn</span>
-      </div>
 
       <!-- Header -->
       <div class="flex justify-between items-center mb-6 flex-col md:flex-row gap-4">
@@ -192,164 +183,72 @@
       </div>
     </div>
 
-    <!-- POPUP CHI TIẾT LỊCH HẸN - ĐÃ THÊM THANH TOÁN GIỐNG MẪU 100% -->
+    <!-- POPUP CHI TIẾT LỊCH HẸN -->
     <teleport to="body">
-      <div v-if="showDetail" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" @click="showDetail = false">
-        <div class="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-xl shadow-2xl border border-black/5" @click.stop>
-          <div class="p-6 space-y-6">
+      <ChiTietLichHen 
+        v-if="selectedAppt"
+        :is-open="showDetail" 
+        :selected-appt="selectedAppt" 
+        @close="showDetail = false" 
+      />
+    </teleport>
 
-            <!-- Header -->
-            <div class="relative flex items-center justify-center py-2">
-              <h2 class="text-xl font-bold">Chi tiết lịch hẹn</h2>
-              <button @click="showDetail = false" class="absolute right-0 p-1 hover:bg-gray-100 rounded-lg transition">
-                <svg class="w-7 h-7" viewBox="0 0 28 28" fill="none">
-                  <path d="M21 7L7 21M7 7l14 14" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </div>
+    <!-- POPUP ĐẶT LỊCH KHÁM -->
+    <teleport to="body">
+      <DatLichKham
+        :is-open="showBookingPopup"
+        :initial-data="rebookData"
+        @close="showBookingPopup = false"
+        @confirm="handleBookingConfirm"
+        @openAddPet="() => {}" 
+      />
+    </teleport>
 
-            <!-- Dịch vụ -->
-            <div class="bg-teal-50 rounded-xl p-4 flex justify-between items-center">
-              <div>
-                <p class="text-gray-500 font-medium">Dịch vụ</p>
-                <p class="font-medium text-black">{{ selectedAppt.service }}</p>
-              </div>
-              <div class="text-right">
-                <p class="text-gray-500 font-medium">Giá dịch vụ</p>
-                <p class="text-teal-600 font-medium">250.000đ</p>
-              </div>
-            </div>
+    <!-- POPUP ĐỔI LỊCH HẸN -->
+    <teleport to="body">
+      <DoiLich
+        v-if="rescheduleAppt"
+        :is-open="showReschedulePopup"
+        :old-appointment="rescheduleAppt"
+        @close="showReschedulePopup = false"
+        @save="handleRescheduleConfirm"
+      />
+    </teleport>
 
-            <!-- Thú cưng -->
-            <section>
-              <div class="flex items-center gap-3 mb-3">
-                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="#12a594"><path d="M10 12a4 4 0 100-8 4 4 0 000 8zM10 14c-4.42 0-8 1.79-8 4v1h16v-1c0-2.21-3.58-4-8-4z"/></svg>
-                <h3 class="font-semibold">Thông tin thú cưng</h3>
-              </div>
-              <div class="bg-white rounded-xl p-6">
-                <div class="grid grid-cols-2 gap-x-12 gap-y-4">
-                  <div><span class="text-gray-500 font-medium">Tên</span><p class="font-medium" :class="selectedAppt.pet === 'Milo' ? 'text-amber-700' : 'text-sky-500'">{{ selectedAppt.pet }}</p></div>
-                  <div><span class="text-gray-500 font-medium">Giống</span><p class="font-medium">{{ selectedAppt.breed }}</p></div>
-                  <div><span class="text-gray-500 font-medium">Tuổi</span><p class="font-medium">{{ selectedAppt.age }}</p></div>
-                  <div><span class="text-gray-500 font-medium">Cân nặng</span><p class="font-medium">{{ selectedAppt.weight }}</p></div>
-                </div>
-              </div>
-            </section>
+    <!-- POPUP HỦY LỊCH HẸN -->
+    <teleport to="body">
+      <HuyHen
+        v-if="cancelAppt"
+        :is-open="showCancelPopup"
+        :appointment="cancelAppt"
+        :cancel-status="cancelStatus"
+        @close="showCancelPopup = false"
+        @keep="showCancelPopup = false"
+        @cancel="handleCancelConfirm"
+      />
+    </teleport>
 
-            <!-- Bác sĩ -->
-            <section>
-              <div class="flex items-center gap-3 mb-3">
-                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M16 18v-1a4 4 0 00-4-4H8a4 4 0 00-4 4v1M12 6a4 4 0 11-8 0 4 4 0 018 0z" stroke="#12a594" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <h3 class="font-semibold">Bác sĩ phụ trách</h3>
-              </div>
-              <div class="bg-white rounded-xl p-4 flex items-center gap-4">
-                <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 font-semibold text-xl">
-                  {{ selectedAppt.doctor.split(' ').pop()[0] }}
-                </div>
-                <div>
-                  <p class="font-medium">{{ selectedAppt.doctor }}</p>
-                  <p class="text-gray-500 font-medium">Nội khoa thú y</p>
-                </div>
-              </div>
-            </section>
-
-            <!-- Ngày giờ khám -->
-            <section>
-              <div class="flex items-center gap-3 mb-3">
-                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="14" rx="2" stroke="#12a594" stroke-width="2"/><path d="M7 2v4M13 2v4M3 8h14" stroke="#12a594" stroke-width="2" stroke-linecap="round"/></svg>
-                <h3 class="font-semibold">Ngày giờ khám</h3>
-              </div>
-              <div class="bg-white rounded-xl p-4 grid grid-cols-3 gap-4 text-center">
-                <div><span class="text-gray-500 font-medium block">Ngày</span><p class="font-medium">{{ selectedAppt.date }}</p></div>
-                <div><span class="text-gray-500 font-medium block">Giờ</span><p class="font-medium">{{ selectedAppt.time }}</p></div>
-                <div><span class="text-gray-500 font-medium block">Mã lịch hẹn</span><p class="font-medium">{{ selectedAppt.id }}</p></div>
-              </div>
-            </section>
-
-            <!-- Địa điểm -->
-            <section>
-              <div class="flex items-center gap-3 mb-3">
-                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M10 11a3 3 0 100-6 3 3 0 000 6z" stroke="#12a594" stroke-width="2"/><path d="M10 2a7 7 0 00-7 7c0 4.5 7 9 7 9s7-4.5 7-9a7 7 0 00-7-7z" stroke="#12a594" stroke-width="2"/></svg>
-                <h3 class="font-semibold">Địa điểm</h3>
-              </div>
-              <div class="bg-white rounded-xl p-4">
-                <p class="font-medium">{{ selectedAppt.clinic }}</p>
-                <p class="text-gray-500 font-medium">{{ selectedAppt.address }}</p>
-              </div>
-            </section>
-
-            <!-- Ghi chú & Hướng dẫn -->
-            <section v-if="selectedAppt.note">
-              <div class="flex items-center gap-3 mb-3">
-                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#12a594" stroke-width="2"/><path d="M10 10v4M10 6h.01" stroke="#12a594" stroke-width="2" stroke-linecap="round"/></svg>
-                <h3 class="font-semibold">Ghi chú & Hướng dẫn</h3>
-              </div>
-              <div class="space-y-3">
-                <div class="bg-amber-50 border border-yellow-200 rounded-xl p-4">
-                  <p class="font-bold text-amber-800 text-sm">Lưu ý:</p>
-                  <p class="font-medium text-amber-800">{{ selectedAppt.note }}</p>
-                </div>
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                  <p class="font-bold text-blue-900 text-sm">Hướng dẫn:</p>
-                  <p class="font-medium text-blue-900">Vui lòng nhịn ăn 8 tiếng trước khi khám</p>
-                </div>
-              </div>
-            </section>
-
-            <!-- Trạng thái -->
-            <section>
-              <div class="flex items-center gap-3 mb-3">
-                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none"><path d="M7 10l2 2 4-4m5 2a8 8 0 11-16 0 8 8 0 0116 0z" stroke="#12a594" stroke-width="2" stroke-linecap="round"/></svg>
-                <h3 class="font-semibold">Trạng thái</h3>
-              </div>
-              <div class="inline-block bg-teal-100 border border-black/5 rounded-lg px-5 py-2">
-                <span class="text-teal-600 font-medium text-lg">Đã xác nhận</span>
-              </div>
-            </section>
-
-            <!-- THANH TOÁN - GIỐNG HỆT MẪU -->
-            <section>
-              <div class="flex items-center gap-3 mb-3">
-                <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none">
-                  <rect x="2" y="5" width="16" height="11" rx="2" stroke="#12a594" stroke-width="2"/>
-                  <path d="M2 9h16" stroke="#12a594" stroke-width="2"/>
-                </svg>
-                <h3 class="font-semibold">Thanh toán</h3>
-              </div>
-              <div class="bg-white rounded-xl p-4 space-y-4">
-                <div class="flex justify-between items-center">
-                  <div>
-                    <p class="text-gray-500 font-medium">Số tiền</p>
-                    <p class="font-medium text-lg">250.000đ</p>
-                  </div>
-                  <div class="bg-red-50 border border-black/5 rounded-lg px-3 py-1">
-                    <span class="text-red-700 font-medium text-lg">Chưa thanh toán</span>
-                  </div>
-                </div>
-                <hr class="border-black/5">
-                <div>
-                  <p class="text-gray-500 font-medium mb-3">Phương thức thanh toán</p>
-                  <div class="grid grid-cols-2 gap-3">
-                    <button class="bg-blue-600 text-white font-medium text-lg py-3 rounded-lg hover:opacity-90 transition">
-                      Thanh toán VNPay
-                    </button>
-                    <button class="bg-red-600 text-white font-medium text-lg py-3 rounded-lg hover:opacity-90 transition">
-                      Thanh toán Banking
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-          </div>
-        </div>
-      </div>
+    <!-- POPUP KẾT QUẢ KHÁM BỆNH -->
+    <teleport to="body">
+      <KetQuaKhambenh
+        v-if="resultData"
+        :is-open="showResultPopup"
+        :result="resultData"
+        @close="showResultPopup = false"
+        @download="(file) => console.log('Downloading', file)"
+      />
     </teleport>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+
+import DatLichKham from './DatLichKham/index.vue'
+import ChiTietLichHen from './ChiTietLichHen/index.vue'
+import DoiLich from './DoiLich/index.vue'
+import HuyHen from './HuyHen/index.vue'
+import KetQuaKhambenh from './KetQuaKhambenh/index.vue'
 
 const activeTab = ref('upcoming')
 const tabs = ref([
@@ -396,19 +295,117 @@ const pastAppointments = ref([
 
 const showDetail = ref(false)
 const selectedAppt = ref(null)
+const showBookingPopup = ref(false)
+const rebookData = ref(null)
+const showReschedulePopup = ref(false)
+const rescheduleAppt = ref(null)
+const showCancelPopup = ref(false)
+const cancelAppt = ref(null)
+const cancelStatus = ref('unpaid') // 'late' | 'refundable' | 'unpaid'
+const showResultPopup = ref(false)
+const resultData = ref(null)
 
 const openDetail = (appt) => {
   selectedAppt.value = { ...appt }
   showDetail.value = true
 }
 
-const handleNewAppointment = () => alert('Chức năng đặt lịch mới')
+const handleNewAppointment = () => {
+  rebookData.value = null
+  showBookingPopup.value = true
+}
+
+const handleBookingConfirm = (bookingData) => {
+  console.log('Booking confirmed:', bookingData)
+  alert('Đặt lịch thành công!')
+}
+
 const openFilter = (type) => alert(`Lọc theo ${type}`)
 const clearFilters = () => alert('Đã xóa bộ lọc')
-const handleReschedule = (id) => confirm(`Đổi lịch hẹn ${id}?`) && alert('Chức năng đổi lịch')
-const handleCancel = (id) => confirm(`Hủy lịch hẹn ${id}?`) && alert('Đã hủy')
-const viewResult = (id) => alert(`Xem kết quả khám của ${id}`)
-const rebook = (id) => alert(`Đặt lại lịch hẹn ${id}`)
+
+const handleReschedule = (id) => {
+  const appt = upcomingAppointments.value.find(a => a.id === id)
+  if (appt) {
+    rescheduleAppt.value = {
+      id: appt.id,
+      petName: appt.pet,
+      serviceName: appt.service,
+      dateTime: `${appt.time} - ${appt.date}`,
+      date: appt.date,
+      time: appt.time
+    }
+    showReschedulePopup.value = true
+  }
+}
+
+const handleRescheduleConfirm = (data) => {
+  console.log('Reschedule confirmed:', data)
+  alert('Đổi lịch thành công!')
+  showReschedulePopup.value = false
+}
+
+const handleCancel = (id) => {
+  const appt = upcomingAppointments.value.find(a => a.id === id)
+  if (appt) {
+    cancelAppt.value = {
+      id: appt.id,
+      petName: appt.pet,
+      serviceName: appt.service,
+      paidAmount: '250.000' // Mock amount
+    }
+    // Mock logic to determine cancel status
+    // In real app, check time diff and payment status
+    const randomStatus = Math.random()
+    if (randomStatus < 0.33) cancelStatus.value = 'late'
+    else if (randomStatus < 0.66) cancelStatus.value = 'refundable'
+    else cancelStatus.value = 'unpaid'
+    
+    showCancelPopup.value = true
+  }
+}
+
+const handleCancelConfirm = (data) => {
+  console.log('Cancel confirmed:', data)
+  alert('Đã hủy lịch hẹn!')
+  showCancelPopup.value = false
+  // Remove from list or update status
+}
+
+const viewResult = (id) => {
+  const appt = pastAppointments.value.find(a => a.id === id)
+  if (appt) {
+    // Mock result data
+    resultData.value = {
+      date: appt.date,
+      time: appt.time,
+      serviceName: appt.service,
+      doctorName: appt.doctor,
+      doctorSpecialty: 'Nội khoa thú y',
+      diagnosis: 'Viêm da dị ứng do bọ chét. Thú cưng có biểu hiện ngứa nhiều vùng lưng và đuôi, da mẩn đỏ.',
+      medicines: [
+        { name: 'Apoquel 5.4mg', dosage: '1 viên/ngày', instruction: 'Uống sau khi ăn sáng' },
+        { name: 'Bravecto', dosage: '1 viên duy nhất', instruction: 'Nhai trực tiếp hoặc trộn với thức ăn' }
+      ],
+      postCareGuideline: 'Vệ sinh môi trường sống sạch sẽ, giặt giũ đệm nằm của thú cưng. Tái khám sau 2 tuần nếu triệu chứng không giảm.',
+      attachments: [
+        { name: 'Ket_qua_xet_nghiem_mau.pdf', label: 'Kết quả xét nghiệm', type: 'pdf', url: '#' },
+        { name: 'Hinh_anh_vung_da.jpg', label: 'Hình ảnh lâm sàng', type: 'image', url: '#' }
+      ]
+    }
+    showResultPopup.value = true
+  }
+}
+
+const rebook = (id) => {
+  const appt = pastAppointments.value.find(a => a.id === id) || upcomingAppointments.value.find(a => a.id === id)
+  if (appt) {
+    rebookData.value = {
+      petName: appt.pet,
+      serviceName: appt.service
+    }
+    showBookingPopup.value = true
+  }
+}
 </script>
 
 <style scoped>

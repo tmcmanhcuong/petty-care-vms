@@ -1,208 +1,864 @@
 <template>
-    <div class="min-h-screen  font-nunito">
-      <div class="container mx-auto px-6 py-7 max-w-6xl">
-        <div class="flex items-center gap-1 mb-6 text-lg">
-          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6.25 15L11.25 10L6.25 5" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="text-gray-500 font-semibold">Trang chủ</span>
-          <span class="font-bold text-black">/</span>
-          <span class="font-semibold underline text-black">Hoá đơn & Thanh Toán</span>
-        </div>
-  
-        <div class="mb-6">
-          <h1 class="text-2xl font-bold text-black mb-1">Thanh toán</h1>
-          <p class="text-xl font-medium text-gray-700">Quản lý hóa đơn và lịch sử thanh toán</p>
-        </div>
-  
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div class="bg-white border border-teal-400 rounded-2xl p-6 flex flex-col justify-between min-h-40">
-            <p class="text-gray-700 font-medium mb-10">Tổng đã thanh toán</p>
-            <div>
-              <p class="text-teal-600 text-xl font-semibold">700.000 ₫</p>
-              <p class="text-gray-700 font-medium">3 hóa đơn</p>
-            </div>
+  <div class="min-h-screen font-nunitoSans">
+    <div class="container mx-auto px-6 py-8 max-w-6xl">
+      <div class="flex flex-col gap-6 items-start w-full">
+        <!-- Header -->
+        <div class="flex flex-col h-[54px] items-start w-full">
+          <div class="h-[30px] w-full">
+            <p class="font-bold text-xl leading-7 text-black">
+              Thanh toán
+            </p>
           </div>
-  
-          <div class="bg-white border border-amber-300 rounded-2xl p-6 flex flex-col justify-between min-h-40">
-            <p class="text-gray-700 font-medium mb-10">Chờ thanh toán</p>
-            <div>
-              <p class="text-amber-700 text-xl font-semibold">500.000 ₫</p>
-              <p class="text-gray-700 font-medium">1 hóa đơn</p>
-            </div>
-          </div>
-  
-          <div class="bg-white border border-gray-400 rounded-2xl p-6 flex flex-col justify-between min-h-40">
-            <p class="text-gray-700 font-medium mb-10">Tổng chi tiêu</p>
-            <div>
-              <p class="text-black text-xl font-semibold">1.200.000 ₫</p>
-              <p class="text-gray-700 font-medium">Trong năm 2025</p>
-            </div>
+          <div class="h-6 w-full">
+            <p class="font-medium text-lg leading-6 text-gray-700">
+              Quản lý hóa đơn và lịch sử thanh toán
+            </p>
           </div>
         </div>
-  
-        <div class="bg-white border border-black/10 rounded-2xl p-8 mb-6">
-          <div class="mb-6">
-            <h2 class="text-lg font-semibold text-black">Lịch sử giao dịch</h2>
-            <p class="text-gray-500 font-medium">Danh sách các hóa đơn và thanh toán</p>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-3 gap-6 w-full">
+          <!-- Card 1: Tổng đã thanh toán -->
+          <div class="bg-white border border-teal-400 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between">
+            <div class="h-5 pt-[25px]">
+              <p class="font-medium text-base leading-6 text-gray-700">
+                Tổng đã thanh toán
+              </p>
+            </div>
+            <div class="flex flex-col gap-1 pb-[25px]">
+              <p class="font-semibold text-4xl leading-6 text-teal-600">
+                {{ formatCurrency(totalPaid) }}
+              </p>
+              <p class="font-medium text-base leading-6 text-gray-700">
+                {{ paidInvoiceCount }} hóa đơn
+              </p>
+            </div>
           </div>
-  
-          <div class="overflow-x-auto">
-            <table class="w-full text-left">
-              <thead class="border-b border-black/10">
-                <tr>
-                  <th class="py-3 px-2 font-medium text-black">Mã hóa đơn</th>
-                  <th class="py-3 px-2 font-medium text-black">Dịch vụ</th>
-                  <th class="py-3 px-2 font-medium text-black">Thú cưng</th>
-                  <th class="py-3 px-2 font-medium text-black">Ngày khám</th>
-                  <th class="py-3 px-2 font-medium text-black text-right">Số tiền</th>
-                  <th class="py-3 px-2 font-medium text-black">Trạng thái</th>
-                  <th class="py-3 px-2 font-medium text-black">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="invoice in invoices" :key="invoice.id" class="border-b border-black/10">
-                  <td class="py-2 px-2">
-                    <div class="font-medium">{{ invoice.id }}</div>
-                    <div class="text-gray-500 text-sm">{{ invoice.appointmentId }}</div>
-                  </td>
-                  <td class="py-2 px-2 font-medium">{{ invoice.service }}</td>
-                  <td class="py-2 px-2">
-                    <span :class="invoice.petColor === 'amber' ? 'text-amber-700' : 'text-sky-500'" class="font-medium">
-                      {{ invoice.pet }}
-                    </span>
-                  </td>
-                  <td class="py-2 px-2">
-                    <div class="font-medium">{{ invoice.date }}</div>
-                    <div v-if="invoice.paymentDate" class="text-gray-500 text-xs">TT: {{ invoice.paymentDate }}</div>
-                  </td>
-                  <td class="py-2 px-2 text-right">
-                    <div class="font-medium">{{ invoice.amount }}</div>
-                    <div v-if="invoice.method" class="text-gray-500 text-xs text-right">{{ invoice.method }}</div>
-                  </td>
-                  <td class="py-2 px-2">
-                    <span :class="invoice.status === 'pending' ? 'bg-amber-100 text-amber-800 border-amber-800' : 'bg-teal-50 text-teal-700 border-teal-700'"
-                          class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-xs font-medium">
-                      <svg v-if="invoice.status === 'pending'" class="w-3 h-3" viewBox="0 0 12 12" fill="none">
-                        <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="2"/>
-                      </svg>
-                      <svg v-else class="w-3 h-3" viewBox="0 0 12 12" fill="none">
-                        <path d="M2 6l3 3 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                      {{ invoice.status === 'pending' ? 'Chờ thanh toán' : 'Đã thanh toán' }}
-                    </span>
-                  </td>
-                  <td class="py-2 px-2">
-                    <div class="flex justify-end gap-2">
-                      <button :class="invoice.status === 'pending' ? 'bg-teal-600 text-white hover:bg-teal-700' : 'bg-white border border-black/10 text-black hover:bg-gray-50'"
-                              class="flex items-center gap-1 px-3 py-1 rounded-lg text-sm font-medium transition">
-                        <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none">
-                          <path :d="invoice.status === 'pending' ? 'M2 8h12M8 2v12' : 'M8 2v12M2 8h12'" 
-                                :stroke="invoice.status === 'pending' ? 'white' : 'black'" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        {{ invoice.status === 'pending' ? 'Thanh toán' : 'Biên lai' }}
-                      </button>
-                      <button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition">
-                        <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none">
-                          <circle cx="8" cy="4" r="1" fill="currentColor"/>
-                          <circle cx="8" cy="8" r="1" fill="currentColor"/>
-                          <circle cx="8" cy="12" r="1" fill="currentColor"/>
-                        </svg>
-                      </button>
+
+          <!-- Card 2: Tổng dư nợ -->
+          <div class="bg-white border border-amber-300 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between">
+            <div class="h-5 pt-[25px]">
+              <p class="font-medium text-base leading-6 text-gray-700">
+                Tổng dư nợ
+              </p>
+            </div>
+            <div class="flex flex-col gap-1 pb-[25px]">
+              <p class="font-semibold text-4xl leading-6 text-amber-700">
+                {{ formatCurrency(totalDebt) }}
+              </p>
+              <p class="font-medium text-base leading-6 text-gray-700">
+                {{ debtInvoiceCount }} hóa đơn
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 3: Tổng chi tiêu -->
+          <div class="bg-white border border-gray-400 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between">
+            <div class="h-5 pt-[25px]">
+              <p class="font-medium text-base leading-6 text-gray-700">
+                Tổng chi tiêu
+              </p>
+            </div>
+            <div class="flex flex-col gap-1 pb-[25px]">
+              <p class="font-semibold text-4xl leading-6 text-black">
+                {{ formatCurrency(totalSpending) }}
+              </p>
+              <p class="font-medium text-base leading-6 text-gray-700">
+                Trong năm {{ currentYear }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment History -->
+        <div class="bg-white border border-black/15 rounded-[14px] px-8 py-6 flex flex-col gap-6 w-full">
+          <!-- Card Header -->
+          <div class="flex flex-col h-[70px] items-start w-full">
+            <p class="font-bold text-xl leading-7 text-black">
+              Lịch sử giao dịch
+            </p>
+            <p class="font-normal text-lg leading-6 text-gray-500">
+              Danh sách các hóa đơn và thanh toán
+            </p>
+          </div>
+
+          <!-- Filter Payments -->
+          <div class="bg-white rounded-[10px] shadow-md px-6 py-6 flex items-center gap-9">
+            <div class="flex items-center gap-2">
+              <div class="w-5 h-5">
+                <img :src="iconFilter" alt="" class="w-full h-full" />
+              </div>
+              <p class="font-medium text-base leading-6 text-black">
+                Lọc theo:
+              </p>
+            </div>
+
+            <div class="flex items-center gap-6">
+              <!-- Filter: Dịch vụ -->
+              <div class="relative">
+                <button 
+                  @click="toggleServiceFilter"
+                  class="bg-gray-200 border border-black/15 rounded-lg px-[13px] py-[9px] flex items-center gap-16"
+                >
+                  <span class="text-sm font-medium text-gray-500 w-[111px]">
+                    {{ selectedService || 'Dịch vụ' }}
+                  </span>
+                  <div class="w-4 h-4">
+                    <img :src="iconChevronDown" alt="" class="w-full h-full" />
+                  </div>
+                </button>
+              </div>
+
+              <!-- Filter: Tháng -->
+              <div class="relative">
+                <button 
+                  @click="toggleMonthFilter"
+                  class="bg-gray-200 border border-black/15 rounded-lg px-[13px] py-[9px] flex items-center gap-16"
+                >
+                  <span class="text-sm font-medium text-gray-500 w-[111px]">
+                    {{ selectedMonth || 'Tháng' }}
+                  </span>
+                  <div class="w-4 h-4">
+                    <img :src="iconChevronDown" alt="" class="w-full h-full" />
+                  </div>
+                </button>
+              </div>
+
+              <!-- Filter: Năm -->
+              <div class="relative">
+                <button 
+                  @click="toggleYearFilter"
+                  class="bg-gray-200 border border-black/15 rounded-lg px-[13px] py-[9px] flex items-center gap-16"
+                >
+                  <span class="text-sm font-medium text-gray-500 w-[111px]">
+                    {{ selectedYear || 'Năm' }}
+                  </span>
+                  <div class="w-4 h-4">
+                    <img :src="iconChevronDown" alt="" class="w-full h-full" />
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Clear Filters -->
+            <button 
+              @click="clearFilters"
+              class="rounded-lg px-3 py-0 flex items-center justify-center"
+            >
+              <p class="font-semibold text-base leading-5 text-teal-700">
+                Xóa bộ lọc
+              </p>
+            </button>
+          </div>
+
+          <!-- Payments Table -->
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col overflow-hidden w-full">
+              <!-- Table Header -->
+              <div class="border-b border-black/15 h-10 flex items-center">
+                <div class="w-[126.688px] px-2">
+                  <p class="font-semibold text-base leading-6 text-black">
+                    Mã hóa đơn
+                  </p>
+                </div>
+                <div class="w-[301.516px] px-2">
+                  <p class="font-semibold text-base leading-6 text-black">
+                    Dịch vụ
+                  </p>
+                </div>
+                <div class="w-[136.531px] px-2">
+                  <p class="font-semibold text-base leading-6 text-black">
+                    Ngày khám
+                  </p>
+                </div>
+                <div class="w-[250.727px] px-2">
+                  <p class="font-semibold text-base leading-6 text-black">
+                    Trạng thái & Số tiền
+                  </p>
+                </div>
+                <div class="flex-1 px-2">
+                  <p class="font-semibold text-base leading-6 text-black text-right">
+                    Thao tác
+                  </p>
+                </div>
+              </div>
+
+              <!-- Table Body -->
+              <div class="flex flex-col">
+                <div 
+                  v-for="payment in paginatedPayments" 
+                  :key="payment.id"
+                  class="border-b border-black/15 h-[53px] flex items-center"
+                >
+                  <!-- Mã hóa đơn -->
+                  <div class="w-[126.688px] px-2">
+                    <p 
+                      class="font-bold text-sm leading-5"
+                      :class="getInvoiceCodeColor(payment.status)"
+                    >
+                      {{ payment.invoiceCode }}
+                    </p>
+                  </div>
+
+                  <!-- Dịch vụ -->
+                  <div class="w-[301.516px] px-2">
+                    <p class="font-medium text-sm leading-5 text-black">
+                      {{ payment.service }}
+                    </p>
+                  </div>
+
+                  <!-- Ngày khám -->
+                  <div class="w-[136.531px] px-2">
+                    <p class="font-medium text-sm leading-5 text-black">
+                      {{ payment.date }}
+                    </p>
+                  </div>
+
+                  <!-- Trạng thái & Số tiền -->
+                  <div class="w-[250.727px] px-2">
+                    <div class="flex flex-col gap-0">
+                      <p 
+                        class="font-semibold text-sm leading-5"
+                        :class="getStatusColor(payment.status)"
+                      >
+                        {{ payment.statusText }}
+                      </p>
+                      <p class="font-medium text-sm leading-5 text-gray-500">
+                        {{ payment.amountText }}
+                      </p>
                     </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                  </div>
+
+                  <!-- Thao tác -->
+                  <div class="flex-1 px-2 flex justify-end">
+                    <button
+                      v-if="payment.status === 'pending'"
+                      @click="handlePayNow(payment)"
+                      class="bg-amber-600 rounded-lg px-3 py-1 flex items-center gap-2"
+                    >
+                      <div class="w-4 h-4">
+                        <img :src="iconCreditCard" alt="" class="w-full h-full" />
+                      </div>
+                      <span class="font-semibold text-base leading-6 text-white">
+                        Thanh toán ngay
+                      </span>
+                    </button>
+
+                    <button
+                      v-else-if="payment.status === 'prepaid' || payment.status === 'refunded'"
+                      @click="handleViewDetail(payment)"
+                      class="bg-white border border-black/15 rounded-lg px-3 py-1 flex items-center gap-2"
+                    >
+                      <div class="w-4 h-4">
+                        <img :src="iconEye" alt="" class="w-full h-full" />
+                      </div>
+                      <span class="font-semibold text-base leading-6 text-black">
+                        Xem chi tiết
+                      </span>
+                    </button>
+
+                    <button
+                      v-else-if="payment.status === 'completed'"
+                      @click="handleViewReceipt(payment)"
+                      class="bg-white border border-black/15 rounded-lg px-3 py-1 flex items-center gap-2"
+                    >
+                      <div class="w-4 h-4">
+                        <img :src="iconReceipt" alt="" class="w-full h-full" />
+                      </div>
+                      <span class="font-semibold text-base leading-6 text-black">
+                        Xem biên lai
+                      </span>
+                    </button>
+
+                    <button
+                      v-else-if="payment.status === 'refunding'"
+                      @click="handleViewRefundStatus(payment)"
+                      class="bg-white border border-black/15 rounded-lg px-3 py-1 flex items-center gap-2"
+                    >
+                      <div class="w-4 h-4">
+                        <img :src="iconClock" alt="" class="w-full h-full" />
+                      </div>
+                      <span class="font-semibold text-base leading-6 text-black">
+                        Đang xử lý
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex items-center justify-between w-full">
+              <div class="flex items-center gap-1">
+                <p class="font-medium text-sm leading-6 text-gray-600">
+                  Hiển thị
+                </p>
+                <p class="font-medium text-base leading-6 text-[#101828]">
+                  {{ startIndex }}-{{ endIndex }}
+                </p>
+                <p class="font-medium text-sm leading-6 text-gray-600">
+                  trong
+                </p>
+                <p class="font-medium text-base leading-6 text-[#101828]">
+                  {{ totalPayments }}
+                </p>
+                <p class="font-medium text-sm leading-6 text-gray-600">
+                  giao dịch
+                </p>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <!-- Previous Button -->
+                <button
+                  @click="prevPage"
+                  :disabled="currentPage === 1"
+                  :class="{ 'opacity-50': currentPage === 1 }"
+                  class="bg-white border border-black/20 rounded-lg px-[17px] py-px flex items-center justify-center"
+                >
+                  <div class="w-6 h-6">
+                    <img :src="iconArrowLeft" alt="" class="w-full h-full" />
+                  </div>
+                </button>
+
+                <!-- Page Numbers -->
+                <button
+                  v-for="page in visiblePages"
+                  :key="page"
+                  @click="goToPage(page)"
+                  :class="page === currentPage ? 'bg-teal-700 text-white' : 'bg-white text-black'"
+                  class="border border-black/10 rounded-lg h-8 px-[13px] py-px flex items-center justify-center min-w-[32px]"
+                >
+                  <span class="font-semibold text-sm leading-5">
+                    {{ page }}
+                  </span>
+                </button>
+
+                <!-- Next Button -->
+                <button
+                  @click="nextPage"
+                  :disabled="currentPage === totalPages"
+                  class="bg-white border border-black/20 rounded-lg px-[17px] py-px flex items-center justify-center"
+                >
+                  <div class="w-6 h-6">
+                    <img :src="iconArrowRight" alt="" class="w-full h-full" />
+                  </div>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-  
-        <div class="bg-teal-50 border border-teal-300 rounded-2xl p-6">
-          <div class="mb-6">
-            <h3 class="text-teal-900 font-medium">Phương thức thanh toán</h3>
-            <p class="text-teal-700 font-medium">Chúng tôi hỗ trợ các hình thức thanh toán sau</p>
+
+        <!-- Payment Methods -->
+        <div class="bg-teal-50/50 border border-teal-500 rounded-[14px] px-8 py-6 flex flex-col gap-6 w-full">
+          <!-- Card Header -->
+          <div class="flex flex-col h-[70px] items-start w-full">
+            <p class="font-bold text-xl leading-6 text-teal-800">
+              Phương thức thanh toán
+            </p>
+            <p class="font-normal text-lg leading-6 text-teal-600">
+              Liên kết ví điện tử và tài khoản ngân hàng để thanh toán nhanh hơn
+            </p>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div v-for="method in paymentMethods" :key="method.title" class="bg-white border border-teal-300 rounded-xl p-4 flex gap-3">
-              <div class="w-10 h-10 bg-teal-100 rounded-xl flex-shrink-0 flex items-center justify-center">
-                <svg class="w-5 h-5 text-teal-600" viewBox="0 0 20 20" fill="none">
-                  <path d="M4 6h12M4 10h12M4 14h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
+
+          <!-- Payment Method List -->
+          <div class="flex flex-col gap-4">
+            <!-- VNPay -->
+            <div class="bg-white border border-teal-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="rounded-[10px] shadow-md w-12 h-12">
+                  <img :src="imgVNPay" alt="VNPay" class="w-full h-full rounded-[10px] object-contain" />
+                </div>
+                <div class="flex flex-col">
+                  <p class="font-medium text-base leading-6 text-black">
+                    VNPay
+                  </p>
+                  <p class="font-medium text-sm leading-6 text-gray-500">
+                    Ví điện tử VNPay
+                  </p>
+                </div>
               </div>
-              <div>
-                <h4 class="font-medium text-black">{{ method.title }}</h4>
-                <p class="text-sm text-gray-700">{{ method.desc }}</p>
+              <div class="flex items-center gap-3">
+                <div class="bg-gray-100 border border-black/15 rounded-lg px-[17px] py-[3px]">
+                  <p class="font-semibold text-sm leading-5 text-black/60">
+                    Chưa liên kết
+                  </p>
+                </div>
+                <button
+                  @click="handleLinkPayment('vnpay')"
+                  class="bg-white border border-teal-500 rounded-lg px-[13px] py-[9px]"
+                >
+                  <p class="font-semibold text-sm leading-5 text-teal-500">
+                    Liên kết
+                  </p>
+                </button>
               </div>
+            </div>
+
+            <!-- MoMo -->
+            <div class="bg-white border border-teal-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="rounded-[10px] shadow-md w-12 h-12">
+                  <img :src="imgMoMo" alt="MoMo" class="w-full h-full rounded-[10px] object-contain" />
+                </div>
+                <div class="flex flex-col">
+                  <p class="font-medium text-base leading-6 text-black">
+                    MoMo
+                  </p>
+                  <p class="font-medium text-sm leading-6 text-gray-500">
+                    Ví điện tử MoMo
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="bg-gray-100 border border-black/15 rounded-lg px-[17px] py-[3px]">
+                  <p class="font-semibold text-sm leading-5 text-black/60">
+                    Chưa liên kết
+                  </p>
+                </div>
+                <button
+                  @click="handleLinkPayment('momo')"
+                  class="bg-white border border-teal-500 rounded-lg px-[13px] py-[9px]"
+                >
+                  <p class="font-semibold text-sm leading-5 text-teal-500">
+                    Liên kết
+                  </p>
+                </button>
+              </div>
+            </div>
+
+            <!-- Techcombank (Linked) -->
+            <div class="bg-white border border-green-400 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="rounded-[10px] shadow-md w-12 h-12">
+                  <img :src="imgTechcombank" alt="Techcombank" class="w-full h-full rounded-[10px] object-contain" />
+                </div>
+                <div class="flex flex-col">
+                  <p class="font-medium text-base leading-6 text-black">
+                    Ngân hàng Techcombank
+                  </p>
+                  <p class="font-medium text-sm leading-6 text-gray-500">
+                    **** **** **** 1234
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="bg-green-100 border border-black/15 rounded-lg px-4 py-[2px] flex items-center gap-2">
+                  <div class="w-3 h-3">
+                    <img :src="iconCheck" alt="" class="w-full h-full" />
+                  </div>
+                  <p class="font-semibold text-sm leading-5 text-green-600">
+                    Đã liên kết
+                  </p>
+                </div>
+                <button
+                  @click="handleUnlinkPayment('techcombank')"
+                  class="bg-white border border-red-300 rounded-lg px-[13px] py-[9px]"
+                >
+                  <p class="font-semibold text-sm leading-5 text-red-600">
+                    Hủy liên kết
+                  </p>
+                </button>
+              </div>
+            </div>
+
+            <!-- Add Bank Account -->
+            <div class="bg-white border border-gray-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="bg-gray-100 rounded-[10px] shadow-md w-12 h-12 flex items-center justify-center">
+                  <div class="w-6 h-6">
+                    <img :src="iconBank" alt="" class="w-full h-full" />
+                  </div>
+                </div>
+                <div class="flex flex-col">
+                  <p class="font-medium text-base leading-6 text-black">
+                    Tài khoản ngân hàng
+                  </p>
+                  <p class="font-medium text-sm leading-6 text-gray-500">
+                    Liên kết thêm tài khoản ngân hàng
+                  </p>
+                </div>
+              </div>
+              <button
+                @click="handleAddBankAccount"
+                class="bg-[#5a9690] rounded-lg px-3 py-2 flex items-center gap-2"
+              >
+                <div class="w-4 h-4">
+                  <img :src="iconPlus" alt="" class="w-full h-full" />
+                </div>
+                <p class="font-semibold text-sm leading-5 text-white">
+                  Thêm tài khoản
+                </p>
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue'
-  
-  const invoices = ref([
-    {
-      id: 'HD001234',
-      appointmentId: 'LH001234',
-      service: 'Khám tổng quát + Xét nghiệm máu',
-      pet: 'Milo',
-      petColor: 'amber',
-      date: '10/11/2025',
-      amount: '500.000 ₫',
-      status: 'pending'
-    },
-    {
-      id: 'HD001230',
-      appointmentId: 'LH001230',
-      service: 'Khám da liễu + Thuốc điều trị',
-      pet: 'Milo',
-      petColor: 'amber',
-      date: '25/10/2025',
-      paymentDate: '25/10/2025',
-      amount: '350.000 ₫',
-      method: 'VNPay',
-      status: 'paid'
-    },
-    {
-      id: 'HD001228',
-      appointmentId: 'LH001228',
-      service: 'Khám tổng quát',
-      pet: 'Luna',
-      petColor: 'sky',
-      date: '15/10/2025',
-      paymentDate: '15/10/2025',
-      amount: '200.000 ₫',
-      method: 'Tiền mặt',
-      status: 'paid'
-    },
-    {
-      id: 'HD001225',
-      appointmentId: 'LH001225',
-      service: 'Tiêm phòng 6 bệnh',
-      pet: 'Milo',
-      petColor: 'sky',
-      date: '20/09/2025',
-      paymentDate: '20/09/2025',
-      amount: '150.000 ₫',
-      method: 'Chuyển khoản',
-      status: 'paid'
-    }
-  ])
-  
-  const paymentMethods = ref([
-    { title: 'VNPay / MoMo', desc: 'Thanh toán qua ví điện tử' },
-    { title: 'Chuyển khoản ngân hàng', desc: 'Quét mã QR hoặc chuyển khoản' },
-    { title: 'Tiền mặt', desc: 'Thanh toán trực tiếp tại phòng khám' }
-  ])
-  </script>
-  
-  <style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap');
-  
-  body {
-    font-family: 'Nunito Sans', sans-serif;
+  </div>
+
+  <!-- Payment Popup -->
+  <teleport to="body">
+    <div
+      v-if="showPaymentPopup"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click.self="closePaymentPopup"
+    >
+      <ChiTietHoaDon
+        :is-open="showPaymentPopup"
+        :payment-status="paymentStatus"
+        :invoice-data="selectedPayment"
+        @close="closePaymentPopup"
+        @payment-success="handlePaymentSuccess"
+      />
+    </div>
+  </teleport>
+
+  <!-- Receipt Popup -->
+  <teleport to="body">
+    <div
+      v-if="showReceiptPopup"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click.self="closeReceiptPopup"
+    >
+      <BienLaiThanhToan
+        :is-open="showReceiptPopup"
+        :receipt-data="selectedReceipt"
+        @close="closeReceiptPopup"
+      />
+    </div>
+  </teleport>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue';
+import ChiTietHoaDon from './ChiTietHoaDon/index.vue';
+import BienLaiThanhToan from './BienLaiThanhToan/index.vue';
+
+
+// Icon URLs from Figma
+const iconFilter = "https://www.figma.com/api/mcp/asset/a52c069b-e1bb-4cf6-9b07-658fc41883ba";
+const iconChevronDown = "https://www.figma.com/api/mcp/asset/0fed6ebc-152f-4045-affe-d791cc19174a";
+const iconCreditCard = "https://www.figma.com/api/mcp/asset/43eabd7f-62f4-49d2-bd2e-04e2e2145049";
+const iconEye = "https://www.figma.com/api/mcp/asset/12bb07b3-1a94-46b5-9ab8-06d511b87d87";
+const iconReceipt = "https://www.figma.com/api/mcp/asset/bfc1d0d4-e436-4a6a-9536-3acf559acd30";
+const iconClock = "https://www.figma.com/api/mcp/asset/0963718a-988f-466e-9164-809244ee0e8c";
+const iconArrowLeft = "https://www.figma.com/api/mcp/asset/1b2c1207-51a7-42ff-8b0a-8f9a315cfba0";
+const iconArrowRight = "https://www.figma.com/api/mcp/asset/1b2c1207-51a7-42ff-8b0a-8f9a315cfba0";
+const iconCheck = "https://www.figma.com/api/mcp/asset/e60e2d05-4121-4868-9cff-d37bc0a9b0d3";
+const iconBank = "https://www.figma.com/api/mcp/asset/71069a98-a50b-4e8b-bdff-42bbbabfbba8";
+const iconPlus = "https://www.figma.com/api/mcp/asset/1324b97b-6462-4489-a4c6-fea472285ee8";
+
+// Payment method images
+const imgVNPay = "https://www.figma.com/api/mcp/asset/8af4ada0-50d6-4281-80d3-84f41e62c032";
+const imgMoMo = "https://www.figma.com/api/mcp/asset/3c5948bb-b2a3-4e46-9f9a-244ad6276e0d";
+const imgTechcombank = "https://www.figma.com/api/mcp/asset/83dbb109-fa75-456a-9dc3-8b1fd5258840";
+
+// Statistics data
+const totalPaid = ref(700000);
+const paidInvoiceCount = ref(3);
+const totalDebt = ref(500000);
+const debtInvoiceCount = ref(1);
+const totalSpending = ref(1200000);
+const currentYear = ref(2025);
+
+// Filter state
+const selectedService = ref('');
+const selectedMonth = ref('');
+const selectedYear = ref('');
+
+// Payment popup state
+const showPaymentPopup = ref(false);
+const selectedPayment = ref(null);
+const paymentStatus = ref('pending');
+const showReceiptPopup = ref(false);
+const selectedReceipt = ref(null);
+
+// Payments data
+const payments = ref([
+  {
+    id: 1,
+    invoiceCode: 'HD001234',
+    service: 'Khám bệnh + 1 dịch vụ khác',
+    date: '10/11/2025',
+    status: 'pending',
+    statusText: 'Cần thanh toán: 100.000 ₫',
+    amountText: '(Tổng: 250.000 ₫)',
+    totalAmount: 250000,
+    paidAmount: 0
+  },
+  {
+    id: 2,
+    invoiceCode: 'HD001230',
+    service: 'Tắm rửa',
+    date: '15/11/2025',
+    status: 'prepaid',
+    statusText: 'Đã thanh toán trước',
+    amountText: '(Đã trả: 200.000 ₫)',
+    totalAmount: 200000,
+    paidAmount: 200000
+  },
+  {
+    id: 3,
+    invoiceCode: 'HD001228',
+    service: 'Tiêm phòng + 2 dịch vụ khác',
+    date: '25/10/2025',
+    status: 'completed',
+    statusText: 'Đã hoàn thành',
+    amountText: '(Tổng: 350.000 ₫)',
+    totalAmount: 350000,
+    paidAmount: 350000
+  },
+  {
+    id: 4,
+    invoiceCode: 'HD001227',
+    service: 'Khám răng miệng',
+    date: '01/10/2025',
+    status: 'refunding',
+    statusText: 'Đang hoàn tiền',
+    amountText: '(Dự kiến: 24h)',
+    totalAmount: 150000,
+    paidAmount: 150000
+  },
+  {
+    id: 5,
+    invoiceCode: 'HD001226',
+    service: 'Tiêm phòng 6 bệnh',
+    date: '24/09/2025',
+    status: 'refunded',
+    statusText: 'Đã hoàn tiền',
+    amountText: '(+ 350.000 ₫)',
+    totalAmount: 350000,
+    paidAmount: 350000
+  },
+  {
+    id: 6,
+    invoiceCode: 'HD001225',
+    service: 'Khám tổng quát',
+    date: '20/09/2025',
+    status: 'completed',
+    statusText: 'Đã hoàn thành',
+    amountText: '(Tổng: 150.000 ₫)',
+    totalAmount: 150000,
+    paidAmount: 150000
   }
-  </style>
+]);
+
+// Pagination
+const currentPage = ref(1);
+const itemsPerPage = ref(6);
+
+const totalPayments = computed(() => payments.value.length);
+const totalPages = computed(() => Math.ceil(totalPayments.value / itemsPerPage.value));
+
+const paginatedPayments = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return payments.value.slice(start, end);
+});
+
+const startIndex = computed(() => (currentPage.value - 1) * itemsPerPage.value + 1);
+const endIndex = computed(() => Math.min(currentPage.value * itemsPerPage.value, totalPayments.value));
+
+const visiblePages = computed(() => {
+  const pages = [];
+  const maxVisible = 3;
+  
+  for (let i = 1; i <= Math.min(maxVisible, totalPages.value); i++) {
+    pages.push(i);
+  }
+  
+  return pages;
+});
+
+// Methods
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'decimal',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(amount) + ' ₫';
+};
+
+const getInvoiceCodeColor = (status) => {
+  const colors = {
+    pending: 'text-amber-600',
+    prepaid: 'text-blue-500',
+    completed: 'text-green-600',
+    refunding: 'text-yellow-500',
+    refunded: 'text-purple-600'
+  };
+  return colors[status] || 'text-black';
+};
+
+const getStatusColor = (status) => {
+  const colors = {
+    pending: 'text-amber-600',
+    prepaid: 'text-blue-500',
+    completed: 'text-green-600',
+    refunding: 'text-yellow-500',
+    refunded: 'text-purple-600'
+  };
+  return colors[status] || 'text-black';
+};
+
+const toggleServiceFilter = () => {
+  // Implement dropdown toggle
+  console.log('Toggle service filter');
+};
+
+const toggleMonthFilter = () => {
+  // Implement dropdown toggle
+  console.log('Toggle month filter');
+};
+
+const toggleYearFilter = () => {
+  // Implement dropdown toggle
+  console.log('Toggle year filter');
+};
+
+const clearFilters = () => {
+  selectedService.value = '';
+  selectedMonth.value = '';
+  selectedYear.value = '';
+};
+
+const handlePayNow = (payment) => {
+  console.log('Pay now:', payment);
+  selectedPayment.value = {
+    invoiceCode: payment.invoiceCode,
+    services: [
+      {
+        id: 1,
+        name: payment.service,
+        note: '(Dịch vụ đã đặt)',
+        price: payment.totalAmount
+      }
+    ],
+    totalAmount: payment.totalAmount,
+    paidAmount: payment.paidAmount || 0,
+    remainingAmount: payment.totalAmount - (payment.paidAmount || 0)
+  };
+  paymentStatus.value = 'pending';
+  showPaymentPopup.value = true;
+};
+
+const handleViewDetail = (payment) => {
+  console.log('View detail:', payment);
+  
+  if (payment.status === 'prepaid') {
+    // Show prepaid appointment details
+    paymentStatus.value = 'prepaid';
+    selectedPayment.value = {
+      appointmentCode: payment.invoiceCode,
+      time: `09:00 - ${payment.date}`,
+      petName: 'Luna', // Mock data - should come from payment
+      service: payment.service,
+      staff: 'NV. Lê Thị C', // Mock data
+      paidAmount: payment.paidAmount
+    };
+  } else if (payment.status === 'refunded') {
+    // Show refunded details
+    paymentStatus.value = 'refunded';
+    selectedPayment.value = {
+      refundCode: payment.invoiceCode.replace('HD', 'HT'),
+      originalInvoice: payment.invoiceCode,
+      refundDate: payment.date,
+      paymentMethodLogo: 'https://www.figma.com/api/mcp/asset/1d522772-1899-4c7a-ab6f-b5fd5ce56053',
+      paymentMethodName: 'Ví Momo',
+      items: [
+        { id: 1, name: payment.service, amount: payment.totalAmount }
+      ],
+      totalRefund: payment.totalAmount
+    };
+  }
+  
+  showPaymentPopup.value = true;
+};
+
+const handleViewReceipt = (payment) => {
+  console.log('View receipt:', payment);
+  selectedReceipt.value = {
+    invoiceCode: payment.invoiceCode,
+    visitDate: payment.date,
+    petName: 'Luna', // Mock data - should come from payment
+    doctor: 'BS. Trần Văn D', // Mock data
+    services: [
+      { id: 1, name: payment.service, price: payment.totalAmount }
+    ],
+    totalAmount: payment.totalAmount,
+    paidAmount: payment.paidAmount,
+    prepaidAmount: payment.paidAmount
+  };
+  showReceiptPopup.value = true;
+};
+
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
+};
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
+};
+
+const goToPage = (page) => {
+  currentPage.value = page;
+};
+
+const handleLinkPayment = (method) => {
+  console.log('Link payment:', method);
+  // Implement payment method linking
+};
+
+const handleUnlinkPayment = (method) => {
+  console.log('Unlink payment:', method);
+  // Implement payment method unlinking
+};
+
+const handleAddBankAccount = () => {
+  console.log('Add bank account');
+  // Implement add bank account
+};
+
+const handlePaymentSuccess = (paymentData) => {
+  console.log('Payment successful:', paymentData);
+  // TODO: Update payment status in the list
+  // TODO: Show success notification
+  alert(`Thanh toán thành công! Mã hóa đơn: ${paymentData.invoiceCode}`);
+  showPaymentPopup.value = false;
+  selectedPayment.value = null;
+};
+
+const closePaymentPopup = () => {
+  showPaymentPopup.value = false;
+  selectedPayment.value = null;
+};
+
+const closeReceiptPopup = () => {
+  showReceiptPopup.value = false;
+  selectedReceipt.value = null;
+};
+
+const handleViewRefundStatus = (payment) => {
+  console.log('View refund status:', payment);
+  
+  // Show refunding status popup
+  paymentStatus.value = 'refunding';
+  selectedPayment.value = {
+    invoiceCode: payment.invoiceCode,
+    originalInvoice: payment.invoiceCode,
+    canceledService: payment.service,
+    refundAmount: payment.totalAmount
+  };
+  
+  showPaymentPopup.value = true;
+};
+</script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&family=Inter:wght@700&display=swap');
+.font-nunitoSans { font-family: 'Nunito Sans', sans-serif; }
+</style>

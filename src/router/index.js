@@ -26,7 +26,7 @@ const routes = [
     {
         path: '/khach-hang/trang-cua-toi',
         component: () => import('../components/KhachHang/QuanLyTaiKhoan/index.vue'),
-        meta: { layout: 'trangchu' }
+        meta: { layout: 'dangki_dangnhap' }
     },
     {
         path: '/khach-hang/quan-ly-thong-tin-ca-nhan',
@@ -36,22 +36,22 @@ const routes = [
     {
         path: '/khach-hang/tro-giup-lien-he',
         component: () => import('../components/KhachHang/TroGiupLienHe/index.vue'),
-        meta: { layout: 'trangchu' }
+        meta: { layout: 'dangki_dangnhap' }
     },
     {
         path: '/khach-hang/thanh-toan',
         component: () => import('../components/KhachHang/ThanhToan/index.vue'),
-        meta: { layout: 'trangchu' }
+        meta: { layout: 'dangki_dangnhap' }
     },
     {
         path: '/khach-hang/lich-hen',
         component: () => import('../components/KhachHang/LichHen/index.vue'),
-        meta: { layout: 'trangchu' }
+        meta: { layout: 'dangki_dangnhap' }
     },
     {
         path: '/khach-hang/thu-cung-cua-toi',
         component: () => import('../components/KhachHang/ThuCungCuaToi/index.vue'),
-        meta: { layout: 'trangchu' }
+        meta: { layout: 'dangki_dangnhap' }
     },
 
 

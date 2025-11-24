@@ -11,6 +11,7 @@ import "./assets/css/main.css";
 // npm install --save vue-toastification
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import "./assets/css/toast-override.css";
 import axios from "axios";
 import {
   logout as authLogout,

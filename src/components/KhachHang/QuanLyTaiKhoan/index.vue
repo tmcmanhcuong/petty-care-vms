@@ -1,10 +1,6 @@
 <template>
   <div class="min-h-screen py-7 px-12 max-w-5xl mx-auto md:px-6 sm:px-4">
-    <button class="flex items-center gap-1 mb-6 font-semibold text-xl text-black hover:text-teal-700 transition">
-      <img src="https://www.figma.com/api/mcp/asset/632d2be1-5494-4db7-bbce-773360d5ad82" alt="Back" class="w-5 h-5" />
-      <span>Quay lại trang chủ</span>
-    </button>
-
+    <!-- Dashboard - Trang Của Tôi -->
     <div class="bg-teal-50 border border-teal-300 rounded-xl p-8 flex gap-3 mb-6 sm:p-4">
       <img src="https://www.figma.com/api/mcp/asset/49a71dd4-fc1c-432b-9dcf-953170709dbc" alt="Info"
         class="w-4 h-4 flex-shrink-0 mt-1" />
@@ -25,12 +21,14 @@
 
     <div class="flex gap-16 mb-11">
       <button
+        @click="openBookingPopup"
         class="flex-1 flex items-center justify-center gap-4 py-6 rounded-lg bg-teal-700 text-white font-bold text-xl hover:bg-teal-800 transition">
         <img src="https://www.figma.com/api/mcp/asset/025ca85f-759b-44b3-ab90-5dc1971e474e" alt="Calendar"
           class="w-6 h-6" />
-        <span>Đặt lịch khám mới</span>
+        <span>Đặt lịch khám</span>
       </button>
       <button
+        @click="openAddPetPopup"
         class="flex-1 flex items-center justify-center gap-4 py-6 rounded-lg bg-white border border-teal-200 text-teal-700 font-bold text-xl hover:bg-teal-50 transition">
         <img src="https://www.figma.com/api/mcp/asset/a40f71e4-b37d-4574-9e21-93c9c182618f" alt="Pet" class="w-4 h-4" />
         <span>Thêm thú cưng</span>
@@ -135,6 +133,7 @@
           <div class="flex flex-col gap-2 items-center sm:flex-row sm:w-full sm:justify-between">
             <span class="bg-teal-100 text-teal-800 font-bold text-base px-2 py-1 rounded-lg">Đã xác nhận</span>
             <button
+              @click="openAppointmentDetail(appointment1)"
               class="border border-gray-300 text-black font-bold text-base px-3 py-1 rounded-lg hover:bg-gray-50 transition">
               Chi tiết
             </button>
@@ -174,6 +173,7 @@
           <div class="flex flex-col gap-2 items-center sm:flex-row sm:w-full sm:justify-between">
             <span class="bg-teal-100 text-teal-800 font-bold text-base px-2 py-1 rounded-lg">Đã xác nhận</span>
             <button
+              @click="openAppointmentDetail(appointment2)"
               class="border border-gray-300 text-black font-bold text-base px-3 py-1 rounded-lg hover:bg-gray-50 transition">
               Chi tiết
             </button>
@@ -206,7 +206,7 @@
             <p class="text-orange-700 font-bold text-base mb-1">
               Đến hạn: 20/11/2025
             </p>
-            <button class="text-teal-600 font-semibold text-sm hover:text-teal-700 transition">
+            <button @click="openVaccinationBooking('Milo', 'Tiêm phòng 6 bệnh', '20/11/2025')" class="text-teal-600 font-semibold text-sm hover:text-teal-700 transition">
               Đặt lịch ngay
             </button>
           </div>
@@ -223,7 +223,7 @@
             <p class="text-orange-700 font-bold text-base mb-1">
               Đến hạn: 15/11/2025
             </p>
-            <button class="text-teal-600 font-semibold text-sm hover:text-teal-700 transition">
+            <button @click="openVaccinationBooking('Luna', 'Tiêm phòng dại', '15/11/2025')" class="text-teal-600 font-semibold text-sm hover:text-teal-700 transition">
               Đặt lịch ngay
             </button>
           </div>
@@ -231,9 +231,167 @@
       </div>
     </div>
   </div>
+
+  <!-- Add Pet Popup -->
+    <ThemThuCung 
+      ref="themThuCungRef"
+      :isOpen="isAddPetOpen" 
+      @close="closeAddPetPopup" 
+      @submit="handleAddPetSubmit" 
+    />
+
+    <!-- Success Popup -->
+    <ThemThuCungThanhCong 
+      :isOpen="isSuccessPopupOpen" 
+      :petData="newPetData"
+      @close="closeSuccessPopup" 
+      @bookAppointment="handleBookAppointment" 
+    />
+
+    <!-- Booking Popup -->
+    <DatLichKham 
+      :isOpen="isBookingPopupOpen" 
+      :initialData="rebookData"
+      @close="closeBookingPopup" 
+      @confirm="handleBookingConfirm"
+      @openAddPet="openAddPetPopup" 
+    />
+
+    <!-- Appointment Detail Popup -->
+    <ChiTietLichHen 
+      :isOpen="isAppointmentDetailOpen" 
+      :selectedAppt="selectedAppointment"
+      @close="closeAppointmentDetail" 
+    />
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from 'vue';
+import ThemThuCung from '../ThuCungCuaToi/ThemThuCung/index.vue';
+import DatLichKham from '../LichHen/DatLichKham/index.vue';
+import ChiTietLichHen from '../LichHen/ChiTietLichHen/index.vue';
+
+const themThuCungRef = ref(null);
+const isAddPetOpen = ref(false);
+const isSuccessPopupOpen = ref(false);
+const newPetData = ref({});
+const isBookingPopupOpen = ref(false);
+const rebookData = ref(null);
+const isAppointmentDetailOpen = ref(false);
+const selectedAppointment = ref({});
+
+// Mock appointment data
+const appointment1 = {
+  id: '#LH001234',
+  service: 'Khám tổng quát',
+  pet: 'Milo',
+  breed: 'Poodle',
+  age: '2 tuổi',
+  weight: '5.5 kg',
+  doctor: 'Bs. Nguyễn Thị B',
+  date: '10/11/2025',
+  time: '14:00',
+  clinic: 'Phòng khám thú y Petty',
+  address: '123 Đường ABC, Quận 1, TP.HCM',
+  note: 'Thú cưng cần nhịn ăn trước khi khám'
+};
+
+const appointment2 = {
+  id: '#LH001235',
+  service: 'Tiêm phòng dại',
+  pet: 'Luna',
+  breed: 'Scottish Fold',
+  age: '1.5 tuổi',
+  weight: '3.2 kg',
+  doctor: 'Bs. Trần Văn C',
+  date: '15/11/2025',
+  time: '10:30',
+  clinic: 'Phòng khám thú y Petty',
+  address: '123 Đường ABC, Quận 1, TP.HCM',
+  note: 'Mang theo sổ tiêm chủng'
+};
+
+const openAddPetPopup = () => {
+  isAddPetOpen.value = true;
+};
+
+const closeAddPetPopup = () => {
+  isAddPetOpen.value = false;
+  // Reset form when closing
+  setTimeout(() => {
+    themThuCungRef.value?.resetForm();
+  }, 300);
+};
+
+const handleAddPetSubmit = (petData) => {
+  console.log('New pet data:', petData);
+  // TODO: Implement API call to save pet data
+  // Example: await api.addPet(petData);
+  
+  // Store pet data for success popup
+  newPetData.value = petData;
+  
+  // Close add pet popup and show success popup
+  isAddPetOpen.value = false;
+  isSuccessPopupOpen.value = true;
+};
+
+const closeSuccessPopup = () => {
+  isSuccessPopupOpen.value = false;
+  // Reset form after closing success popup
+  setTimeout(() => {
+    themThuCungRef.value?.resetForm();
+    newPetData.value = {};
+  }, 300);
+};
+
+const handleBookAppointment = (petData) => {
+  console.log('Book appointment for:', petData);
+  // TODO: Navigate to booking page or open booking modal
+  // Example: router.push({ name: 'LichHen', query: { petId: petData.id } });
+};
+
+const openBookingPopup = () => {
+  rebookData.value = null;
+  isBookingPopupOpen.value = true;
+};
+
+const closeBookingPopup = () => {
+  isBookingPopupOpen.value = false;
+  // Reset rebookData after closing
+  setTimeout(() => {
+    rebookData.value = null;
+  }, 300);
+};
+
+const handleBookingConfirm = (bookingData) => {
+  console.log('Booking confirmed:', bookingData);
+  // TODO: Implement API call to save booking data
+  // Example: await api.createBooking(bookingData);
+};
+
+const openAppointmentDetail = (appointment) => {
+  selectedAppointment.value = appointment;
+  isAppointmentDetailOpen.value = true;
+};
+
+const closeAppointmentDetail = () => {
+  isAppointmentDetailOpen.value = false;
+  // Reset selected appointment after animation
+  setTimeout(() => {
+    selectedAppointment.value = {};
+  }, 300);
+};
+
+const openVaccinationBooking = (petName, serviceName, dueDate) => {
+  rebookData.value = {
+    petName,
+    serviceName,
+    dueDate
+  };
+  isBookingPopupOpen.value = true;
+};
+</script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito+Sans:ital,wght@0,400;0,500;0,600;0,700;1,700&family=Nunito:wght@400&display=swap");
