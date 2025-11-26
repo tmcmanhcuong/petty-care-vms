@@ -52,7 +52,8 @@
     </div>
 
     <!-- Form View -->
-    <div v-else class="bg-white border border-black/15 rounded-[10px] w-full max-w-[512px] max-h-[90vh] overflow-y-auto m-4">
+    <div v-else
+      class="bg-white border border-black/15 rounded-[10px] w-full max-w-[512px] max-h-[90vh] overflow-y-auto m-4">
       <div class="flex flex-col gap-4 p-6">
         <!-- Header -->
         <div class="flex flex-col gap-2">

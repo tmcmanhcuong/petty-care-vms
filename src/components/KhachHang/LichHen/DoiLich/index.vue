@@ -1,6 +1,7 @@
 <template>
   <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-[10px] border border-gray-300 p-6 w-full max-w-[512px] flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
+    <div
+      class="bg-white rounded-[10px] border border-gray-300 p-6 w-full max-w-[512px] flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
       <!-- Header -->
       <div class="flex items-center justify-center h-7 relative">
         <h2 class="font-bold text-lg text-black">Đổi lịch hẹn</h2>
@@ -29,19 +30,13 @@
         <div class="border border-gray-300 rounded-lg p-3">
           <!-- Calendar Header -->
           <div class="flex items-center justify-between mb-3">
-            <button 
-              @click="previousMonth" 
-              :disabled="!canGoPrevious"
-              :class="['w-7 h-7 border border-gray-300 rounded-lg flex items-center justify-center', !canGoPrevious && 'opacity-50']"
-            >
+            <button @click="previousMonth" :disabled="!canGoPrevious"
+              :class="['w-7 h-7 border border-gray-300 rounded-lg flex items-center justify-center', !canGoPrevious && 'opacity-50']">
               <img :src="iconChevronLeft" alt="Previous" class="w-4 h-4" />
             </button>
             <p class="text-sm font-semibold text-black">{{ currentMonthYear }}</p>
-            <button 
-              @click="nextMonth" 
-              :disabled="!canGoNext"
-              :class="['w-7 h-7 border border-gray-300 rounded-lg flex items-center justify-center', !canGoNext && 'opacity-50']"
-            >
+            <button @click="nextMonth" :disabled="!canGoNext"
+              :class="['w-7 h-7 border border-gray-300 rounded-lg flex items-center justify-center', !canGoNext && 'opacity-50']">
               <img :src="iconChevronRight" alt="Next" class="w-4 h-4" />
             </button>
           </div>
@@ -55,21 +50,16 @@
 
           <!-- Calendar Grid -->
           <div class="grid grid-cols-7 gap-0">
-            <button
-              v-for="date in calendarDates"
-              :key="date.key"
-              @click="selectDate(date)"
-              :disabled="date.isDisabled"
+            <button v-for="date in calendarDates" :key="date.key" @click="selectDate(date)" :disabled="date.isDisabled"
               :class="[
                 'w-8 h-8 rounded-lg text-sm font-medium flex items-center justify-center',
-                date.isSelected 
-                  ? 'bg-black text-white' 
+                date.isSelected
+                  ? 'bg-black text-white'
                   : (date.isOtherMonth ? 'text-gray-500 opacity-50' : 'text-black'),
                 !date.isSelected && date.isPastOldDate ? 'bg-gray-300 opacity-50' : '',
                 date.isDisabled ? 'cursor-not-allowed opacity-50' : '',
                 !date.isSelected && !date.isDisabled ? 'hover:bg-gray-100' : ''
-              ]"
-            >
+              ]">
               {{ date.date }}
             </button>
           </div>
@@ -80,17 +70,11 @@
       <div class="flex flex-col gap-2">
         <label class="text-sm font-semibold text-black">Chọn giờ khám</label>
         <div class="grid grid-cols-4 gap-2">
-          <button
-            v-for="slot in timeSlots"
-            :key="slot.time"
-            @click="selectTime(slot)"
-            :disabled="slot.isBooked"
-            :class="[
-              'px-4 py-2 rounded-lg text-sm font-semibold border',
-              slot.isBooked ? 'border-gray-300 text-black opacity-50 cursor-not-allowed' : '',
-              slot.time === selectedTime ? 'bg-teal-600 text-white border-none' : 'border-gray-300 text-black hover:bg-gray-50'
-            ]"
-          >
+          <button v-for="slot in timeSlots" :key="slot.time" @click="selectTime(slot)" :disabled="slot.isBooked" :class="[
+            'px-4 py-2 rounded-lg text-sm font-semibold border',
+            slot.isBooked ? 'border-gray-300 text-black opacity-50 cursor-not-allowed' : '',
+            slot.time === selectedTime ? 'bg-teal-600 text-white border-none' : 'border-gray-300 text-black hover:bg-gray-50'
+          ]">
             {{ slot.time }}
           </button>
         </div>
@@ -98,7 +82,8 @@
       </div>
 
       <!-- Alert box - So sánh lịch cũ và mới -->
-      <div v-if="selectedDate && selectedTime" class="bg-blue-50 border border-blue-200 rounded-[10px] p-3 flex items-center gap-4">
+      <div v-if="selectedDate && selectedTime"
+        class="bg-blue-50 border border-blue-200 rounded-[10px] p-3 flex items-center gap-4">
         <img :src="iconInfo" alt="Info" class="w-4 h-4 shrink-0" />
         <div class="flex items-center gap-2 text-sm">
           <div class="flex items-center gap-3">
@@ -115,14 +100,10 @@
 
       <!-- Footer -->
       <div class="flex justify-end">
-        <button 
-          @click="saveChanges"
-          :disabled="!canSave"
-          :class="[
-            'px-4 py-2 rounded-lg text-sm font-semibold text-white',
-            canSave ? 'bg-teal-600 hover:bg-teal-700' : 'bg-gray-400 cursor-not-allowed'
-          ]"
-        >
+        <button @click="saveChanges" :disabled="!canSave" :class="[
+          'px-4 py-2 rounded-lg text-sm font-semibold text-white',
+          canSave ? 'bg-teal-600 hover:bg-teal-700' : 'bg-gray-400 cursor-not-allowed'
+        ]">
           Lưu thay đổi
         </button>
       </div>
@@ -187,25 +168,25 @@ const timeSlots = ref([
 
 // Computed
 const currentMonthYear = computed(() => {
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 
-                  'July', 'August', 'September', 'October', 'November', 'December'];
+  const months = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'];
   return `${months[currentDate.value.getMonth()]} ${currentDate.value.getFullYear()}`;
 });
 
 const calendarDates = computed(() => {
   const year = currentDate.value.getFullYear();
   const month = currentDate.value.getMonth();
-  
+
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
   const prevLastDay = new Date(year, month, 0);
-  
+
   const firstDayWeek = firstDay.getDay();
   const lastDate = lastDay.getDate();
   const prevLastDate = prevLastDay.getDate();
-  
+
   const dates = [];
-  
+
   // Previous month dates
   for (let i = firstDayWeek - 1; i >= 0; i--) {
     const date = prevLastDate - i;
@@ -220,25 +201,25 @@ const calendarDates = computed(() => {
       key: `prev-${date}`
     });
   }
-  
+
   // Current month dates
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  
+
   // Parse old appointment date
   const oldDate = parseOldAppointmentDate();
-  
+
   for (let date = 1; date <= lastDate; date++) {
     const currentDateObj = new Date(year, month, date);
     currentDateObj.setHours(0, 0, 0, 0);
-    
+
     const isPast = currentDateObj < today;
     const isPastOldDate = oldDate && currentDateObj <= oldDate;
-    const isSelected = selectedDate.value && 
-                      selectedDate.value.date === date && 
-                      selectedDate.value.month === month &&
-                      selectedDate.value.year === year;
-    
+    const isSelected = selectedDate.value &&
+      selectedDate.value.date === date &&
+      selectedDate.value.month === month &&
+      selectedDate.value.year === year;
+
     dates.push({
       date,
       month,
@@ -250,7 +231,7 @@ const calendarDates = computed(() => {
       key: `current-${date}`
     });
   }
-  
+
   // Next month dates
   const remainingDays = 42 - dates.length;
   for (let date = 1; date <= remainingDays; date++) {
@@ -265,7 +246,7 @@ const calendarDates = computed(() => {
       key: `next-${date}`
     });
   }
-  
+
   return dates;
 });
 
@@ -273,29 +254,29 @@ const canGoPrevious = computed(() => {
   const today = new Date();
   const currentYear = currentDate.value.getFullYear();
   const currentMonth = currentDate.value.getMonth();
-  
-  return currentYear > today.getFullYear() || 
-         (currentYear === today.getFullYear() && currentMonth > today.getMonth());
+
+  return currentYear > today.getFullYear() ||
+    (currentYear === today.getFullYear() && currentMonth > today.getMonth());
 });
 
 const canGoNext = computed(() => {
   const maxDate = new Date();
   maxDate.setMonth(maxDate.getMonth() + 3);
-  
+
   const currentYear = currentDate.value.getFullYear();
   const currentMonth = currentDate.value.getMonth();
-  
-  return currentYear < maxDate.getFullYear() || 
-         (currentYear === maxDate.getFullYear() && currentMonth < maxDate.getMonth());
+
+  return currentYear < maxDate.getFullYear() ||
+    (currentYear === maxDate.getFullYear() && currentMonth < maxDate.getMonth());
 });
 
 const newDateTime = computed(() => {
   if (!selectedDate.value || !selectedTime.value) return '';
-  
+
   const day = String(selectedDate.value.date).padStart(2, '0');
   const month = String(selectedDate.value.month + 1).padStart(2, '0');
   const year = selectedDate.value.year;
-  
+
   return `${selectedTime.value} - ${day}/${month}/${year}`;
 });
 
@@ -306,7 +287,7 @@ const canSave = computed(() => {
 // Methods
 function parseOldAppointmentDate() {
   if (!props.oldAppointment.date) return null;
-  
+
   // Assuming format: "DD/MM/YYYY"
   const parts = props.oldAppointment.date.split('/');
   if (parts.length === 3) {
@@ -359,14 +340,14 @@ function closePopup() {
 
 function saveChanges() {
   if (!canSave.value) return;
-  
+
   const changeData = {
     oldDateTime: props.oldAppointment.dateTime,
     newDate: `${String(selectedDate.value.date).padStart(2, '0')}/${String(selectedDate.value.month + 1).padStart(2, '0')}/${selectedDate.value.year}`,
     newTime: selectedTime.value,
     newDateTime: newDateTime.value
   };
-  
+
   emit('save', changeData);
   resetForm();
 }

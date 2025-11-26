@@ -48,11 +48,8 @@
             <h4 class="text-base font-medium text-black">Đơn thuốc</h4>
           </div>
           <div class="flex flex-col gap-3">
-            <div 
-              v-for="(medicine, index) in result.medicines" 
-              :key="index"
-              class="bg-white border-l-4 border-teal-400 rounded-[10px] p-4 pl-5"
-            >
+            <div v-for="(medicine, index) in result.medicines" :key="index"
+              class="bg-white border-l-4 border-teal-400 rounded-[10px] p-4 pl-5">
               <div class="grid grid-cols-3 gap-3">
                 <div class="flex flex-col">
                   <p class="text-base font-medium text-gray-500 mb-0.5">Thuốc</p>
@@ -64,7 +61,8 @@
                 </div>
                 <div class="flex flex-col">
                   <p class="text-base font-medium text-gray-500 mb-0.5">Hướng dẫn</p>
-                  <p class="text-base font-medium text-black leading-6 whitespace-pre-wrap">{{ medicine.instruction }}</p>
+                  <p class="text-base font-medium text-black leading-6 whitespace-pre-wrap">{{ medicine.instruction }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -78,7 +76,8 @@
             <h4 class="text-base font-medium text-black">Hướng dẫn sau khám</h4>
           </div>
           <div class="bg-blue-50 border border-blue-200 rounded-[10px] px-7 py-3">
-            <p class="text-base font-medium text-blue-900 leading-6 whitespace-pre-wrap">{{ result.postCareGuideline }}</p>
+            <p class="text-base font-medium text-blue-900 leading-6 whitespace-pre-wrap">{{ result.postCareGuideline }}
+            </p>
           </div>
         </div>
 
@@ -89,30 +88,22 @@
             <h4 class="text-base font-medium text-black">Tập tin đính kèm</h4>
           </div>
           <div class="grid grid-cols-2 gap-3">
-            <div 
-              v-for="(file, index) in result.attachments" 
-              :key="index"
-              class="bg-white rounded-[10px] px-4 py-0 flex items-center justify-between h-[88px]"
-            >
+            <div v-for="(file, index) in result.attachments" :key="index"
+              class="bg-white rounded-[10px] px-4 py-0 flex items-center justify-between h-[88px]">
               <div class="flex items-center gap-3">
-                <div 
-                  :class="[
-                    'rounded p-1',
-                    file.type === 'image' ? 'bg-teal-100' : 'bg-red-50'
-                  ]"
-                >
-                  <img 
-                    :src="file.type === 'image' ? iconImage : iconPDF" 
-                    alt="File icon" 
-                    class="w-5 h-5" 
-                  />
+                <div :class="[
+                  'rounded p-1',
+                  file.type === 'image' ? 'bg-teal-100' : 'bg-red-50'
+                ]">
+                  <img :src="file.type === 'image' ? iconImage : iconPDF" alt="File icon" class="w-5 h-5" />
                 </div>
                 <div class="flex flex-col gap-1">
                   <p class="text-base font-medium text-black leading-6 whitespace-pre-wrap w-24">{{ file.name }}</p>
                   <p class="text-xs font-medium text-gray-500">{{ file.label }}</p>
                 </div>
               </div>
-              <button @click="downloadFile(file)" class="w-9 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100">
+              <button @click="downloadFile(file)"
+                class="w-9 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100">
                 <img :src="iconDownload" alt="Download" class="w-4 h-4" />
               </button>
             </div>
@@ -135,11 +126,6 @@ const props = defineProps({
   result: {
     type: Object,
     required: true,
-    // Format: {
-    //   date, time, serviceName, doctorName, doctorSpecialty,
-    //   diagnosis, medicines: [{name, dosage, instruction}],
-    //   postCareGuideline, attachments: [{name, label, type, url}]
-    // }
   }
 });
 

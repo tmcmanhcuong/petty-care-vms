@@ -30,30 +30,6 @@
         </div>
 
         <!-- Lý do hủy -->
-        <div class="flex flex-col gap-3">
-          <label class="text-sm font-semibold text-black">Lý do hủy (Optional)</label>
-          <div class="flex flex-col gap-3">
-            <label 
-              v-for="reason in cancelReasons" 
-              :key="reason.value"
-              class="flex items-center gap-2 cursor-pointer"
-            >
-              <div 
-                :class="[
-                  'w-4 h-4 rounded-full border flex items-center justify-center',
-                  selectedReason === reason.value ? 'border-black' : 'border-gray-400'
-                ]"
-                @click="selectReason(reason.value)"
-              >
-                <div 
-                  v-if="selectedReason === reason.value"
-                  class="w-2 h-2 rounded-full bg-black"
-                ></div>
-              </div>
-              <span class="text-sm font-semibold text-black">{{ reason.label }}</span>
-            </label>
-          </div>
-        </div>
       </div>
 
       <!-- Footer -->

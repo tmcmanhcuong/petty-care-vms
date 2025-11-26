@@ -229,6 +229,7 @@ import { ref, nextTick, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { useToast } from "vue-toastification";
+import { showInfoToast } from "@/utils/toast";
 
 const router = useRouter();
 const route = useRoute();
@@ -283,9 +284,9 @@ if (existingToken) {
 }
 
 // If user was redirected here because they tried to access a protected page,
-// show an informational toast asking them to login first.
+// show an informational toast asking them to login first using our styled toast.
 if (route.query && route.query.redirect) {
-  toast.info("Vui lòng đăng nhập để tiếp tục");
+  showInfoToast("Thông báo", "Vui lòng đăng nhập để tiếp tục");
 }
 
 // Xử lý đăng nhập

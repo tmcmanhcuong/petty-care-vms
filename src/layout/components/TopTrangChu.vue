@@ -254,7 +254,7 @@
               </li>
               <li
                 class="px-3 py-2 hover:bg-gray-50 cursor-pointer"
-                @click="navigateTo('/khach-hang/hoa-don')"
+                @click="navigateTo('/khach-hang/thanh-toan')"
               >
                 <div class="flex items-center gap-3">
                   <div
@@ -269,7 +269,7 @@
               </li>
               <li
                 class="px-3 py-2 hover:bg-gray-50 cursor-pointer"
-                @click="navigateTo('/tro-giup')"
+                @click="navigateTo('/khach-hang/tro-giup-lien-he')"
               >
                 <div class="flex items-center gap-3">
                   <div
