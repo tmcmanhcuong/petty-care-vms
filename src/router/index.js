@@ -62,7 +62,63 @@ const routes = [
     component: () => import("../components/Admin/DangNhap/index.vue"),
     meta: { layout: "dangki_dangnhap" },
   },
-  //********************** Bác Sĩ ************************* */
+  {
+    path: "/admin/dashboard",
+    component: () => import("../components/Admin/Dashboard/index.vue"),
+    meta: { layout: "sidebar" },
+  },
+
+  {
+    path: "/admin/quan-ly-khoa",
+    component: () => import("../components/Admin/TaiNguyen/QuanLyKhoa/index.vue"),
+    meta: { layout: "sidebar" },
+  },
+  {
+    path: "/admin/quan-ly-dich-vu",
+    component: () => import("../components/Admin/TaiNguyen/QuanLyDichVu/index.vue"),
+    meta: { layout: "sidebar" },
+  },
+  {
+    path: "/admin/kho-thuoc-vat-tu",
+    component: () => import("../components/Admin/TaiNguyen/QuanLyKhoThuocVatTu/index.vue"),
+    meta: { layout: "sidebar" },
+  },
+  {
+    path: "/admin/tai-khoan",
+    component: () => import("../components/Admin/NhanSu/QuanLyTaiKhoan/index.vue"),
+    meta: { layout: "sidebar" },
+  },
+  {
+    path: "/admin/lich-lam-viec",
+    component: () => import("../components/Admin/NhanSu/QuanLyLichLamViec/index.vue"),
+    meta: { layout: "sidebar" },
+  },
+  {
+    path: "/admin/quan-ly-lich-hen",
+    component: () => import("../components/Admin/VanHanh/QuanLyLichHen/index.vue"),
+    meta: { layout: "sidebar" },
+  },
+  {
+    path: "/admin/ho-so-benh-an",
+    component: () => import("../components/Admin/VanHanh/HoSoBenhAn/index.vue"),
+    meta: { layout: "sidebar" },
+  },
+  {
+    path: "/admin/danh-sach-hoa-don",
+    component: () => import("../components/Admin/TaiChinhHoaDon/DanhSachHoaDon/index.vue"),
+    meta: { layout: "sidebar" },
+  },
+  {
+    path: "/admin/phieu-chi",
+    component: () => import("../components/Admin/TaiChinhHoaDon/PhieuChi/index.vue"),
+    meta: { layout: "sidebar" },
+  },
+  {
+    path: "/admin/bai-viet",
+    component: () => import("../components/Admin/TruyenThong/BaiViet/index.vue"),
+    meta: { layout: "sidebar" },
+  },
+  //********************** Bác Sĩ ************************* */s
 
   //********************** Y Tá ************************* */
 ];
