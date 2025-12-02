@@ -71,14 +71,14 @@
 
       <!-- Submenu Tài nguyên -->
       <div v-show="openSubmenus.taiNguyen" class="flex flex-col bg-[#264a48] w-full transition-all duration-300 ease-in-out">
-        <router-link 
+        <!-- <router-link 
           to="/admin/quan-ly-khoa"
           class="h-10 flex items-center pl-14 pr-6 cursor-pointer transition-colors"
           :class="activeItem === 'quanLyKhoa' ? 'bg-[#5a9690] border-r-4 border-white' : 'hover:text-[#5eead4] text-white'"
           @click="navigateTo('quanLyKhoa')"
         >
           <span class="font-nunitoSans font-medium text-sm">Quản lý Khoa</span>
-        </router-link>
+        </router-link> -->
         <router-link 
           to="/admin/quan-ly-dich-vu"
           class="h-10 flex items-center pl-14 pr-6 cursor-pointer transition-colors"
