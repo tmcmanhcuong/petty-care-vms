@@ -25,8 +25,9 @@ return new class extends Migration
             // description
             $table->text('mo_ta')->nullable();
 
-            // status (e.g. active, inactive)
-            $table->string('trang_thai', 50)->default('active')->index();
+            // status: 'kinh_doanh' (in business) or 'ngung' (stopped)
+            // use enum to restrict values
+            $table->enum('trang_thai', ['kinh_doanh', 'ngung'])->default('kinh_doanh')->index();
 
             // category relationship (danh_muc_dich_vus) - keep as unsignedBigInteger nullable
             // to avoid FK creation ordering issues; add FK in a later migration if needed

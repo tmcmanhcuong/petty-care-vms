@@ -16,6 +16,9 @@ class DichVu extends Model
         'gia_tien',
         'thoi_gian_thuc_hien',
         'mo_ta',
+        'ma_dich_vu',
+        'huong_dan',
+        'anh_dich_vu',
         'trang_thai',
         'danh_muc_id',
     ];
@@ -24,6 +27,10 @@ class DichVu extends Model
         'gia_tien' => 'decimal:2',
         'thoi_gian_thuc_hien' => 'integer',
     ];
+
+    // Status constants
+    public const STATUS_KINH_DOANH = 'kinh_doanh';
+    public const STATUS_NGUNG = 'ngung';
 
     // Relationship: each service belongs to a category
     public function danhMuc()

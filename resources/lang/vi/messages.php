@@ -12,6 +12,21 @@ return [
     'unauthorized' => 'Bạn cần đăng nhập để thực hiện hành động này.',
     'update_success' => 'Cập nhật thông tin thành công.',
     'not_found' => 'Không tìm thấy khách hàng.',
+    'unauthorized_admin' => 'Chỉ quản trị viên mới có thể thực hiện hành động này.',
+    // Khoa validation messages
+    'ma_khoa_required' => 'Mã khoa là bắt buộc.',
+    'ma_khoa_unique' => 'Mã khoa đã tồn tại.',
+    'ma_khoa_max' => 'Mã khoa không được dài quá :max ký tự.',
+    'ma_khoa_string' => 'Mã khoa phải là chuỗi hợp lệ.',
+
+    'ten_khoa_required' => 'Tên khoa là bắt buộc.',
+    'ten_khoa_max' => 'Tên khoa không được dài quá :max ký tự.',
+    'ten_khoa_string' => 'Tên khoa phải là chuỗi hợp lệ.',
+
+    'mo_ta_string' => 'Mô tả phải là chuỗi.',
+
+    'trang_thai_required' => 'Trạng thái là bắt buộc.',
+    'trang_thai_in' => 'Trạng thái không hợp lệ. Chỉ nhận các giá trị 0 hoặc 1.',
 
 
     // Specific messages

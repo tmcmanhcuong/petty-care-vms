@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('danh_muc_dich_vus', function (Blueprint $table) {
+        Schema::create('hang_hoas', function (Blueprint $table) {
             $table->id();
-            $table->string('ten_nhom')->index();
-
-            $table->text('mo_ta')->nullable();
-
+            $table->foreignId('danh_muc_hang_hoa_id')->nullable()->constrained('danh_muc_hang_hoas')->nullOnDelete();
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('danh_muc_dich_vus');
+        Schema::dropIfExists('hang_hoas');
     }
 };

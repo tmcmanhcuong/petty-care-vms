@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
             DichVuSeeder::class,
             AdminSeeder::class,
             KhoaSeeder::class,
+            DanhMucDichVuSeeder::class,
+            NhanVienSeeder::class,
+            LichLamViecSeeder::class,
         ]);
     }
 }

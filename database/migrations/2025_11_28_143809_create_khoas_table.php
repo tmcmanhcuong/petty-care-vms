@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('khoas', function (Blueprint $table) {
             $table->id();
+            $table->string('ma_khoa')->unique();
             $table->string('ten_khoa');
             $table->text('mo_ta')->nullable();
             $table->string('chuyen_mon')->nullable();
-            // trạng_thai: 1 = active, 0 = inactive
             $table->tinyInteger('trang_thai')->default(1);
 
             $table->timestamps();

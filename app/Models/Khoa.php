@@ -11,6 +11,7 @@ class Khoa extends Model
 
     protected $fillable = [
         'ten_khoa',
+        'ma_khoa',
         'mo_ta',
         'chuyen_mon',
         'trang_thai',
