@@ -26,6 +26,9 @@ class DatabaseSeeder extends Seeder
             DanhMucDichVuSeeder::class,
             NhanVienSeeder::class,
             LichLamViecSeeder::class,
+            PhanLoaiBaiVietSeeder::class,
+            BaiVietSeeder::class,
+            HangHoaSeeder::class,
         ]);
     }
 }

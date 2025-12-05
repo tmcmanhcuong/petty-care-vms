@@ -12,6 +12,59 @@ use Illuminate\Http\Request;
 
 class LichHenController extends Controller
 {
+
+    /**
+     * Transform a single LichHen model to an array replacing khach_hang_id with khach_hang (full name).
+     */
+    private function transformLichHenModel($lichHen)
+    {
+        $arr = $lichHen->toArray();
+
+        // replace khach_hang_id with khach_hang (full_name)
+        $arr['khach_hang'] = optional($lichHen->khachHang)->full_name ?? null;
+        unset($arr['khach_hang_id']);
+
+        return $arr;
+    }
+
+    /**
+     * Transform collection, paginator or single model into standardized response data
+     */
+    private function transformData($data)
+    {
+        // Paginator
+        if (method_exists($data, 'items')) {
+            $items = collect($data->items())->map(function ($item) {
+                // $item may be array or model
+                if (is_array($item)) {
+                    $khName = data_get($item, 'khach_hang.full_name') ?? data_get($item, 'khach_hang');
+                    $item['khach_hang'] = $khName ?: (data_get($item, 'khach_hang_id') ?? null);
+                    unset($item['khach_hang_id']);
+                    return $item;
+                }
+
+                return $this->transformLichHenModel($item);
+            })->all();
+
+            // build paginator array preserving meta
+            return array_merge($data->toArray(), ['data' => $items]);
+        }
+
+        // Collection
+        if ($data instanceof \Illuminate\Database\Eloquent\Collection) {
+            return $data->map(function ($item) {
+                return $this->transformLichHenModel($item);
+            })->all();
+        }
+
+        // Single model
+        if ($data instanceof \Illuminate\Database\Eloquent\Model) {
+            return $this->transformLichHenModel($data);
+        }
+
+        // Fallback: return as-is
+        return $data;
+    }
     /**
      * Store a newly created appointment in storage.
      */
@@ -43,9 +96,11 @@ class LichHenController extends Controller
 
         $lichHen = LichHen::create($data);
 
+        $payload = $this->transformData($lichHen->fresh()->load(['thuCung', 'dichVu', 'khachHang']));
+
         return response()->json([
             'status' => true,
-            'data' => $lichHen->load(['thuCung', 'dichVu', 'khachHang']),
+            'data' => $payload,
         ], 201);
     }
 
@@ -111,9 +166,11 @@ class LichHenController extends Controller
             $data = $query->get();
         }
 
+        $payload = $this->transformData($data);
+
         return response()->json([
             'status' => true,
-            'data' => $data,
+            'data' => $payload,
         ]);
     }
 
@@ -130,10 +187,99 @@ class LichHenController extends Controller
             ], 403);
         }
 
+        $payload = $this->transformData($lichHen->load(['thuCung', 'dichVu', 'nhanVien', 'thanhToan', 'khachHang']));
+
         return response()->json([
             'status' => true,
-            'data' => $lichHen->load(['thuCung', 'dichVu', 'nhanVien', 'thanhToan', 'khachHang']),
+            'data' => $payload,
         ]);
+    }
+
+    /**
+     * Update lịch hẹn (gán bác sĩ hoặc cập nhật thông tin)
+     */
+    public function update(Request $request, LichHen $lichHen): JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'nhan_vien_id' => 'nullable|exists:nhan_viens,id',
+                'trang_thai' => 'nullable|in:pending,confirmed,in-progress,completed,cancelled',
+                'ghi_chu' => 'nullable|string',
+            ]);
+
+            // Cập nhật các trường được phép
+            if (isset($validated['nhan_vien_id'])) {
+                $lichHen->nhan_vien_id = $validated['nhan_vien_id'];
+            }
+
+            if (isset($validated['trang_thai'])) {
+                $lichHen->trang_thai = $validated['trang_thai'];
+            }
+
+            if (isset($validated['ghi_chu'])) {
+                $lichHen->ghi_chu = $validated['ghi_chu'];
+            }
+
+            $lichHen->save();
+
+            // Load relationships để trả lại dữ liệu đầy đủ
+            $lichHen->load(['khachHang', 'thuCung', 'dichVu', 'nhanVien', 'thanhToan']);
+
+            $payload = $this->transformData($lichHen);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Cập nhật lịch hẹn thành công',
+                'data' => $payload,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi xác thực dữ liệu',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi khi cập nhật lịch hẹn: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Xác nhận lịch hẹn (chuyển từ pending sang confirmed)
+     */
+    public function confirm(Request $request, LichHen $lichHen): JsonResponse
+    {
+        try {
+            // Kiểm tra trạng thái hiện tại
+            if ($lichHen->trang_thai !== 'pending') {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Lịch hẹn không ở trạng thái chưa xác nhận. Trạng thái hiện tại: ' . $lichHen->trang_thai,
+                ], 422);
+            }
+
+            // Chuyển trạng thái sang confirmed
+            $lichHen->trang_thai = 'confirmed';
+            $lichHen->save();
+
+            // Load relationships để trả lại dữ liệu đầy đủ
+            $lichHen->load(['khachHang', 'thuCung', 'dichVu', 'nhanVien', 'thanhToan']);
+
+            $payload = $this->transformData($lichHen);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Xác nhận lịch hẹn thành công',
+                'data' => $payload,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi khi xác nhận lịch hẹn: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -156,9 +302,11 @@ class LichHenController extends Controller
         $lichHen->ngay_gio = Carbon::parse($validated['ngay_gio'])->format('Y-m-d H:i:s');
         $lichHen->save();
 
+        $payload = $this->transformData($lichHen->fresh()->load(['thuCung', 'dichVu', 'khachHang']));
+
         return response()->json([
             'status' => true,
-            'data' => $lichHen->fresh()->load(['thuCung', 'dichVu', 'khachHang']),
+            'data' => $payload,
         ]);
     }
 

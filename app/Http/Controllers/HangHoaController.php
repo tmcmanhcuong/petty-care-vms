@@ -12,7 +12,25 @@ class HangHoaController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $hangHoas = HangHoa::with('danhMuc')->get()->map(function ($hangHoa) {
+                return array_merge($hangHoa->toArray(), [
+                    'ten_danh_muc_hang_hoa' => $hangHoa->danhMuc?->ten_danh_muc_hang_hoa ?? null,
+                    'tinh_trang_label' => $hangHoa->tinh_trang_label,
+                ]);
+            });
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Lấy danh sách hàng hóa thành công',
+                'data' => $hangHoas,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -28,7 +46,46 @@ class HangHoaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'ma_hang_hoa' => 'required|string|unique:hang_hoas,ma_hang_hoa',
+                'ten_mat_hang' => 'required|string|max:255',
+                'don_vi_tinh' => 'required|string|max:100',
+                'gia_von' => 'required|numeric|min:0',
+                'gia_ban' => 'required|numeric|min:0',
+                'dinh_muc_toi_thieu' => 'required|integer|min:0',
+                'anh_san_pham' => 'nullable|string',
+                'tinh_trang' => 'required|string|in:hoat_dong,ngung_kinh_doanh',
+                'danh_muc_hang_hoa_id' => 'nullable|exists:danh_muc_hang_hoas,id',
+            ], [
+                'tinh_trang.in' => 'Trạng thái phải là "hoat_dong" hoặc "ngung_kinh_doanh"',
+            ]);
+
+            $hangHoa = HangHoa::create($validated);
+            $hangHoa->load('danhMuc');
+
+            $response = array_merge($hangHoa->toArray(), [
+                'ten_danh_muc_hang_hoa' => $hangHoa->danhMuc?->ten_danh_muc_hang_hoa ?? null,
+                'tinh_trang_label' => $hangHoa->tinh_trang_label,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Thêm hàng hóa thành công',
+                'data' => $response,
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Dữ liệu không hợp lệ',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -36,7 +93,25 @@ class HangHoaController extends Controller
      */
     public function show(HangHoa $hangHoa)
     {
-        //
+        try {
+            $hangHoa->load('danhMuc');
+
+            $response = array_merge($hangHoa->toArray(), [
+                'ten_danh_muc_hang_hoa' => $hangHoa->danhMuc?->ten_danh_muc_hang_hoa ?? null,
+                'tinh_trang_label' => $hangHoa->tinh_trang_label,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Lấy chi tiết hàng hóa thành công',
+                'data' => $response,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -52,14 +127,87 @@ class HangHoaController extends Controller
      */
     public function update(Request $request, HangHoa $hangHoa)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'ma_hang_hoa' => 'sometimes|string|unique:hang_hoas,ma_hang_hoa,' . $hangHoa->id,
+                'ten_mat_hang' => 'sometimes|string|max:255',
+                'don_vi_tinh' => 'sometimes|string|max:100',
+                'gia_von' => 'sometimes|numeric|min:0',
+                'gia_ban' => 'sometimes|numeric|min:0',
+                'dinh_muc_toi_thieu' => 'sometimes|integer|min:0',
+                'anh_san_pham' => 'nullable|string',
+                'tinh_trang' => 'sometimes|string|in:hoat_dong,ngung_kinh_doanh',
+                'danh_muc_hang_hoa_id' => 'nullable|exists:danh_muc_hang_hoas,id',
+            ], [
+                'tinh_trang.in' => 'Trạng thái phải là "hoat_dong" hoặc "ngung_kinh_doanh"',
+            ]);
+
+            $hangHoa->update($validated);
+            $hangHoa->load('danhMuc');
+
+            $response = array_merge($hangHoa->toArray(), [
+                'ten_danh_muc_hang_hoa' => $hangHoa->danhMuc?->ten_danh_muc_hang_hoa ?? null,
+                'tinh_trang_label' => $hangHoa->tinh_trang_label,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Cập nhật hàng hóa thành công',
+                'data' => $response,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Dữ liệu không hợp lệ',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Change the status of the product.
      */
-    public function destroy(HangHoa $hangHoa)
+    public function changeStatus(Request $request, HangHoa $hangHoa)
     {
-        //
+        try {
+            $request->validate([
+                'tinh_trang' => 'required|string|in:hoat_dong,ngung_kinh_doanh',
+            ], [
+                'tinh_trang.in' => 'Trạng thái phải là "hoat_dong" hoặc "ngung_kinh_doanh"',
+                'tinh_trang.required' => 'Trạng thái không được để trống',
+            ]);
+
+            $tinh_trang = $request->input('tinh_trang');
+
+            $hangHoa->update(['tinh_trang' => $tinh_trang]);
+            $hangHoa->load('danhMuc');
+
+            $response = array_merge($hangHoa->toArray(), [
+                'ten_danh_muc_hang_hoa' => $hangHoa->danhMuc?->ten_danh_muc_hang_hoa ?? null,
+                'tinh_trang_label' => $hangHoa->tinh_trang_label,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Đổi trạng thái hàng hóa thành công',
+                'data' => $response,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Dữ liệu không hợp lệ',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }

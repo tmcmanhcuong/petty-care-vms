@@ -15,7 +15,8 @@ class UploadController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'file' => 'required|file|image|mimes:jpg,jpeg,png,gif|max:5120', // 5MB
+            'image' => 'sometimes|image|mimes:jpg,jpeg,png,gif,webp|max:5120', // 5MB
+            'file' => 'sometimes|image|mimes:jpg,jpeg,png,gif,webp|max:5120', // Fallback for 'file' field
         ]);
 
         if ($validator->fails()) {
@@ -27,15 +28,25 @@ class UploadController extends Controller
         }
 
         try {
-            $file = $request->file('file');
-            $path = $file->store('dichvu/images', 'public');
+            // Get file from either 'image' or 'file' field
+            $file = $request->file('image') ?? $request->file('file');
 
-            // Storage::url returns path for the disk; url() will convert to full URL
+            if (!$file) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No file found'
+                ], 400);
+            }
+
+            // Store in articles directory
+            $path = $file->store('articles/images', 'public');
+
+            // Get full URL
             $publicUrl = url(Storage::url($path));
 
             return response()->json([
                 'status' => true,
-                'message' => 'File uploaded',
+                'message' => 'File uploaded successfully',
                 'data' => [
                     'path' => $publicUrl,
                     'url' => $publicUrl,

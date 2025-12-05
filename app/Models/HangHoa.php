@@ -17,9 +17,36 @@ class HangHoa extends Model
      * @var string[]
      */
     protected $fillable = [
+        'ma_hang_hoa',
+        'ten_mat_hang',
+        'don_vi_tinh',
+        'gia_von',
+        'gia_ban',
+        'dinh_muc_toi_thieu',
+        'anh_san_pham',
+        'tinh_trang',
         'danh_muc_hang_hoa_id',
-        // add other fillable attributes of HangHoa here (ten, gia, etc.)
     ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'gia_von' => 'decimal:2',
+        'gia_ban' => 'decimal:2',
+        'dinh_muc_toi_thieu' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    /**
+     * Append custom attributes to the model.
+     *
+     * @var array
+     */
+    protected $appends = ['ten_danh_muc_hang_hoa', 'tinh_trang_label'];
 
     /**
      * The category this product belongs to.
@@ -27,5 +54,26 @@ class HangHoa extends Model
     public function danhMuc()
     {
         return $this->belongsTo(\App\Models\DanhMucHangHoa::class, 'danh_muc_hang_hoa_id');
+    }
+
+    /**
+     * Get the category name.
+     */
+    public function getTenDanhMucHangHoaAttribute()
+    {
+        return $this->danhMuc?->ten_danh_muc_hang_hoa;
+    }
+
+    /**
+     * Get the status label in Vietnamese.
+     */
+    public function getTinhTrangLabelAttribute()
+    {
+        $statusMap = [
+            'hoat_dong' => 'Hoạt động',
+            'ngung_kinh_doanh' => 'Ngừng kinh doanh',
+        ];
+
+        return $statusMap[$this->tinh_trang] ?? $this->tinh_trang;
     }
 }
