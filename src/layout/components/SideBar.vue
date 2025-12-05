@@ -61,6 +61,15 @@
               {{ item.label }}
             </span>
           </div>
+          <!-- Badge -->
+          <div 
+            v-if="item.badge"
+            class="bg-[#fb2c36] rounded-lg px-2 py-0.5 min-w-[22px] h-[22px] flex items-center justify-center"
+          >
+            <span class="font-nunitoSans font-medium text-white text-xs">
+              {{ item.badge }}
+            </span>
+          </div>
         </router-link>
 
         <!-- Group Menu Item (with children) -->

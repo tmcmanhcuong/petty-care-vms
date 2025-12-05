@@ -250,10 +250,9 @@
     </div>
 
     <!-- Ket Qua Sieu Am Modal -->
-    <KetQuaSieuAm
+    <KetQuaCanLamSang
       v-if="isResultModalOpen"
       :mode="resultModalMode"
-      :patient-name="selectedRecord?.patientName"
       :record-id="selectedRecord?.code"
       @close="closeResultModal"
       @save="handleSaveResult"
@@ -263,7 +262,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import KetQuaSieuAm from './KetQuaSieuAm/index.vue';
+import KetQuaCanLamSang from './KetQuaCanLamSang/index.vue';
 
 // Modal state
 const isResultModalOpen = ref(false);

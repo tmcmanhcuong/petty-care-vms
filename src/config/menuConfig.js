@@ -157,10 +157,10 @@ export const menuConfig = {
         type: 'single'
       },
       {
-        key: 'benhNhan',
-        label: 'Bệnh nhân & HSBA',
+        key: 'benhAn',
+        label: 'Hồ sơ bệnh án',
         icon: 'https://www.figma.com/api/mcp/asset/fa838dd6-b6d7-41bc-8be4-d8cfc7b095ee',
-        path: '/doctor/benh-nhan',
+        path: '/doctor/benh-an',
         type: 'single'
       },
       {
@@ -185,6 +185,63 @@ export const menuConfig = {
         type: 'single'
       }
     ]
+  },
+  nurse: {
+    title: 'Petty Nurse',
+    subtitle: 'Hệ thống y tá',
+    menuItems: [
+      {
+        key: 'dashboard',
+        label: 'Dashboard',
+        icon: 'https://www.figma.com/api/mcp/asset/49fd7d49-99f7-4859-9ce2-4aa89c9f9eca',
+        path: '/nurse/dashboard',
+        type: 'single',
+        badge: 3
+      },
+      {
+        key: 'lichHen',
+        label: 'Lịch hẹn',
+        icon: 'https://www.figma.com/api/mcp/asset/44ef5d15-b156-4ce2-9e1c-1b3cac9a3922',
+        path: '/nurse/lich-hen',
+        type: 'single'
+      },
+      {
+        key: 'khachHang',
+        label: 'Khách hàng',
+        icon: 'https://www.figma.com/api/mcp/asset/9db990e4-5cc7-4cbb-9d23-507f00b5efe4',
+        path: '/nurse/khach-hang',
+        type: 'single'
+      },
+      {
+        key: 'hoaDon',
+        label: 'Hóa đơn',
+        icon: 'https://www.figma.com/api/mcp/asset/1bce8405-8978-452f-b55e-19174a611030',
+        path: '/nurse/hoa-don',
+        type: 'single',
+        badge: 2
+      },
+      {
+        key: 'lichLamViec',
+        label: 'Lịch làm việc',
+        icon: 'https://www.figma.com/api/mcp/asset/16b37603-e2f8-43a0-9364-e9d3b40dd066',
+        path: '/nurse/lich-lam-viec',
+        type: 'single'
+      },
+      {
+        key: 'khoThuocVatTu',
+        label: 'Kho Thuốc & Vật Tư',
+        icon: 'https://www.figma.com/api/mcp/asset/a95c0cc7-7307-47cb-a25c-62e95b8fc3a9',
+        path: '/nurse/kho-thuoc-vat-tu',
+        type: 'single'
+      },
+      {
+        key: 'phieuChi',
+        label: 'Phiếu Chi',
+        icon: 'https://www.figma.com/api/mcp/asset/380bf330-8557-432d-ae87-a709c49830ad',
+        path: '/nurse/phieu-chi',
+        type: 'single'
+      }
+    ]
   }
 };
 
@@ -197,7 +254,7 @@ export const sharedIcons = {
 
 /**
  * Get menu configuration by role
- * @param {string} role - User role (admin, doctor)
+ * @param {string} role - User role (admin, doctor, nurse)
  * @returns {object} Menu configuration object
  */
 export function getMenuByRole(role = 'admin') {

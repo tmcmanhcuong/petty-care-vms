@@ -195,13 +195,18 @@ const routes = [
         component: () => import("../components/Doctor/LichKham/index.vue"),
       },
       {
-        path: "benh-nhan",
-        component: () => import("../components/Doctor/BenhNhan/index.vue"),
+        path: "lich-kham/phieu-kham",
+        component: () => import("../components/Doctor/LichKham/PhieuKhamBenh/index.vue"),
       },
       {
-        path: "benh-nhan/phieu-kham",
+        path: "benh-an",
         component: () =>
-          import("../components/Doctor/BenhNhan/PhieuKhamBenh/index.vue"),
+          import("../components/Doctor/HoSoBenhAn/index.vue"),
+      },
+      {
+        path: "benh-an/chi-tiet",
+        component: () =>
+          import("../components/Doctor/HoSoBenhAn/ChiTietHoSoBA/index.vue"),
       },
       {
         path: "can-lam-sang",
@@ -224,6 +229,45 @@ const routes = [
   //********************** Bác Sĩ ************************* */s
 
   //********************** Y Tá ************************* */
+  {
+    path: "/nurse",
+    component: () => import("../layout/wrapper/NurseLayout.vue"),
+    children: [
+      {
+        path: "dashboard",
+        component: () => import("../components/Nurse/Dashboard/index.vue"),
+      },
+      {
+        path: "lich-hen",
+        component: () => import("../components/Nurse/LichHen/index.vue"),
+      },
+      {
+        path: "khach-hang",
+        component: () => import("../components/Nurse/KhachHang/index.vue"),
+      },
+      {
+        path: "hoa-don",
+        component: () =>
+          import("../components/Nurse/HoaDon/index.vue"),
+      },
+      {
+        path: "lich-lam-viec",
+        component: () => import("../components/Nurse/LichLamViec/index.vue"),
+      },
+      {
+        path: "kho-thuoc-vat-tu",
+        component: () => import("../components/Nurse/KhoThuocVatTu/index.vue"),
+      },
+      {
+        path: "trang-ca-nhan",
+        component: () => import("../components/Nurse/TrangCaNhan/index.vue"),
+      },
+      {
+        path: "phieu-chi",
+        component: () => import("../components/Nurse/PhieuChi/index.vue"),
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
@@ -232,28 +276,28 @@ const router = createRouter({
 });
 
 // Global navigation guard: redirect to login when a route requires auth
-router.beforeEach((to, from, next) => {
-  const token = getToken();
-  const requiresAuth = to.matched.some(
-    (record) => record.meta && record.meta.requiresAuth
-  );
+// router.beforeEach((to, from, next) => {
+//   const token = getToken();
+//   const requiresAuth = to.matched.some(
+//     (record) => record.meta && record.meta.requiresAuth
+//   );
 
-  if (requiresAuth && !token) {
-    // If any matched record is admin-only, redirect to admin login first
-    const isAdminRoute = to.matched.some(
-      (record) => record.meta && record.meta.adminOnly
-    );
+//   if (requiresAuth && !token) {
+//     // If any matched record is admin-only, redirect to admin login first
+//     const isAdminRoute = to.matched.some(
+//       (record) => record.meta && record.meta.adminOnly
+//     );
 
-    if (isAdminRoute) {
-      next({ path: "/admin/dang-nhap", query: { redirect: to.fullPath } });
-      return;
-    }
+//     if (isAdminRoute) {
+//       next({ path: "/admin/dang-nhap", query: { redirect: to.fullPath } });
+//       return;
+//     }
 
-    // Default: redirect to customer login
-    next({ path: "/khach-hang/dang-nhap", query: { redirect: to.fullPath } });
-    return;
-  }
-  next();
-});
+//     // Default: redirect to customer login
+//     next({ path: "/khach-hang/dang-nhap", query: { redirect: to.fullPath } });
+//     return;
+//   }
+//   next();
+// });
 
 export default router;

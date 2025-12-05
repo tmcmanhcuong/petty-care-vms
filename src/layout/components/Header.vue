@@ -208,6 +208,8 @@ const handleSearch = () => {
 const handleProfileClick = () => {
   if (route.path.startsWith('/doctor')) {
     router.push('/doctor/trang-ca-nhan');
+  } else if (route.path.startsWith('/nurse')) {
+    router.push('/nurse/trang-ca-nhan');
   } else {
     router.push('/admin/trang-ca-nhan');
   }
