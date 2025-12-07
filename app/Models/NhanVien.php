@@ -26,6 +26,7 @@ class NhanVien extends Authenticatable
         'bang_cap_chuyen_mon',
         'password',
         'trang_thai',
+        'phan_quyen_id',
     ];
 
     // Ẩn mật khẩu khi serialize
@@ -101,11 +102,30 @@ class NhanVien extends Authenticatable
     }
 
     /**
-     * Phân quyền (many-to-many)
+     * Quan hệ với bảng PhanQuyen (belongsTo - mỗi nhân viên có 1 vai trò)
+     */
+    public function phanQuyen()
+    {
+        return $this->belongsTo(PhanQuyen::class, 'phan_quyen_id');
+    }
+
+    /**
+     * Phân quyền (many-to-many) - giữ lại nếu cần
      */
     public function phanQuyens(): BelongsToMany
     {
         return $this->belongsToMany(PhanQuyen::class, 'phan_quyen_nhan_vien', 'nhan_vien_id', 'phan_quyen_id');
+    }
+
+    /**
+     * Kiểm tra xem nhân viên có quyền không
+     */
+    public function hasPermission($permission)
+    {
+        if (!$this->phanQuyen) {
+            return false;
+        }
+        return $this->phanQuyen->hasPermission($permission);
     }
 
     /**
@@ -114,5 +134,21 @@ class NhanVien extends Authenticatable
     public function lichLamViecs()
     {
         return $this->hasMany(LichLamViec::class, 'nhan_vien_id');
+    }
+
+    /**
+     * Quan hệ với bảng KiemKe
+     */
+    public function kiemKes()
+    {
+        return $this->hasMany(KiemKe::class, 'nhan_vien_id');
+    }
+
+    /**
+     * Quan hệ với bảng PhieuChi
+     */
+    public function phieuChis()
+    {
+        return $this->hasMany(PhieuChi::class, 'nhan_vien_id');
     }
 }

@@ -13,10 +13,34 @@ class HangHoaController extends Controller
     public function index()
     {
         try {
-            $hangHoas = HangHoa::with('danhMuc')->get()->map(function ($hangHoa) {
+            $hangHoas = HangHoa::with([
+                'danhMuc',
+                'chiTietPhieuNhapKhos' => function ($query) {
+                    $query->select('id', 'hang_hoa_id', 'so_luong', 'don_gia', 'thanh_tien', 'so_lo', 'han_su_dung', 'phieu_nhap_kho_id')
+                        ->with('phieuNhapKho:id,ma_phieu_nhap,ngay_nhap')
+                        ->orderBy('created_at', 'desc')
+                        ->limit(5); // Lấy 5 phiếu nhập gần nhất
+                }
+            ])->get()->map(function ($hangHoa) {
+                // Tính tổng số lượng từ tất cả chi tiết phiếu nhập kho
+                $tongSoLuongNhap = $hangHoa->chiTietPhieuNhapKhos->sum('so_luong');
+
                 return array_merge($hangHoa->toArray(), [
                     'ten_danh_muc_hang_hoa' => $hangHoa->danhMuc?->ten_danh_muc_hang_hoa ?? null,
                     'tinh_trang_label' => $hangHoa->tinh_trang_label,
+                    'tong_so_luong_nhap' => $tongSoLuongNhap,
+                    'chi_tiet_nhap_kho_gan_nhat' => $hangHoa->chiTietPhieuNhapKhos->map(function ($ct) {
+                        return [
+                            'id' => $ct->id,
+                            'so_luong' => $ct->so_luong,
+                            'don_gia' => $ct->don_gia,
+                            'thanh_tien' => $ct->thanh_tien,
+                            'so_lo' => $ct->so_lo,
+                            'han_su_dung' => $ct->han_su_dung,
+                            'ma_phieu_nhap' => $ct->phieuNhapKho?->ma_phieu_nhap,
+                            'ngay_nhap' => $ct->phieuNhapKho?->ngay_nhap,
+                        ];
+                    }),
                 ]);
             });
 
@@ -94,11 +118,47 @@ class HangHoaController extends Controller
     public function show(HangHoa $hangHoa)
     {
         try {
-            $hangHoa->load('danhMuc');
+            $hangHoa->load([
+                'danhMuc',
+                'chiTietPhieuNhapKhos' => function ($query) {
+                    $query->select('id', 'hang_hoa_id', 'so_luong', 'don_gia', 'thanh_tien', 'so_lo', 'han_su_dung', 'phieu_nhap_kho_id', 'ghi_chu', 'created_at')
+                        ->with('phieuNhapKho:id,ma_phieu_nhap,ngay_nhap,tong_tien,nha_cung_cap_id')
+                        ->with('phieuNhapKho.nhaCungCap:id,ten_nha_cung_cap,so_dien_thoai')
+                        ->orderBy('created_at', 'desc');
+                }
+            ]);
+
+            // Tính tổng số lượng từ tất cả chi tiết phiếu nhập kho
+            $tongSoLuongNhap = $hangHoa->chiTietPhieuNhapKhos->sum('so_luong');
 
             $response = array_merge($hangHoa->toArray(), [
                 'ten_danh_muc_hang_hoa' => $hangHoa->danhMuc?->ten_danh_muc_hang_hoa ?? null,
                 'tinh_trang_label' => $hangHoa->tinh_trang_label,
+                'tong_so_luong_nhap' => $tongSoLuongNhap,
+                'so_phieu_nhap' => $hangHoa->chiTietPhieuNhapKhos->count(),
+                'chi_tiet_nhap_kho' => $hangHoa->chiTietPhieuNhapKhos->map(function ($ct) {
+                    return [
+                        'id' => $ct->id,
+                        'so_luong' => $ct->so_luong,
+                        'don_gia' => $ct->don_gia,
+                        'thanh_tien' => $ct->thanh_tien,
+                        'so_lo' => $ct->so_lo,
+                        'han_su_dung' => $ct->han_su_dung,
+                        'ghi_chu' => $ct->ghi_chu,
+                        'ngay_tao' => $ct->created_at,
+                        'phieu_nhap_kho' => $ct->phieuNhapKho ? [
+                            'id' => $ct->phieuNhapKho->id,
+                            'ma_phieu_nhap' => $ct->phieuNhapKho->ma_phieu_nhap,
+                            'ngay_nhap' => $ct->phieuNhapKho->ngay_nhap,
+                            'tong_tien' => $ct->phieuNhapKho->tong_tien,
+                            'nha_cung_cap' => $ct->phieuNhapKho->nhaCungCap ? [
+                                'id' => $ct->phieuNhapKho->nhaCungCap->id,
+                                'ten_nha_cung_cap' => $ct->phieuNhapKho->nhaCungCap->ten_nha_cung_cap,
+                                'so_dien_thoai' => $ct->phieuNhapKho->nhaCungCap->so_dien_thoai,
+                            ] : null,
+                        ] : null,
+                    ];
+                }),
             ]);
 
             return response()->json([

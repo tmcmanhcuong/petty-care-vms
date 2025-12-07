@@ -23,7 +23,7 @@ class PhieuNhapKhoController extends Controller
                 'nhaCungCap:id,ten_nha_cung_cap,ma_nha_cung_cap',
                 'nhanVien:id,full_name',
                 'admin:id,ho_ten,email',
-                'phieuChi:id,ma_phieu_chi,so_tien',
+                'phieuChi:id,ma_phieu_chi,loai_phieu_chi,tong_so_tien,so_tien_thanh_toan_ngay,so_tien_con_no,trang_thai',
                 'chiTietPhieuNhapKhos.hangHoa:id,ten_mat_hang,don_vi_tinh,gia_ban'
             ])->orderBy('created_at', 'desc')->get();
 
@@ -52,7 +52,11 @@ class PhieuNhapKhoController extends Controller
                     'phieu_chi' => $phieu->phieuChi ? [
                         'id' => $phieu->phieuChi->id,
                         'ma_phieu_chi' => $phieu->phieuChi->ma_phieu_chi,
-                        'so_tien' => $phieu->phieuChi->so_tien,
+                        'loai_phieu_chi' => $phieu->phieuChi->loai_phieu_chi,
+                        'tong_so_tien' => $phieu->phieuChi->tong_so_tien,
+                        'so_tien_thanh_toan_ngay' => $phieu->phieuChi->so_tien_thanh_toan_ngay,
+                        'so_tien_con_no' => $phieu->phieuChi->so_tien_con_no,
+                        'trang_thai' => $phieu->phieuChi->trang_thai,
                     ] : null,
                     'chi_tiet' => $phieu->chiTietPhieuNhapKhos->map(function ($chiTiet) {
                         return [
@@ -108,14 +112,22 @@ class PhieuNhapKhoController extends Controller
                 $nhanVienId = $user->id;
             }
 
+            // Tạo phiếu chi với cấu trúc mới
             $phieuChi = PhieuChi::create([
                 'ma_phieu_chi' => $request->input('phieu_chi.ma_phieu_chi'),
-                'so_tien' => 0,
-                'ly_do' => $request->input('phieu_chi.ly_do'),
-                'ngay_chi' => $request->input('phieu_chi.ngay_chi'),
-                'nguoi_nhan' => $request->input('phieu_chi.nguoi_nhan'),
+                'loai_phieu_chi' => 'chi_nhap_hang',
+                'ly_do_chi' => $request->input('phieu_chi.ly_do', 'Chi nhập hàng'),
+                'tong_so_tien' => 0, // Sẽ cập nhật sau
+                'so_tien_thanh_toan_ngay' => 0,
+                'so_tien_con_no' => 0,
+                'tien_mat' => 0,
+                'tien_chuyen_khoan' => 0,
+                'anh_chung_tu' => $request->input('phieu_chi.anh_chung_tu', []),
+                'nha_cung_cap_id' => $request->nha_cung_cap_id,
+                'ngay_chi' => $request->input('phieu_chi.ngay_chi', now()),
                 'ghi_chu' => $request->input('phieu_chi.ghi_chu'),
-                'trang_thai' => 'cho_duyet',
+                'trang_thai' => 'con_no',
+                'admin_id' => $adminId,
                 'nhan_vien_id' => $nhanVienId,
             ]);
 
@@ -148,14 +160,18 @@ class PhieuNhapKhoController extends Controller
                 ]);
             }
 
+            // Cập nhật tổng tiền cho phiếu nhập kho và phiếu chi
             $phieuNhapKho->update(['tong_tien' => $tongTien]);
-            $phieuChi->update(['so_tien' => $tongTien]);
+            $phieuChi->update([
+                'tong_so_tien' => $tongTien,
+                'so_tien_con_no' => $tongTien, // Mặc định chưa thanh toán
+            ]);
 
             $phieuNhapKho->load([
                 'nhaCungCap:id,ten_nha_cung_cap,ma_nha_cung_cap',
                 'nhanVien:id,full_name',
                 'admin:id,ho_ten,email',
-                'phieuChi:id,ma_phieu_chi,so_tien',
+                'phieuChi:id,ma_phieu_chi,loai_phieu_chi,tong_so_tien,so_tien_thanh_toan_ngay,so_tien_con_no,trang_thai',
                 'chiTietPhieuNhapKhos.hangHoa:id,ten_mat_hang,don_vi_tinh,gia_ban'
             ]);
 
@@ -183,7 +199,11 @@ class PhieuNhapKhoController extends Controller
                 'phieu_chi' => [
                     'id' => $phieuNhapKho->phieuChi->id,
                     'ma_phieu_chi' => $phieuNhapKho->phieuChi->ma_phieu_chi,
-                    'so_tien' => $phieuNhapKho->phieuChi->so_tien,
+                    'loai_phieu_chi' => $phieuNhapKho->phieuChi->loai_phieu_chi,
+                    'tong_so_tien' => $phieuNhapKho->phieuChi->tong_so_tien,
+                    'so_tien_thanh_toan_ngay' => $phieuNhapKho->phieuChi->so_tien_thanh_toan_ngay,
+                    'so_tien_con_no' => $phieuNhapKho->phieuChi->so_tien_con_no,
+                    'trang_thai' => $phieuNhapKho->phieuChi->trang_thai,
                 ],
                 'chi_tiet' => $phieuNhapKho->chiTietPhieuNhapKhos->map(function ($chiTiet) {
                     return [
@@ -231,7 +251,7 @@ class PhieuNhapKhoController extends Controller
                 'nhaCungCap:id,ten_nha_cung_cap,ma_nha_cung_cap',
                 'nhanVien:id,full_name',
                 'admin:id,ho_ten,email',
-                'phieuChi:id,ma_phieu_chi,so_tien',
+                'phieuChi:id,ma_phieu_chi,loai_phieu_chi,tong_so_tien,so_tien_thanh_toan_ngay,so_tien_con_no,trang_thai',
                 'chiTietPhieuNhapKhos.hangHoa:id,ten_mat_hang,don_vi_tinh,gia_ban'
             ]);
 
@@ -259,7 +279,11 @@ class PhieuNhapKhoController extends Controller
                 'phieu_chi' => $phieuNhapKho->phieuChi ? [
                     'id' => $phieuNhapKho->phieuChi->id,
                     'ma_phieu_chi' => $phieuNhapKho->phieuChi->ma_phieu_chi,
-                    'so_tien' => $phieuNhapKho->phieuChi->so_tien,
+                    'loai_phieu_chi' => $phieuNhapKho->phieuChi->loai_phieu_chi,
+                    'tong_so_tien' => $phieuNhapKho->phieuChi->tong_so_tien,
+                    'so_tien_thanh_toan_ngay' => $phieuNhapKho->phieuChi->so_tien_thanh_toan_ngay,
+                    'so_tien_con_no' => $phieuNhapKho->phieuChi->so_tien_con_no,
+                    'trang_thai' => $phieuNhapKho->phieuChi->trang_thai,
                 ] : null,
                 'chi_tiet' => $phieuNhapKho->chiTietPhieuNhapKhos->map(function ($chiTiet) {
                     return [
@@ -351,7 +375,7 @@ class PhieuNhapKhoController extends Controller
                 'nhaCungCap:id,ten_nha_cung_cap,ma_nha_cung_cap',
                 'nhanVien:id,full_name',
                 'admin:id,ho_ten,email',
-                'phieuChi:id,ma_phieu_chi,so_tien,trang_thai',
+                'phieuChi:id,ma_phieu_chi,loai_phieu_chi,tong_so_tien,so_tien_thanh_toan_ngay,so_tien_con_no,trang_thai',
                 'chiTietPhieuNhapKhos.hangHoa:id,ten_mat_hang,don_vi_tinh,gia_ban'
             ]);
 

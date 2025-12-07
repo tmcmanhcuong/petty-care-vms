@@ -17,6 +17,7 @@ class Admin extends Model
         'so_dien_thoai',
         'dia_chi',
         'trang_thai',
+        'phan_quyen_id',
     ];
 
     protected $hidden = [
@@ -26,4 +27,39 @@ class Admin extends Model
     protected $casts = [
         'trang_thai' => 'integer',
     ];
+
+    /**
+     * Quan hệ với bảng KiemKe
+     */
+    public function kiemKes()
+    {
+        return $this->hasMany(KiemKe::class, 'admin_id');
+    }
+
+    /**
+     * Quan hệ với bảng PhieuChi
+     */
+    public function phieuChis()
+    {
+        return $this->hasMany(PhieuChi::class, 'admin_id');
+    }
+
+    /**
+     * Quan hệ với bảng PhanQuyen
+     */
+    public function phanQuyen()
+    {
+        return $this->belongsTo(PhanQuyen::class, 'phan_quyen_id');
+    }
+
+    /**
+     * Kiểm tra xem admin có quyền không
+     */
+    public function hasPermission($permission)
+    {
+        if (!$this->phanQuyen) {
+            return false;
+        }
+        return $this->phanQuyen->hasPermission($permission);
+    }
 }

@@ -46,4 +46,13 @@ class NhaCungCap extends Model
     {
         return $this->hasMany(PhieuNhapKho::class, 'nha_cung_cap_id');
     }
+
+    /**
+     * Quan hệ với bảng PhieuChi
+     * Một nhà cung cấp có thể có nhiều phiếu chi (chi nhập hàng)
+     */
+    public function phieuChis(): HasMany
+    {
+        return $this->hasMany(PhieuChi::class, 'nha_cung_cap_id');
+    }
 }

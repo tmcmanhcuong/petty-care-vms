@@ -44,4 +44,12 @@ class ChiTietPhieuNhapKho extends Model
     {
         return $this->belongsTo(HangHoa::class, 'hang_hoa_id');
     }
+
+    /**
+     * Quan hệ với bảng KiemKe
+     */
+    public function kiemKes()
+    {
+        return $this->hasMany(KiemKe::class, 'chi_tiet_phieu_nhap_kho_id');
+    }
 }

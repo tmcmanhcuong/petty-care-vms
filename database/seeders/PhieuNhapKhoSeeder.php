@@ -28,15 +28,26 @@ class PhieuNhapKhoSeeder extends Seeder
         // Tạo 10 phiếu chi trước
         $phieuChiIds = [];
         for ($i = 1; $i <= 10; $i++) {
+            $tongTien = rand(5000000, 50000000);
+            $soTienThanhToanNgay = rand(0, 1) ? $tongTien : rand(0, $tongTien);
             $phieuChiIds[] = DB::table('phieu_chis')->insertGetId([
                 'ma_phieu_chi' => 'PC' . str_pad($i, 5, '0', STR_PAD_LEFT),
-                'so_tien' => rand(5000000, 50000000),
-                'ly_do' => 'Thanh toán tiền hàng nhập kho đợt ' . $i,
+                'loai_phieu_chi' => 'chi_nhap_hang',
+                'ly_do_chi' => 'Thanh toán tiền hàng nhập kho đợt ' . $i,
+                'tong_so_tien' => $tongTien,
+                'so_tien_thanh_toan_ngay' => $soTienThanhToanNgay,
+                'so_tien_con_no' => $tongTien - $soTienThanhToanNgay,
+                'tien_mat' => rand(0, $soTienThanhToanNgay),
+                'tien_chuyen_khoan' => $soTienThanhToanNgay - rand(0, $soTienThanhToanNgay),
+                'anh_chung_tu' => json_encode(['chungtu_' . $i . '.jpg']),
+                'doi_tuong_nhan_tien' => null,
+                'nha_cung_cap_id' => rand(1, 10),
+                'trang_thai' => ($tongTien - $soTienThanhToanNgay) > 0 ? 'con_no' : 'da_hoan_thanh',
+                'admin_id' => 1,
+                'nhan_vien_id' => null,
+                'nguoi_tao_type' => 'Admin',
                 'ngay_chi' => Carbon::now()->subDays(rand(1, 30))->format('Y-m-d'),
-                'nguoi_nhan' => 'Nhà cung cấp số ' . rand(1, 10),
-                'ghi_chu' => 'Đã thanh toán đầy đủ theo hợp đồng',
-                'trang_thai' => ['cho_duyet', 'da_duyet', 'tu_choi'][rand(0, 2)],
-                'nhan_vien_id' => rand(1, 10),
+                'ghi_chu' => 'Phiếu chi cho phiếu nhập kho đợt ' . $i,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -89,20 +100,31 @@ class PhieuNhapKhoSeeder extends Seeder
 
         DB::table('chi_tiet_phieu_nhap_khos')->insert($chiTietData);
 
-        // Cập nhật lại tổng tiền cho các phiếu nhập kho
+        // Cập nhật lại tổng tiền cho các phiếu nhập kho và phiếu chi
         foreach ($phieuNhapKhoData as $phieu) {
             $tongTienThucTe = DB::table('chi_tiet_phieu_nhap_khos')
                 ->where('phieu_nhap_kho_id', $phieu['id'])
                 ->sum('thanh_tien');
 
+            // Cập nhật tổng tiền phiếu nhập kho
             DB::table('phieu_nhap_khos')
                 ->where('id', $phieu['id'])
                 ->update(['tong_tien' => $tongTienThucTe]);
 
-            // Cập nhật lại số tiền phiếu chi
+            // Cập nhật lại số tiền phiếu chi với cấu trúc mới
+            $soTienThanhToanNgay = rand(0, 1) ? $tongTienThucTe : rand(0, $tongTienThucTe);
+            $soTienConNo = $tongTienThucTe - $soTienThanhToanNgay;
+
             DB::table('phieu_chis')
                 ->where('id', $phieu['phieu_chi_id'])
-                ->update(['so_tien' => $tongTienThucTe]);
+                ->update([
+                    'tong_so_tien' => $tongTienThucTe,
+                    'so_tien_thanh_toan_ngay' => $soTienThanhToanNgay,
+                    'so_tien_con_no' => $soTienConNo,
+                    'tien_mat' => rand(0, $soTienThanhToanNgay),
+                    'tien_chuyen_khoan' => $soTienThanhToanNgay,
+                    'trang_thai' => $soTienConNo > 0 ? 'con_no' : 'da_hoan_thanh',
+                ]);
         }
     }
 }

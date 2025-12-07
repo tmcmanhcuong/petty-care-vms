@@ -43,4 +43,11 @@ class DichVu extends Model
     {
         return $this->hasMany(LichHen::class, 'dich_vu_id');
     }
+
+    // Relationship: a service can have many promotions
+    public function khuyenMais()
+    {
+        return $this->belongsToMany(KhuyenMai::class, 'khuyen_mai_dich_vu', 'dich_vu_id', 'khuyen_mai_id')
+            ->withTimestamps();
+    }
 }

@@ -65,6 +65,14 @@ class HangHoa extends Model
     }
 
     /**
+     * Quan hệ với bảng KiemKe
+     */
+    public function kiemKes()
+    {
+        return $this->hasMany(\App\Models\KiemKe::class, 'hang_hoa_id');
+    }
+
+    /**
      * Get the category name.
      */
     public function getTenDanhMucHangHoaAttribute()
