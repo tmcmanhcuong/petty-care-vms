@@ -9,6 +9,10 @@ use App\Notifications\NhanVienCreatedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
 
 class NhanVienController extends Controller
 {
@@ -166,5 +170,153 @@ class NhanVienController extends Controller
     public function destroy(NhanVien $nhanVien)
     {
         //
+    }
+
+    /**
+     * Đăng nhập cho nhân viên
+     */
+    public function dangNhap(Request $request): JsonResponse
+    {
+        $rules = [
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => Lang::get('messages.validation_failed'),
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $credentials = $validator->validated();
+
+        $nhanVien = NhanVien::where('email', $credentials['email'])->first();
+
+        // Kiểm tra email và password
+        if (!$nhanVien || !Hash::check($credentials['password'], $nhanVien->password)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Email hoặc mật khẩu không đúng.',
+            ], 401);
+        }
+
+        // Kiểm tra tài khoản có bị khóa không
+        if (!$nhanVien->isActive()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.',
+            ], 403);
+        }
+
+        try {
+            $token = $nhanVien->createToken('api-token')->plainTextToken;
+        } catch (\Exception $e) {
+            Log::error('NhanVien token creation failed: ' . $e->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => 'Có lỗi xảy ra khi tạo token đăng nhập.',
+            ], 500);
+        }
+
+        // Load thông tin vai trò và quyền
+        $nhanVien->load('phanQuyen');
+
+        // Ẩn password
+        if (method_exists($nhanVien, 'makeHidden')) {
+            $nhanVien->makeHidden(['password']);
+        }
+
+        // Xác định đường dẫn redirect dựa trên vai trò
+        $redirectUrl = $this->getRedirectUrlByRole($nhanVien->vai_tro);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Đăng nhập thành công.',
+            'data' => $nhanVien,
+            'token' => $token,
+            'redirect_url' => $redirectUrl,
+            'vai_tro_debug' => $nhanVien->vai_tro, // Thêm để debug
+        ], 200);
+    }
+
+    /**
+     * Xác định đường dẫn redirect dựa trên vai trò nhân viên
+     */
+    private function getRedirectUrlByRole(?string $vaiTro): string
+    {
+        // Nếu vai_tro null, trả về dashboard mặc định
+        if (!$vaiTro) {
+            return '/dashboard';
+        }
+
+        // Chuẩn hóa vai trò (lowercase và trim)
+        $vaiTro = strtolower(trim($vaiTro));
+
+        $roleRoutes = [
+            'bac_si' => '/doctor/dashboard',
+            'bacsi' => '/doctor/dashboard',
+            'bác sĩ' => '/doctor/dashboard',
+            'doctor' => '/doctor/dashboard',
+
+            'dieu_duong' => '/nurse/dashboard',
+            'dieuduong' => '/nurse/dashboard',
+            'điều dưỡng' => '/nurse/dashboard',
+            'y_ta' => '/nurse/dashboard',
+            'yta' => '/nurse/dashboard',
+            'y tá' => '/nurse/dashboard',
+            'nurse' => '/nurse/dashboard',
+
+            'le_tan' => '/receptionist/dashboard',
+            'letan' => '/receptionist/dashboard',
+            'lễ tân' => '/receptionist/dashboard',
+            'receptionist' => '/receptionist/dashboard',
+
+            'tro_ly' => '/assistant/dashboard',
+            'troly' => '/assistant/dashboard',
+            'trợ lý' => '/assistant/dashboard',
+            'assistant' => '/assistant/dashboard',
+        ];
+
+        return $roleRoutes[$vaiTro] ?? '/dashboard';
+    }
+
+    /**
+     * Đăng xuất cho nhân viên
+     */
+    public function dangXuat(Request $request): JsonResponse
+    {
+        $nhanVien = $request->user();
+
+        if (!$nhanVien) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Chưa đăng nhập.',
+            ], 401);
+        }
+
+        try {
+            // Xóa token hiện tại
+            $token = $request->user()->currentAccessToken();
+            if ($token) {
+                $token->delete();
+            } else {
+                // Xóa tất cả token của nhân viên này
+                $nhanVien->tokens()->delete();
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Đăng xuất thành công.',
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('NhanVien logout failed: ' . $e->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => 'Có lỗi xảy ra khi đăng xuất.',
+            ], 500);
+        }
     }
 }

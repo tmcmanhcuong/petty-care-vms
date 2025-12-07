@@ -49,11 +49,15 @@ class AdminController extends Controller
             $admin->makeHidden(['mat_khau']);
         }
 
+        // Load thông tin vai trò và quyền
+        $admin->load('phanQuyen');
+
         return response()->json([
             'status' => true,
             'message' => Lang::get('messages.login_success'),
             'data' => $admin,
             'token' => $token,
+            'redirect_url' => '/admin/dashboard',
         ], 200);
     }
 

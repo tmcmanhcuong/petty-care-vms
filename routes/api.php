@@ -28,6 +28,12 @@ use App\Http\Controllers\PhanQuyenController;
 Route::post('/khach-hang/dang-ki', [KhachHangController::class, 'dangKi']);
 Route::post('/khach-hang/dang-nhap', [KhachHangController::class, 'dangNhap']);
 
+// Admin login route
+Route::post('/admin/dang-nhap', [AdminController::class, 'dangNhap']);
+
+// Nhân viên login route
+Route::post('/nhan-vien/dang-nhap', [NhanVienController::class, 'dangNhap']);
+
 
 // Routes đăng nhập mạng xã hội
 Route::get('/auth/google', [KhachHangController::class, 'redirectToGoogle']);
@@ -39,10 +45,19 @@ Route::get('/auth/facebook/callback', [KhachHangController::class, 'handleFacebo
 Route::get('/email/verify/{id}/{hash}', [KhachHangController::class, 'verifyEmail'])->name('verification.verify');
 
 Route::middleware('auth:sanctum')->group(function () {
+    // Lấy thông tin user hiện tại (Admin hoặc NhanVien) kèm quyền
     Route::get('/user', function (Request $request) {
+        $user = $request->user();
+
+        // Load thông tin vai trò và quyền nếu có
+        if ($user && method_exists($user, 'load')) {
+            $user->load('phanQuyen');
+        }
+
         return response()->json([
             'status' => true,
-            'data' => $request->user()
+            'data' => $user,
+            'user_type' => $user instanceof \App\Models\Admin ? 'admin' : 'nhan_vien'
         ]);
     });
 
@@ -103,6 +118,7 @@ Route::post('/admin/dang-nhap', [AdminController::class, 'dangNhap']);
 // Admin authenticated routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/dang-xuat', [AdminController::class, 'dangXuat']);
+    Route::post('/nhan-vien/dang-xuat', [NhanVienController::class, 'dangXuat']);
 
     // Khoa: tạo mới (chỉ admin)
     Route::post('/khoa', [KhoaController::class, 'store'])->middleware('permission:khoa_tao');
@@ -189,7 +205,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::match(['put', 'patch'], '/khuyen-mai/{id}', [KhuyenMaiController::class, 'update'])->middleware(\App\Http\Middleware\EnsureAdmin::class);
     Route::patch('/khuyen-mai/{id}/trang-thai', [KhuyenMaiController::class, 'changeStatus'])->middleware(\App\Http\Middleware\EnsureAdmin::class);
 
-   Route::delete('/khuyen-mai/{id}', [KhuyenMaiController::class, 'destroy'])->middleware(\App\Http\Middleware\EnsureAdmin::class);
+    Route::delete('/khuyen-mai/{id}', [KhuyenMaiController::class, 'destroy'])->middleware(\App\Http\Middleware\EnsureAdmin::class);
 
     // Phân quyền và vai trò: CRUD (chỉ admin)
     Route::get('/phan-quyen', [PhanQuyenController::class, 'index'])->middleware(\App\Http\Middleware\EnsureAdmin::class);
