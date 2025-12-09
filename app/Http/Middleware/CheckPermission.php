@@ -26,7 +26,12 @@ class CheckPermission
             ], 401);
         }
 
-        // Kiểm tra xem user có phương thức hasPermission không
+        // Nếu là Khách hàng (User/KhachHang), bỏ qua kiểm tra quyền (cho phép truy cập)
+        if ($user instanceof \App\Models\KhachHang || $user instanceof \App\Models\User) {
+            return $next($request);
+        }
+
+        // Kiểm tra xem user có phương thức hasPermission không (cho Admin và NhanVien)
         if (!method_exists($user, 'hasPermission')) {
             return response()->json([
                 'success' => false,
@@ -34,12 +39,21 @@ class CheckPermission
             ], 403);
         }
 
-        // Kiểm tra quyền
-        if (!$user->hasPermission($permission)) {
+        // Kiểm tra quyền cho Admin và NhanVien
+        try {
+            if (!$user->hasPermission($permission)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bạn không có quyền thực hiện chức năng này',
+                    'required_permission' => $permission
+                ], 403);
+            }
+        } catch (\Exception $e) {
+            // Nếu có lỗi khi check permission (ví dụ: phanQuyen null)
             return response()->json([
                 'success' => false,
-                'message' => 'Bạn không có quyền thực hiện chức năng này',
-                'required_permission' => $permission
+                'message' => 'Tài khoản chưa được phân quyền. Vui lòng liên hệ quản trị viên.',
+                'error' => $e->getMessage()
             ], 403);
         }
 
