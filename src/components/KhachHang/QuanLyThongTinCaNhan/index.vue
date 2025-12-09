@@ -1,18 +1,10 @@
 <template>
   <div class="min-h-screen">
-    <div class="container max-w-6xl mx-auto px-6 py-8 md:px-12 lg:px-20">
-      <nav class="flex items-center gap-2 text-lg font-semibold mb-8">
-        <img src="https://www.figma.com/api/mcp/asset/1d75c94f-d14c-428b-bb1d-c3790ef43737" alt="Home"
-          class="w-5 h-5" />
-        <span class="text-gray-400">Trang chủ</span>
-        <span class="text-black text-2xl">/</span>
-        <span class="underline text-black">Thông tin cá nhân</span>
-      </nav>
-
-      <div class="bg-white border border-gray-100 rounded-2xl p-8 mb-6">
+    <div class="container max-w-6xl mx-auto md:px-12 lg:px-20">
+      <div class="bg-white border !border-gray-300 rounded-2xl p-8 mb-6">
         <div class="mb-8">
-          <h1 class="text-2xl font-bold text-black mb-1">Thông tin cá nhân</h1>
-          <p class="text-xl font-semibold text-gray-500">
+          <h1 class="text-xl font-bold text-black mb-1">Thông tin cá nhân</h1>
+          <p class="text-lg font-semibold text-gray-500">
             Quản lý thông tin tài khoản và cài đặt cá nhân của bạn
           </p>
         </div>
@@ -33,8 +25,7 @@
               <input ref="fileInputRef" type="file" accept="image/*" class="hidden" @change="handleFileChange" />
               <button @click="onAvatarClick"
                 class="flex items-center gap-3 px-4 py-2 border border-black/40 rounded-lg hover:bg-gray-100 transition">
-                <img src="https://www.figma.com/api/mcp/asset/eb992b41-f02a-470f-a22e-4159ca1002da" alt="Camera"
-                  class="w-4 h-4" />
+                <CameraSmIcon  />
                 <span class="font-semibold">Chọn ảnh</span>
               </button>
 
@@ -108,17 +99,17 @@
         </div>
       </div>
 
-      <div class="bg-white border border-gray-100 rounded-2xl p-8 mb-6">
+      <div class="bg-white border !border-gray-300 rounded-2xl p-8 mb-6">
         <div class="mb-8">
-          <h2 class="text-2xl font-bold text-black mb-1">Bảo mật tài khoản</h2>
-          <p class="text-xl font-semibold text-gray-500">
+          <h2 class="text-xl font-bold text-black mb-1">Bảo mật tài khoản</h2>
+          <p class="text-lg font-semibold text-gray-500">
             Quản lý mật khẩu và cài đặt bảo mật
           </p>
         </div>
 
         <div class="space-y-6">
           <div
-            class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-4 border border-gray-200 rounded-xl">
+            class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-4 border !border-gray-300 rounded-xl">
             <div>
               <h3 class="font-semibold text-lg">Mật khẩu</h3>
               <p class="font-semibold text-gray-600">
@@ -127,16 +118,15 @@
             </div>
             <button @click="onChangePassword"
               class="flex items-center gap-2 px-4 py-2 border border-black/70 rounded-lg hover:bg-gray-100 transition">
-              <img src="https://www.figma.com/api/mcp/asset/8c4e111d-ff36-4599-a675-3d5b938ea571" alt="Key"
-                class="w-4 h-4" />
+              <KeyIcon />
               <span class="font-semibold">Đổi mật khẩu</span>
             </button>
           </div>
 
-          <hr class="border-t border-black/10" />
+          <hr class="border-t !border-gray-500" />
 
           <div
-            class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-4 border border-gray-200 rounded-xl">
+            class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-4 border !border-gray-300 rounded-xl">
             <div>
               <h3 class="font-semibold text-lg">
                 Đăng xuất khỏi tất cả thiết bị
@@ -147,24 +137,23 @@
             </div>
             <button @click="onLogoutAll"
               class="flex items-center gap-2 px-4 py-2 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition">
-              <img src="https://www.figma.com/api/mcp/asset/63132e90-e7db-435c-acbd-360a6e1a3fee" alt="Logout"
-                class="w-4 h-4" />
+              <LogoutIcon />
               <span class="font-semibold">Đăng xuất tất cả</span>
             </button>
           </div>
         </div>
       </div>
 
-      <div class="bg-white border border-gray-100 rounded-2xl p-8 mb-6">
+      <div class="bg-white border !border-gray-300 rounded-2xl p-8 mb-6">
         <div class="mb-8">
-          <h2 class="text-2xl font-bold text-black mb-1">Tài khoản liên kết</h2>
-          <p class="text-xl font-semibold text-gray-500">
+          <h2 class="text-xl font-bold text-black mb-1">Tài khoản liên kết</h2>
+          <p class="text-lg font-semibold text-gray-500">
             Quản lý các tài khoản mạng xã hội đã liên kết
           </p>
         </div>
 
         <div class="space-y-4">
-          <div class="flex items-center justify-between p-4 border border-gray-200 rounded-xl">
+          <div class="flex items-center justify-between p-4 border !border-gray-300 rounded-xl">
             <div class="flex items-center gap-4">
               <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center border">
                 <span class="text-sm font-bold text-red-500">G</span>
@@ -183,7 +172,7 @@
             </div>
           </div>
 
-          <div class="flex items-center justify-between p-4 border border-gray-200 rounded-xl">
+          <div class="flex items-center justify-between p-4 border !border-gray-300 rounded-xl">
             <div class="flex items-center gap-4">
               <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center border">
                 <span class="text-sm font-bold text-blue-600">f</span>
@@ -204,11 +193,11 @@
         </div>
       </div>
 
-      <div class="bg-teal-50 border border-teal-200 rounded-2xl p-8">
+      <div class="bg-teal-50 border !border-teal-200 rounded-2xl p-8">
         <div class="space-y-4">
           <div class="flex justify-between">
             <span class="font-medium">Loại tài khoản:</span>
-            <span class="font-bold text-[#2f5755]">Khách hàng thường</span>
+            <span class="font-bold text-[#2f5755]">Silver</span>
           </div>
           <div class="flex justify-between">
             <span class="font-medium">Ngày tham gia:</span>
@@ -228,11 +217,14 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, onBeforeUnmount, watch, nextTick } from "vue";
 import axios from "axios";
 import { useToast } from "vue-toastification";
 import { getUser, logout, setAuth, getToken } from "../../../utils/auth";
+import CameraSmIcon from "@/assets/svg/camerasm.svg";
+import KeyIcon from "@/assets/svg/key.svg";
+import LogoutIcon from "@/assets/svg/log-out.svg";
 
 const isEditing = ref(false);
 
@@ -355,7 +347,7 @@ const onLinkFacebook = () => {
 
 const toast = useToast();
 const saving = ref(false);
-const errors = ref<Record<string, string[]>>({});
+const errors = ref({});
 
 const API_BASE = "http://127.0.0.1:8000/api/khach-hang";
 
@@ -366,17 +358,17 @@ function ensureAuthHeader() {
   } catch (e) { }
 }
 
-const nameRef = ref<HTMLInputElement | null>(null);
-const phoneRef = ref<HTMLInputElement | null>(null);
-const emailRef = ref<HTMLInputElement | null>(null);
-const addressRef = ref<HTMLInputElement | null>(null);
-const fileInputRef = ref<HTMLInputElement | null>(null);
-const avatarFile = ref<File | null>(null);
-const avatarPreview = ref<string | null>(user.value?.anh_dai_dien || null);
-const avatarLocalUrl = ref<string | null>(null); // object URL created for preview
+const nameRef = ref(null);
+const phoneRef = ref(null);
+const emailRef = ref(null);
+const addressRef = ref(null);
+const fileInputRef = ref(null);
+const avatarFile = ref(null);
+const avatarPreview = ref(user.value?.anh_dai_dien || null);
+const avatarLocalUrl = ref(null); // object URL created for preview
 const avatarUploading = ref(false);
 
-function focusFirstError(errs: Record<string, any>) {
+function focusFirstError(errs) {
   const order = ["ho_ten", "email", "so_dien_thoai", "dia_chi"];
   for (const key of order) {
     if (errs && errs[key]) {
@@ -415,8 +407,8 @@ function onAvatarClick() {
   if (fileInputRef.value) fileInputRef.value.click();
 }
 
-function handleFileChange(e: Event) {
-  const input = e.target as HTMLInputElement;
+function handleFileChange(e) {
+  const input = e.target;
   const file = input?.files?.[0] || null;
   if (!file) return;
   if (!file.type.startsWith("image/")) {
@@ -450,7 +442,7 @@ async function uploadAvatar() {
   const base = API_BASE;
   try {
     const fd = new FormData();
-    fd.append("anh_dai_dien", avatarFile.value as Blob);
+    fd.append("anh_dai_dien", avatarFile.value);
     // use backend field names
     fd.append("full_name", form.value.name || "");
     fd.append("email", form.value.email || "");
@@ -482,7 +474,7 @@ async function uploadAvatar() {
       } catch (e) { }
       avatarLocalUrl.value = null;
     }
-  } catch (e: any) {
+  } catch (e) {
     const msg = e?.response?.data?.message || e?.message || "Tải ảnh thất bại";
     if (e?.response?.status === 422) {
       const respErrors = e.response.data.errors || {};
@@ -556,7 +548,7 @@ async function saveProfile() {
 
     toast.success("Thông tin đã được cập nhật");
     isEditing.value = false;
-  } catch (e: any) {
+  } catch (e) {
     const msg = e?.response?.data?.message || e?.message || "Cập nhật thất bại";
     if (e?.response?.status === 422) {
       const respErrors = e.response.data.errors || {};

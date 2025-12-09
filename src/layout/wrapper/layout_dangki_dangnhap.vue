@@ -46,4 +46,12 @@ export default {
 @import "../../assets/css/semi-dark.css";
 @import "../../assets/css/header-colors.css";
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css");
+
+.page-wrapper {
+    padding-top: 40px;
+    margin-top: 64px;
+}
+.page-content {
+    padding: 0px;
+}
 </style>

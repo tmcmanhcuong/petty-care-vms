@@ -61,7 +61,7 @@
             <label class="block text-base font-medium text-gray-800">
               Email <span class="text-red-600">*</span>
             </label>
-            <div class="relative mt-2 text-gray-300">
+            <div class="relative mt-2">
               <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                 <MailIcon class="h-6 w-6 text-gray-500" aria-hidden="true" />
               </div>
@@ -71,7 +71,7 @@
                 type="email"
                 placeholder="Nhập email"
                 autocomplete="email"
-                class="w-full pl-12 pr-4 py-3.5 border rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-teal-600"
+                class="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-lg text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-600"
                 :class="{ 'border-red-500': errors.email }"
                 aria-invalid="errors.email ? 'true' : 'false'"
                 aria-describedby="email-error"
@@ -129,7 +129,7 @@
                 type="password"
                 placeholder="Nhập mật khẩu"
                 autocomplete="current-password"
-                class="w-full pl-12 pr-4 py-3.5 border rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-teal-600"
+                class="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-lg text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-600"
                 :class="{ 'border-red-500': errors.password }"
                 aria-invalid="errors.password ? 'true' : 'false'"
                 aria-describedby="password-error"

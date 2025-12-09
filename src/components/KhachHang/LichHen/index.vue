@@ -1,19 +1,17 @@
 <template>
   <div class="min-h-screen font-nunitoSans">
-    <div class="container mx-auto px-6 py-8 max-w-6xl">
+    <div class="container mx-auto px-6 max-w-6xl">
       <!-- Header -->
       <div class="flex justify-between items-center mb-6 flex-col md:flex-row gap-4">
         <div>
-          <h1 class="text-2xl font-bold text-black">Lịch hẹn khám</h1>
-          <p class="text-xl font-medium text-gray-600">
+          <h1 class="text-xl font-bold text-black">Lịch hẹn khám</h1>
+          <p class="text-lg font-medium text-gray-600">
             Quản lý các buổi khám đã đặt
           </p>
         </div>
         <button @click="handleNewAppointment"
-          class="flex items-center gap-3 px-6 py-3 bg-teal-600 text-white rounded-lg font-medium text-lg hover:bg-teal-700 transition">
-          <svg class="w-5 h-5" viewBox="0 0 16 16" fill="none">
-            <path d="M8 2v12M2 8h12" stroke="white" stroke-width="2" stroke-linecap="round" />
-          </svg>
+          class="flex items-center gap-3 px-6 py-3 bg-[#5A9690] text-white rounded-lg font-medium text-lg hover:bg-teal-700 transition">
+          <AddIcon />
           Đặt lịch mới
         </button>
       </div>
@@ -29,7 +27,7 @@
       </div>
 
       <!-- Filter -->
-      <div class="bg-gray-200 border border-black/20 rounded-2xl p-6 mb-8">
+      <div class="bg-gray-200 border !border-black/20 rounded-2xl p-6 mb-8">
         <div class="flex flex-wrap items-center gap-4">
           <div class="flex items-center gap-2">
             <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none">
@@ -300,6 +298,7 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
+import AddIcon from "@/assets/svg/add.svg";
 
 import DatLichKham from "./DatLichKham/index.vue";
 import ChiTietLichHen from "./ChiTietLichHen/index.vue";

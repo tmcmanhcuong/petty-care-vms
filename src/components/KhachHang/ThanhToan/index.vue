@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen font-nunitoSans">
-    <div class="container mx-auto px-6 py-8 max-w-6xl">
+    <div class="container mx-auto max-w-6xl">
       <div class="flex flex-col gap-6 items-start w-full">
         <!-- Header -->
         <div class="flex flex-col h-[54px] items-start w-full">
@@ -19,14 +19,14 @@
         <!-- Statistics Cards -->
         <div class="grid grid-cols-3 gap-6 w-full">
           <!-- Card 1: Tổng đã thanh toán -->
-          <div class="bg-white border border-teal-400 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between">
+          <div class="bg-white border !border-teal-400 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between">
             <div class="h-5 pt-[25px]">
               <p class="font-medium text-base leading-6 text-gray-700">
                 Tổng đã thanh toán
               </p>
             </div>
             <div class="flex flex-col gap-1 pb-[25px]">
-              <p class="font-semibold text-4xl leading-6 text-teal-600">
+              <p class="font-semibold text-4xl leading-6 text-teal-500">
                 {{ formatCurrency(totalPaid) }}
               </p>
               <p class="font-medium text-base leading-6 text-gray-700">
@@ -36,7 +36,7 @@
           </div>
 
           <!-- Card 2: Tổng dư nợ -->
-          <div class="bg-white border border-amber-300 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between">
+          <div class="bg-white border !border-amber-300 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between">
             <div class="h-5 pt-[25px]">
               <p class="font-medium text-base leading-6 text-gray-700">
                 Tổng dư nợ
@@ -53,7 +53,7 @@
           </div>
 
           <!-- Card 3: Tổng chi tiêu -->
-          <div class="bg-white border border-gray-400 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between">
+          <div class="bg-white border !border-gray-400 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between">
             <div class="h-5 pt-[25px]">
               <p class="font-medium text-base leading-6 text-gray-700">
                 Tổng chi tiêu
@@ -71,13 +71,13 @@
         </div>
 
         <!-- Payment History -->
-        <div class="bg-white border border-black/15 rounded-[14px] px-8 py-6 flex flex-col gap-6 w-full">
+        <div class="bg-white border !border-black/15 shadow-sm rounded-[14px] px-8 py-6 flex flex-col gap-6 w-full">
           <!-- Card Header -->
           <div class="flex flex-col h-[70px] items-start w-full">
-            <p class="font-bold text-xl leading-7 text-black">
+            <p class="font-bold text-lg leading-7 text-black">
               Lịch sử giao dịch
             </p>
-            <p class="font-normal text-lg leading-6 text-gray-500">
+            <p class="font-normal text-base leading-6 text-gray-500">
               Danh sách các hóa đơn và thanh toán
             </p>
           </div>
@@ -85,9 +85,6 @@
           <!-- Filter Payments -->
           <div class="bg-white rounded-[10px] shadow-md px-6 py-6 flex items-center gap-9">
             <div class="flex items-center gap-2">
-              <div class="w-5 h-5">
-                <img :src="iconFilter" alt="" class="w-full h-full" />
-              </div>
               <p class="font-medium text-base leading-6 text-black">
                 Lọc theo:
               </p>
@@ -98,13 +95,13 @@
               <div class="relative">
                 <button 
                   @click="toggleServiceFilter"
-                  class="bg-gray-200 border border-black/15 rounded-lg px-[13px] py-[9px] flex items-center gap-16"
+                  class="bg-gray-200 border !border-black/15 rounded-lg px-[13px] py-[9px] flex items-center gap-16"
                 >
                   <span class="text-sm font-medium text-gray-500 w-[111px]">
                     {{ selectedService || 'Dịch vụ' }}
                   </span>
-                  <div class="w-4 h-4">
-                    <img :src="iconChevronDown" alt="" class="w-full h-full" />
+                  <div class="">
+                    <ChevronDownIcon class="text-gray-500" />
                   </div>
                 </button>
               </div>
@@ -113,13 +110,13 @@
               <div class="relative">
                 <button 
                   @click="toggleMonthFilter"
-                  class="bg-gray-200 border border-black/15 rounded-lg px-[13px] py-[9px] flex items-center gap-16"
+                  class="bg-gray-200 border !border-black/15 rounded-lg px-[13px] py-[9px] flex items-center gap-16"
                 >
                   <span class="text-sm font-medium text-gray-500 w-[111px]">
                     {{ selectedMonth || 'Tháng' }}
                   </span>
-                  <div class="w-4 h-4">
-                    <img :src="iconChevronDown" alt="" class="w-full h-full" />
+                  <div >
+                    <ChevronDownIcon class="text-gray-500" />
                   </div>
                 </button>
               </div>
@@ -128,13 +125,13 @@
               <div class="relative">
                 <button 
                   @click="toggleYearFilter"
-                  class="bg-gray-200 border border-black/15 rounded-lg px-[13px] py-[9px] flex items-center gap-16"
+                  class="bg-gray-200 border !border-black/15 rounded-lg px-[13px] py-[9px] flex items-center gap-16"
                 >
                   <span class="text-sm font-medium text-gray-500 w-[111px]">
                     {{ selectedYear || 'Năm' }}
                   </span>
-                  <div class="w-4 h-4">
-                    <img :src="iconChevronDown" alt="" class="w-full h-full" />
+                  <div >
+                    <ChevronDownIcon class="text-gray-500" />
                   </div>
                 </button>
               </div>
@@ -237,7 +234,7 @@
                       class="bg-amber-600 rounded-lg px-3 py-1 flex items-center gap-2"
                     >
                       <div class="w-4 h-4">
-                        <img :src="iconCreditCard" alt="" class="w-full h-full" />
+                       <WalletIcon />
                       </div>
                       <span class="font-semibold text-base leading-6 text-white">
                         Thanh toán ngay
@@ -247,10 +244,10 @@
                     <button
                       v-else-if="payment.status === 'prepaid' || payment.status === 'refunded'"
                       @click="handleViewDetail(payment)"
-                      class="bg-white border border-black/15 rounded-lg px-3 py-1 flex items-center gap-2"
+                      class="bg-white border !border-black/15 rounded-lg px-3 py-1 flex items-center gap-2"
                     >
                       <div class="w-4 h-4">
-                        <img :src="iconEye" alt="" class="w-full h-full" />
+                        <EyeIcon />
                       </div>
                       <span class="font-semibold text-base leading-6 text-black">
                         Xem chi tiết
@@ -260,10 +257,10 @@
                     <button
                       v-else-if="payment.status === 'completed'"
                       @click="handleViewReceipt(payment)"
-                      class="bg-white border border-black/15 rounded-lg px-3 py-1 flex items-center gap-2"
+                      class="bg-white border !border-black/15 rounded-lg px-3 py-1 flex items-center gap-2"
                     >
                       <div class="w-4 h-4">
-                        <img :src="iconReceipt" alt="" class="w-full h-full" />
+                        <DownloadIcon />
                       </div>
                       <span class="font-semibold text-base leading-6 text-black">
                         Xem biên lai
@@ -273,10 +270,10 @@
                     <button
                       v-else-if="payment.status === 'refunding'"
                       @click="handleViewRefundStatus(payment)"
-                      class="bg-white border border-black/15 rounded-lg px-3 py-1 flex items-center gap-2"
+                      class="bg-white border !border-black/15 rounded-lg px-3 py-1 flex items-center gap-2"
                     >
-                      <div class="w-4 h-4">
-                        <img :src="iconClock" alt="" class="w-full h-full" />
+                      <div class=" text-black">
+                        <ClockIcon class="text-black"/>
                       </div>
                       <span class="font-semibold text-base leading-6 text-black">
                         Đang xử lý
@@ -290,19 +287,19 @@
             <!-- Pagination -->
             <div class="flex items-center justify-between w-full">
               <div class="flex items-center gap-1">
-                <p class="font-medium text-sm leading-6 text-gray-600">
+                <p class="font-medium text-sm leading-4 text-gray-600">
                   Hiển thị
                 </p>
-                <p class="font-medium text-base leading-6 text-[#101828]">
+                <p class="font-medium text-base leading-4 text-[#101828]">
                   {{ startIndex }}-{{ endIndex }}
                 </p>
-                <p class="font-medium text-sm leading-6 text-gray-600">
+                <p class="font-medium text-sm leading-4 text-gray-600">
                   trong
                 </p>
-                <p class="font-medium text-base leading-6 text-[#101828]">
+                <p class="font-medium text-base leading-4 text-[#101828]">
                   {{ totalPayments }}
                 </p>
-                <p class="font-medium text-sm leading-6 text-gray-600">
+                <p class="font-medium text-sm leading-4 text-gray-600">
                   giao dịch
                 </p>
               </div>
@@ -315,8 +312,8 @@
                   :class="{ 'opacity-50': currentPage === 1 }"
                   class="bg-white border border-black/20 rounded-lg px-[17px] py-px flex items-center justify-center"
                 >
-                  <div class="w-6 h-6">
-                    <img :src="iconArrowLeft" alt="" class="w-full h-full" />
+                  <div class="p-1">
+                    <ChevronLeftIcon class="text-gray-500" />
                   </div>
                 </button>
 
@@ -339,8 +336,8 @@
                   :disabled="currentPage === totalPages"
                   class="bg-white border border-black/20 rounded-lg px-[17px] py-px flex items-center justify-center"
                 >
-                  <div class="w-6 h-6">
-                    <img :src="iconArrowRight" alt="" class="w-full h-full" />
+                  <div class="p-1">
+                    <ChevronRightIcon class="text-gray-500" />
                   </div>
                 </button>
               </div>
@@ -349,7 +346,7 @@
         </div>
 
         <!-- Payment Methods -->
-        <div class="bg-teal-50/50 border border-teal-500 rounded-[14px] px-8 py-6 flex flex-col gap-6 w-full">
+        <div class="bg-teal-50/50 border !border-teal-500 rounded-[14px] px-8 py-6 flex flex-col gap-6 w-full">
           <!-- Card Header -->
           <div class="flex flex-col h-[70px] items-start w-full">
             <p class="font-bold text-xl leading-6 text-teal-800">
@@ -363,10 +360,10 @@
           <!-- Payment Method List -->
           <div class="flex flex-col gap-4">
             <!-- VNPay -->
-            <div class="bg-white border border-teal-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
+            <div class="bg-white border !border-teal-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <div class="rounded-[10px] shadow-md w-12 h-12">
-                  <img :src="imgVNPay" alt="VNPay" class="w-full h-full rounded-[10px] object-contain" />
+                  <img src="/src/assets/img_imports/public_img/vnpay.png" alt="VNPay" class="w-full h-full rounded-[10px] object-contain" />
                 </div>
                 <div class="flex flex-col">
                   <p class="font-medium text-base leading-6 text-black">
@@ -378,14 +375,14 @@
                 </div>
               </div>
               <div class="flex items-center gap-3">
-                <div class="bg-gray-100 border border-black/15 rounded-lg px-[17px] py-[3px]">
+                <div class="bg-gray-100 border !border-black/15 rounded-lg px-[17px] py-[3px]">
                   <p class="font-semibold text-sm leading-5 text-black/60">
                     Chưa liên kết
                   </p>
                 </div>
                 <button
                   @click="handleLinkPayment('vnpay')"
-                  class="bg-white border border-teal-500 rounded-lg px-[13px] py-[9px]"
+                  class="bg-white border !border-teal-500 rounded-lg px-[13px] py-[9px]"
                 >
                   <p class="font-semibold text-sm leading-5 text-teal-500">
                     Liên kết
@@ -395,10 +392,10 @@
             </div>
 
             <!-- MoMo -->
-            <div class="bg-white border border-teal-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
+            <div class="bg-white border !border-teal-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <div class="rounded-[10px] shadow-md w-12 h-12">
-                  <img :src="imgMoMo" alt="MoMo" class="w-full h-full rounded-[10px] object-contain" />
+                  <img src="/src/assets/img_imports/public_img/momo.png" alt="MoMo" class="w-full h-full rounded-[10px] object-contain" />
                 </div>
                 <div class="flex flex-col">
                   <p class="font-medium text-base leading-6 text-black">
@@ -410,14 +407,14 @@
                 </div>
               </div>
               <div class="flex items-center gap-3">
-                <div class="bg-gray-100 border border-black/15 rounded-lg px-[17px] py-[3px]">
+                <div class="bg-gray-100 border !border-black/15 rounded-lg px-[17px] py-[3px]">
                   <p class="font-semibold text-sm leading-5 text-black/60">
                     Chưa liên kết
                   </p>
                 </div>
                 <button
                   @click="handleLinkPayment('momo')"
-                  class="bg-white border border-teal-500 rounded-lg px-[13px] py-[9px]"
+                  class="bg-white border !border-teal-500 rounded-lg px-[13px] py-[9px]"
                 >
                   <p class="font-semibold text-sm leading-5 text-teal-500">
                     Liên kết
@@ -426,7 +423,7 @@
               </div>
             </div>
 
-            <!-- Techcombank (Linked) -->
+            <!-- Techcombank (Linked)
             <div class="bg-white border border-green-400 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <div class="rounded-[10px] shadow-md w-12 h-12">
@@ -459,10 +456,10 @@
                   </p>
                 </button>
               </div>
-            </div>
+            </div> -->
 
             <!-- Add Bank Account -->
-            <div class="bg-white border border-gray-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
+            <!-- <div class="bg-white border border-gray-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <div class="bg-gray-100 rounded-[10px] shadow-md w-12 h-12 flex items-center justify-center">
                   <div class="w-6 h-6">
@@ -489,7 +486,7 @@
                   Thêm tài khoản
                 </p>
               </button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -533,25 +530,19 @@
 import { ref, computed } from 'vue';
 import ChiTietHoaDon from './ChiTietHoaDon/index.vue';
 import BienLaiThanhToan from './BienLaiThanhToan/index.vue';
+// Icon
+import Calendar from '@/assets/svg/calendar.svg';
+import ChevronDownIcon from '@/assets/svg/chevron-down.svg';
+import ChevronRightIcon from '@/assets/svg/chevron-right.svg';
+import ChevronLeftIcon from '@/assets/svg/chevron-left.svg';
+import EyeIcon from '@/assets/svg/eye.svg';
+import DownloadIcon from '@/assets/svg/download.svg';
+import WalletIcon from '@/assets/svg/wallet.svg';
+import ClockIcon from '@/assets/svg/clock.svg';
 
 
-// Icon URLs from Figma
-const iconFilter = "https://www.figma.com/api/mcp/asset/a52c069b-e1bb-4cf6-9b07-658fc41883ba";
-const iconChevronDown = "https://www.figma.com/api/mcp/asset/0fed6ebc-152f-4045-affe-d791cc19174a";
-const iconCreditCard = "https://www.figma.com/api/mcp/asset/43eabd7f-62f4-49d2-bd2e-04e2e2145049";
-const iconEye = "https://www.figma.com/api/mcp/asset/12bb07b3-1a94-46b5-9ab8-06d511b87d87";
-const iconReceipt = "https://www.figma.com/api/mcp/asset/bfc1d0d4-e436-4a6a-9536-3acf559acd30";
-const iconClock = "https://www.figma.com/api/mcp/asset/0963718a-988f-466e-9164-809244ee0e8c";
-const iconArrowLeft = "https://www.figma.com/api/mcp/asset/1b2c1207-51a7-42ff-8b0a-8f9a315cfba0";
-const iconArrowRight = "https://www.figma.com/api/mcp/asset/1b2c1207-51a7-42ff-8b0a-8f9a315cfba0";
-const iconCheck = "https://www.figma.com/api/mcp/asset/e60e2d05-4121-4868-9cff-d37bc0a9b0d3";
-const iconBank = "https://www.figma.com/api/mcp/asset/71069a98-a50b-4e8b-bdff-42bbbabfbba8";
-const iconPlus = "https://www.figma.com/api/mcp/asset/1324b97b-6462-4489-a4c6-fea472285ee8";
 
-// Payment method images
-const imgVNPay = "https://www.figma.com/api/mcp/asset/8af4ada0-50d6-4281-80d3-84f41e62c032";
-const imgMoMo = "https://www.figma.com/api/mcp/asset/3c5948bb-b2a3-4e46-9f9a-244ad6276e0d";
-const imgTechcombank = "https://www.figma.com/api/mcp/asset/83dbb109-fa75-456a-9dc3-8b1fd5258840";
+
 
 // Statistics data
 const totalPaid = ref(700000);

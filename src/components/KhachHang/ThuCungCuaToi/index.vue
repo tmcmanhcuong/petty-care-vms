@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen font-nunito">
+  <div class="min-h-screen">
     <!-- ====================== DANH SÁCH THÚ CƯNG ====================== -->
-    <div class="container mx-auto px-12 py-7 max-w-7xl">
+    <div class="container mx-auto max-w-7xl">
       <!-- Header -->
       <div class="flex justify-between items-center mb-12">
         <div>
@@ -22,7 +22,7 @@
       <!-- Pet Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div v-for="pet in pets" :key="pet.id"
-          class="bg-white border border-black/15 rounded-2xl overflow-hidden flex flex-col hover:shadow-xl transition cursor-pointer"
+          class="bg-white border !border-black/15 rounded-2xl overflow-hidden flex flex-col hover:shadow-xl transition cursor-pointer"
           @click="openDetail(pet)">
           <!-- Ảnh + Tag loại -->
           <div class="relative h-48 bg-cover bg-center flex justify-end items-start p-7 overflow-hidden">
@@ -37,28 +37,23 @@
             <div class="flex justify-between mb-4">
               <div>
                 <h3 class="text-lg font-bold">{{ pet.name }}</h3>
-                <p class="text-gray-600 font-medium">{{ pet.breed }}</p>
+                <p class="text-gray-600 font-medium whitespace-nowrap">{{ pet.breed }}</p>
               </div>
-              <div class="text-right space-y-1 text-sm">
+              <div class="space-y-1 text-sm">
                 <div>
-                  <span class="text-gray-500 font-medium">Tuổi:</span>
+                  <span class="text-gray-500 font-medium">Tuổi: </span>
                   <span class="font-bold">{{ pet.age }}</span>
                 </div>
                 <div>
-                  <span class="text-gray-500 font-medium">Cân nặng:</span>
+                  <span class="text-gray-500 font-medium">Cân nặng: </span>
                   <span class="font-bold">{{ pet.weight }}</span>
                 </div>
               </div>
             </div>
 
             <!-- Reminder -->
-            <div class="flex gap-3 px-6 py-4 rounded-xl mb-6 border" :class="pet.reminderBg">
-              <svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 16 16">
-                <path
-                  d="M13 2H3C2.44772 2 2 2.44772 2 3V13C2 13.5523 2.44772 14 3 14H13C13.5523 14 14 13.5523 14 13V3C14 2.44772 13.5523 2 13 2Z"
-                  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M11 1V3M5 1V3M2 5H14" stroke-width="1.5" stroke-linecap="round" />
-              </svg>
+            <div class="flex gap-3 px-6 py-4 rounded-xl border !border-black/15 mb-2" :class="pet.reminderBg">
+             <Calendar />
               <div>
                 <p class="font-bold" :class="pet.reminderTitleClass">
                   {{ pet.reminderTitle }}
@@ -72,7 +67,7 @@
             <!-- Buttons -->
             <div class="mt-auto space-y-3">
               <button @click.stop="openDeletePopup(pet)"
-                class="w-full py-3 border border-[#eb8e90] rounded-lg hover:bg-red-50 transition">
+                class="w-full py-2 border !border-[#eb8e90] rounded-lg hover:bg-red-50 transition">
                 <svg class="w-7 h-7 mx-auto" fill="none" stroke="#eb8e90" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14zM10 11v6M14 11v6" />
@@ -110,6 +105,7 @@ import ThemThuCung from "./ThemThuCung/index.vue";
 import ChiTietThuCung from "./ChiTietThuCung/index.vue";
 import XoaThuCung from "./XoaThuCung/index.vue";
 import { showSuccessToast } from "@/utils/toast";
+import Calendar from "@/assets/svg/calendar.svg";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://127.0.0.1:8000/api";
 const BASE_HOST = API_BASE.replace("/api", "");
@@ -147,13 +143,13 @@ const computeAgeDisplay = (v) => {
     const monthDiff = now.getMonth() - dob.getMonth();
     if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < dob.getDate()))
       years -= 1;
-    if (years > 0) return `${years} tuổi (sinh: ${formatDMY(dob)})`;
+    if (years > 0) return `${years} tuổi`;
     let months =
       (now.getFullYear() - dob.getFullYear()) * 12 +
       (now.getMonth() - dob.getMonth());
     if (now.getDate() < dob.getDate()) months -= 1;
     if (months < 0) months = 0;
-    return `${months} tháng (sinh: ${formatDMY(dob)})`;
+    return `${months} tháng`;
   }
   return s;
 };

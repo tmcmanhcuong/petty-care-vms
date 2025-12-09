@@ -1,8 +1,7 @@
 <template>
-  <div class="min-h-screen py-7 px-12 max-w-5xl mx-auto md:px-6 sm:px-4">
-    <div class="bg-teal-50 border border-teal-300 rounded-xl p-8 flex gap-3 mb-6 sm:p-4">
-      <img src="https://www.figma.com/api/mcp/asset/49a71dd4-fc1c-432b-9dcf-953170709dbc" alt="Info"
-        class="w-4 h-4 flex-shrink-0 mt-1" />
+  <div class="min-h-screen max-w-5xl mx-auto md:px-6 sm:px-4">
+    <div class="bg-teal-50 border text-teal-300 rounded-xl p-8 flex gap-3 mb-6 sm:p-4">
+      <HeartIcon class="w-7 h-7 flex-shrink-0 mt-1" />
       <div>
         <p class="font-semibold text-base text-teal-900 mb-2">
           Chào mừng bạn quay trở lại! Bạn có
@@ -20,24 +19,22 @@
 
     <div class="flex gap-16 mb-11">
       <button @click="openBookingPopup"
-        class="flex-1 flex items-center justify-center gap-4 py-6 rounded-lg bg-teal-700 text-white font-bold text-xl hover:bg-teal-800 transition">
-        <img src="https://www.figma.com/api/mcp/asset/025ca85f-759b-44b3-ab90-5dc1971e474e" alt="Calendar"
-          class="w-6 h-6" />
+        class="flex-1 flex items-center justify-center gap-4 py-6 rounded-lg bg-teal-700 text-white font-bold text-xl hover:bg-teal-700/80 transition">
+        <CalendarIcon class="w-6 h-6" />
         <span>Đặt lịch khám</span>
       </button>
       <button @click="openAddPetPopup"
-        class="flex-1 flex items-center justify-center gap-4 py-6 rounded-lg bg-white border border-teal-200 text-teal-700 font-bold text-xl hover:bg-teal-50 transition">
-        <img src="https://www.figma.com/api/mcp/asset/a40f71e4-b37d-4574-9e21-93c9c182618f" alt="Pet" class="w-4 h-4" />
+        class="flex-1 flex items-center justify-center gap-4 py-6 rounded-lg bg-white border border-teal-200 text-teal-700 font-bold text-xl hover:!bg-teal-700 hover:!text-white hover:border-teal-700 transition duration-300">
+        <AddIcon class="w-4 h-4" />
         <span>Thêm thú cưng</span>
       </button>
     </div>
 
     <div class="grid grid-cols-3 gap-11 mb-6">
-      <div class="bg-white border border-sky-400 rounded-2xl p-6 flex flex-col justify-between">
+      <div class="bg-white border text-sky-400 rounded-2xl p-6 flex flex-col justify-between">
         <div class="flex justify-between items-center mb-10">
           <span class="text-gray-600 text-lg font-normal">Lịch hẹn sắp tới</span>
-          <img src="https://www.figma.com/api/mcp/asset/9b6de4bd-0c67-42f6-8919-5a89c9d57795" alt="Calendar"
-            class="w-5 h-5" />
+          <CalendarIcon class="w-7 h-7" />
         </div>
         <div>
           <div class="text-5xl font-normal text-gray-900 font-['Nunito']">
@@ -49,11 +46,10 @@
         </div>
       </div>
 
-      <div class="bg-white border border-orange-400 rounded-2xl p-6 flex flex-col justify-between">
+      <div class="bg-white border text-orange-400 rounded-2xl p-6 flex flex-col justify-between">
         <div class="flex justify-between items-center mb-10">
           <span class="text-gray-600 text-lg font-normal">Nhắc tiêm phòng</span>
-          <img src="https://www.figma.com/api/mcp/asset/d433ca14-4dd1-49bc-8593-b94d0391691b" alt="Syringe"
-            class="w-5 h-5" />
+          <VaccineIcon class="w-7 h-7" />
         </div>
         <div>
           <div class="text-5xl font-normal text-gray-900 font-['Nunito']">
@@ -65,11 +61,10 @@
         </div>
       </div>
 
-      <div class="bg-white border border-purple-300 rounded-2xl p-6 flex flex-col justify-between">
+      <div class="bg-white border text-purple-400 rounded-2xl p-6 flex flex-col justify-between">
         <div class="flex justify-between items-center mb-10">
           <span class="text-gray-600 text-lg font-normal">Thanh toán chờ xử lý</span>
-          <img src="https://www.figma.com/api/mcp/asset/a714ee2e-53af-45f6-8ce5-0f4e3d4f1fe1" alt="Payment"
-            class="w-5 h-5" />
+          <DollarIcon class="w-5 h-5" />
         </div>
         <div>
           <div class="text-5xl font-normal text-gray-900 font-['Nunito']">
@@ -83,8 +78,8 @@
     </div>
 
     <!-- Lịch hẹn sắp tới -->
-    <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-6">
-      <div class="flex justify-between items-start mb-8 sm:flex-col sm:gap-4">
+    <div class="bg-white border !border-gray-200 shadow-sm rounded-2xl p-6 mb-6">
+      <div class="flex flex-row justify-between items-start mb-8 sm:flex-col sm:gap-4">
         <div>
           <h3 class="text-xl font-medium text-black mb-1">Lịch hẹn sắp tới</h3>
           <p class="text-sm text-gray-500 font-medium">
@@ -92,10 +87,9 @@
           </p>
         </div>
         <button @click="$router.push('/lich-hen')"
-          class="flex items-center gap-1 text-teal-600 font-semibold text-base hover:text-teal-700 transition">
+          class="flex items-center gap-1 text-teal-500 font-semibold text-base hover:text-teal-600 transition">
           <span>Xem tất cả</span>
-          <img src="https://www.figma.com/api/mcp/asset/aaf1156e-154d-4557-a460-f3937caa8aa1" alt="Arrow"
-            class="w-5 h-5" />
+          <ArrowRightIcon class="w-4 h-4" />
         </button>
       </div>
 
@@ -154,10 +148,9 @@
     </div>
 
     <!-- Nhắc tiêm phòng -->
-    <div class="bg-yellow-50/30 border border-yellow-300 rounded-2xl p-8">
-      <div class="flex gap-2 items-start mb-6">
-        <img src="https://www.figma.com/api/mcp/asset/af47be4d-4749-4d4e-94e2-ea38f8f3f6a5" alt="Alert"
-          class="w-5 h-5 flex-shrink-0" />
+    <div class="bg-yellow-50/30 border !border-yellow-300 shadow-sm rounded-2xl p-8">
+      <div class="flex gap-2 items-start mb-6 text-orange-700">
+       <VaccineIcon class="w-7 h-7" />
         <div>
           <h3 class="text-xl font-bold text-orange-900">Nhắc nhở tiêm phòng</h3>
           <p class="text-base text-orange-700 mt-2">
@@ -168,7 +161,7 @@
 
       <div class="space-y-3">
         <div v-for="reminder in vaccinationReminders" :key="reminder.pet"
-          class="bg-white border border-yellow-300 rounded-lg p-3.5 flex justify-between items-center">
+          class="bg-white border !border-yellow-300 rounded-lg p-3.5 flex justify-between items-center">
           <div>
             <h4 class="font-bold text-base text-black mb-1">
               {{ reminder.pet }}
@@ -187,7 +180,7 @@
                 reminder.vaccine,
                 reminder.dueDate
               )
-              " class="text-teal-600 font-semibold text-sm hover:text-teal-700 transition">
+              " class="text-teal-500 font-semibold text-sm hover:text-teal-600 transition">
               Đặt lịch ngay
             </button>
           </div>
@@ -268,6 +261,12 @@
 import { ref, computed, onMounted } from "vue";
 import axios from "axios";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
+import HeartIcon from "@/assets/svg/Heart.svg";
+import CalendarIcon from "@/assets/svg/calendar.svg";
+import AddIcon from "@/assets/svg/add.svg";
+import DollarIcon from "@/assets/svg/dollar.svg";
+import VaccineIcon from "@/assets/svg/vaccine.svg";
+import ArrowRightIcon from "@/assets/svg/arrow-right.svg";
 
 import ThemThuCung from "../ThuCungCuaToi/ThemThuCung/index.vue";
 import DatLichKham from "../LichHen/DatLichKham/index.vue";

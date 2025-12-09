@@ -2,7 +2,7 @@
   <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     @click.self="showSuccess ? null : closePopup">
     <!-- Modal thành công -->
-    <div v-if="showSuccess" class="bg-white rounded-lg border border-gray-300 w-full max-w-[512px] shadow-xl">
+    <div v-if="showSuccess" class="bg-white rounded-lg border !border-black/15 w-full max-w-[512px] shadow-xl">
       <div class="flex flex-col p-6 gap-4 items-center">
         <!-- Biểu tượng thành công -->
         <div class="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center">
@@ -11,22 +11,13 @@
 
         <!-- Thông điệp thành công -->
         <div class="flex flex-col gap-2 items-center">
-          <h2 class="text-2xl font-bold text-black text-center" style="
-              font-family: 'Nunito Sans', sans-serif;
-              font-variation-settings: 'YTLC' 500, 'wdth' 100;
-            ">
+          <h2 class="text-2xl font-bold text-black text-center">
             Đặt lịch thành công
           </h2>
-          <p class="text-sm font-medium text-gray-500 text-center" style="
-              font-family: 'Nunito Sans', sans-serif;
-              font-variation-settings: 'YTLC' 500, 'wdth' 100;
-            ">
+          <p class="text-sm font-medium text-gray-500 text-center">
             Mã lịch hẹn của bạn là
           </p>
-          <p class="text-sm font-medium text-teal-600 text-center" style="
-              font-family: 'Nunito Sans', sans-serif;
-              font-variation-settings: 'YTLC' 500, 'wdth' 100;
-            ">
+          <p class="text-sm font-medium text-teal-600 text-center">
             {{ bookingCode }}
           </p>
         </div>
@@ -34,21 +25,21 @@
         <!-- Tóm tắt đặt lịch -->
         <div class="w-full bg-teal-50 rounded-lg p-4 flex flex-col gap-1 items-center">
           <div class="flex items-center gap-2">
-            <span class="text-sm font-semibold text-gray-500" style="font-family: 'Nunito Sans', sans-serif">Thú
+            <span class="text-sm font-semibold text-gray-500">Thú
               cưng:</span>
-            <span class="text-sm font-medium text-black" style="font-family: 'Nunito Sans', sans-serif">{{
+            <span class="text-sm font-medium text-black">{{
               selectedPet?.name }}</span>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-sm font-semibold text-gray-500" style="font-family: 'Nunito Sans', sans-serif">Dịch
+            <span class="text-sm font-semibold text-gray-500">Dịch
               vụ:</span>
-            <span class="text-sm font-medium text-black" style="font-family: 'Nunito Sans', sans-serif">{{
+            <span class="text-sm font-medium text-black">{{
               selectedService?.name }}</span>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-sm font-semibold text-gray-500" style="font-family: 'Nunito Sans', sans-serif">Thời
+            <span class="text-sm font-semibold text-gray-500">Thời
               gian:</span>
-            <span class="text-sm font-medium text-black" style="font-family: 'Nunito Sans', sans-serif">{{
+            <span class="text-sm font-medium text-black">{{
               formattedDateTime }}</span>
           </div>
         </div>
@@ -56,7 +47,7 @@
         <!-- Nút đóng -->
         <button @click="closeSuccessPopup"
           class="w-full h-9 bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors">
-          <span class="text-sm font-semibold text-white" style="font-family: 'Nunito Sans', sans-serif">
+          <span class="text-sm font-semibold text-white">
             Hoàn tất
           </span>
         </button>
@@ -65,26 +56,20 @@
 
     <!-- Modal đặt lịch chính -->
     <div v-else
-      class="bg-white rounded-lg border border-gray-300 w-full max-w-[512px] max-h-[90vh] overflow-hidden shadow-xl">
+      class="bg-white rounded-lg border !border-black/15 w-full max-w-[512px] max-h-[90vh] overflow-hidden shadow-xl">
       <div class="flex flex-col p-6 gap-4 overflow-y-auto max-h-[90vh]">
         <!-- Tiêu đề -->
         <div class="flex flex-col gap-2">
           <div class="h-7 relative">
-            <h2 class="text-lg font-bold text-black" style="
-                font-family: 'Nunito Sans', sans-serif;
-                font-variation-settings: 'YTLC' 500, 'wdth' 100;
-              ">
+            <h2 class="text-lg font-bold text-black">
               Đặt lịch khám
             </h2>
             <button @click="closePopup"
               class="absolute right-0 top-0 w-7 h-7 flex items-center justify-center hover:opacity-70 transition-opacity">
-              <img :src="iconClose" alt="Close" class="w-full h-full" />
+              <IconClose />
             </button>
           </div>
-          <p class="text-sm font-medium text-gray-500" style="
-              font-family: 'Nunito Sans', sans-serif;
-              font-variation-settings: 'YTLC' 500, 'wdth' 100;
-            ">
+          <p class="text-sm font-medium text-gray-500">
             {{ stepDescriptions[currentStep] }}
           </p>
         </div>
@@ -93,10 +78,7 @@
         <div class="flex flex-col gap-2 h-9">
           <div class="flex items-center justify-between h-5">
             <span v-for="(step, index) in steps" :key="index" class="text-sm font-medium"
-              :class="index <= currentStep ? 'text-teal-600' : 'text-gray-500'" style="
-                font-family: 'Nunito Sans', sans-serif;
-                font-variation-settings: 'YTLC' 500, 'wdth' 100;
-              ">
+              :class="index <= currentStep ? 'text-teal-600' : 'text-gray-500'">
               {{ step }}
             </span>
           </div>
@@ -117,13 +99,13 @@
             ]">
               <div class="flex items-center gap-3">
                 <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0">
-                  <img :src="iconPet" alt="Pet" class="w-6 h-6" />
+                  <Heart1Icon />
                 </div>
                 <div class="flex-1 min-w-0">
-                  <p class="text-sm font-medium text-black truncate" style="font-family: 'Nunito Sans', sans-serif">
+                  <p class="text-sm font-medium text-black truncate">
                     {{ pet.name }}
                   </p>
-                  <p class="text-sm font-medium text-gray-500 truncate" style="font-family: 'Nunito Sans', sans-serif">
+                  <p class="text-sm font-medium text-gray-500 truncate">
                     {{ pet.breed }}
                   </p>
                 </div>
@@ -131,13 +113,13 @@
             </div>
           </div>
 
-          <button @click="$emit('openAddPet')"
-            class="w-full h-9 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
-            <img :src="iconPlus" alt="Add" class="w-4 h-4" />
-            <span class="text-sm font-semibold text-black" style="font-family: 'Nunito Sans', sans-serif">
+          <!-- <button @click="$emit('openAddPet')"
+            class="w-full h-9 border !border-gray-400 rounded-lg bg-white hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
+           <AddIcon />
+            <span class="text-sm font-semibold text-black">
               Thêm thú cưng mới
             </span>
-          </button>
+          </button> -->
         </div>
 
         <!-- Bước 2: Chọn dịch vụ -->
@@ -150,22 +132,22 @@
           ]">
             <div class="flex flex-col gap-1">
               <div class="flex items-center gap-2">
-                <p class="text-sm font-medium text-black" style="font-family: 'Nunito Sans', sans-serif">
+                <p class="text-sm font-medium text-black">
                   {{ service.name }}
                 </p>
-                <img v-if="selectedService?.id === service.id" :src="iconCheck" alt="Selected" class="w-5 h-5" />
+                <SuccessIcon v-if="selectedService?.id === service.id" alt="Selected" class="w-5 h-5" />
               </div>
-              <p class="text-sm font-medium text-gray-600" style="font-family: 'Nunito Sans', sans-serif">
+              <p class="text-sm font-medium text-gray-600">
                 {{ service.description }}
               </p>
               <div class="flex items-center gap-4 mt-1">
                 <div class="flex items-center gap-1">
-                  <img :src="iconClock" alt="Time" class="w-4 h-4" />
-                  <span class="text-sm font-medium text-gray-500" style="font-family: 'Nunito Sans', sans-serif">
+                  <ClockIcon />
+                  <span class="text-sm font-medium text-gray-500">
                     {{ service.duration }} phút
                   </span>
                 </div>
-                <span class="text-sm font-medium text-teal-600" style="font-family: 'Nunito Sans', sans-serif">
+                <span class="text-sm font-medium text-teal-600">
                   {{ formatPrice(service.price) }}
                 </span>
               </div>
@@ -177,25 +159,25 @@
         <div v-if="currentStep === 2" class="flex flex-col gap-4">
           <!-- Date Picker -->
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold text-black" style="font-family: 'Nunito Sans', sans-serif">
+            <label class="text-sm font-semibold text-black">
               Chọn ngày khám
             </label>
-            <div class="border border-gray-300 rounded-lg p-3">
+            <div class="border !border-gray-300 rounded-lg p-3">
               <div class="flex flex-col items-center">
                 <!-- Calendar Header -->
                 <div class="flex items-center justify-between w-full mb-4">
                   <button @click="previousMonth"
                     class="w-7 h-7 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
                     :disabled="!canGoPrevious" :class="{ 'opacity-50 cursor-not-allowed': !canGoPrevious }">
-                    <img :src="iconChevronLeft" alt="Previous" class="w-4 h-4" />
+                    <ChevronLeftIcon />
                   </button>
-                  <span class="text-sm font-semibold text-black" style="font-family: 'Nunito Sans', sans-serif">
+                  <span class="text-sm font-semibold text-black">
                     {{ currentMonthYear }}
                   </span>
                   <button @click="nextMonth"
                     class="w-7 h-7 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
                     :disabled="!canGoNext" :class="{ 'opacity-50 cursor-not-allowed': !canGoNext }">
-                    <img :src="iconChevronRight" alt="Next" class="w-4 h-4" />
+                    <ChevronRightIcon />
                   </button>
                 </div>
 
@@ -203,7 +185,7 @@
                 <div class="w-full">
                   <div class="grid grid-cols-7 gap-0 mb-2">
                     <div v-for="day in weekDays" :key="day" class="h-5 flex items-center justify-center">
-                      <span class="text-sm font-medium text-gray-500" style="font-family: 'Nunito Sans', sans-serif">
+                      <span class="text-sm font-medium text-gray-500">
                         {{ day }}
                       </span>
                     </div>
@@ -217,7 +199,7 @@
                           : !date.isCurrentMonth || date.isPast
                             ? 'opacity-50 cursor-not-allowed text-gray-500'
                             : 'text-black hover:bg-gray-100 cursor-pointer',
-                      ]" style="font-family: 'Nunito Sans', sans-serif">
+                      ]">
                       {{ date.day }}
                     </button>
                   </div>
@@ -228,7 +210,7 @@
 
           <!-- Time Picker -->
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold text-black" style="font-family: 'Nunito Sans', sans-serif">
+            <label class="text-sm font-semibold text-black">
               Chọn giờ khám
             </label>
             <div class="grid grid-cols-4 gap-2">
@@ -242,13 +224,13 @@
                     ? 'opacity-50 cursor-not-allowed border-gray-300 bg-white text-black'
                     : '',
                   !time.isBooked && selectedTime !== time.value
-                    ? 'border-gray-300 bg-white text-black hover:border-gray-400'
+                    ? '!border-gray-300 bg-white text-black hover:border-gray-400'
                     : '',
-                ]" style="font-family: 'Nunito Sans', sans-serif">
+                ]">
                 {{ time.label }}
               </button>
             </div>
-            <p class="text-sm font-medium text-gray-500 mt-1" style="font-family: 'Nunito Sans', sans-serif">
+            <p class="text-sm font-medium text-gray-500 mt-1">
               * Các khung giờ bị mờ đã kín lịch
             </p>
           </div>
@@ -258,40 +240,40 @@
         <div v-if="currentStep === 3" class="flex flex-col gap-4">
           <!-- Thông tin đặt lịch -->
           <div class="bg-teal-50 rounded-lg p-4 flex flex-col gap-3">
-            <h3 class="text-sm font-semibold text-teal-900" style="font-family: 'Nunito Sans', sans-serif">
+            <h3 class="text-sm font-semibold text-teal-900">
               Thông tin đặt lịch
             </h3>
             <div class="w-full h-px bg-gray-300"></div>
             <div class="flex flex-col gap-2">
               <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-gray-600" style="font-family: 'Nunito Sans', sans-serif">Khách
+                <span class="text-sm font-medium text-gray-600">Khách
                   hàng:</span>
-                <span class="text-sm font-medium text-black" style="font-family: 'Nunito Sans', sans-serif">{{
+                <span class="text-sm font-medium text-black">{{
                   customerNameLocal }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-gray-600" style="font-family: 'Nunito Sans', sans-serif">Thú
+                <span class="text-sm font-medium text-gray-600">Thú
                   cưng:</span>
-                <span class="text-sm font-medium text-black" style="font-family: 'Nunito Sans', sans-serif">{{
+                <span class="text-sm font-medium text-black">{{
                   selectedPet?.name }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-gray-600" style="font-family: 'Nunito Sans', sans-serif">Dịch
+                <span class="text-sm font-medium text-gray-600">Dịch
                   vụ:</span>
-                <span class="text-sm font-medium text-black" style="font-family: 'Nunito Sans', sans-serif">{{
+                <span class="text-sm font-medium text-black">{{
                   selectedService?.name }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-gray-600" style="font-family: 'Nunito Sans', sans-serif">Thời
+                <span class="text-sm font-medium text-gray-600">Thời
                   gian:</span>
-                <span class="text-sm font-medium text-black" style="font-family: 'Nunito Sans', sans-serif">{{
+                <span class="text-sm font-medium text-black">{{
                   formattedDateTime }}</span>
               </div>
               <div class="w-full h-px bg-gray-300"></div>
               <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-black" style="font-family: 'Nunito Sans', sans-serif">Tạm
+                <span class="text-sm font-medium text-black">Tạm
                   tính:</span>
-                <span class="text-sm font-medium text-teal-600" style="font-family: 'Nunito Sans', sans-serif">{{
+                <span class="text-sm font-medium text-teal-600">{{
                   formatPrice(selectedService?.price) }}</span>
               </div>
             </div>
@@ -299,7 +281,7 @@
 
           <!-- Phương thức thanh toán -->
           <div class="flex flex-col gap-2">
-            <label class="text-sm font-semibold text-black" style="font-family: 'Nunito Sans', sans-serif">
+            <label class="text-sm font-semibold text-black">
               Phương thức thanh toán
             </label>
             <div class="flex flex-col gap-2">
@@ -307,8 +289,8 @@
               <div @click="selectPaymentMethod('online')" :class="[
                 'border rounded-lg p-3 flex items-start gap-2 cursor-pointer transition-all',
                 paymentMethod === 'online'
-                  ? 'border-teal-500 bg-teal-50'
-                  : 'border-gray-300 hover:border-gray-400',
+                  ? '!border-teal-500 bg-teal-50'
+                  : '!border-gray-300 hover:border-gray-400',
               ]">
                 <div class="w-4 h-4 rounded-full border-2 mt-0.5 flex items-center justify-center flex-shrink-0" :class="paymentMethod === 'online'
                     ? 'border-black'
@@ -317,14 +299,8 @@
                   <div v-if="paymentMethod === 'online'" class="w-2 h-2 bg-black rounded-full"></div>
                 </div>
                 <div class="flex-1 flex items-center justify-between gap-2">
-                  <span class="text-sm font-semibold text-black" style="font-family: 'Nunito Sans', sans-serif">
+                  <span class="text-sm font-semibold text-black">
                     Thanh toán trước (VNPay/Momo)
-                  </span>
-                  <span class="text-sm font-semibold text-gray-500 text-right" style="
-                      font-family: 'Nunito Sans', sans-serif;
-                      max-width: 128px;
-                    ">
-                    Thanh toán ngay và được ưu tiên
                   </span>
                 </div>
               </div>
@@ -333,8 +309,8 @@
               <div @click="selectPaymentMethod('offline')" :class="[
                 'border rounded-lg p-3 flex items-start gap-2 cursor-pointer transition-all',
                 paymentMethod === 'offline'
-                  ? 'border-teal-500 bg-teal-50'
-                  : 'border-gray-300 hover:border-gray-400',
+                  ? '!border-teal-500 bg-teal-50'
+                  : '!border-gray-300 hover:border-gray-400',
               ]">
                 <div class="w-4 h-4 rounded-full border-2 mt-0.5 flex items-center justify-center flex-shrink-0" :class="paymentMethod === 'offline'
                     ? 'border-black'
@@ -343,14 +319,8 @@
                   <div v-if="paymentMethod === 'offline'" class="w-2 h-2 bg-black rounded-full"></div>
                 </div>
                 <div class="flex-1 flex items-center justify-between gap-2">
-                  <span class="text-sm font-semibold text-black" style="font-family: 'Nunito Sans', sans-serif">
+                  <span class="text-sm font-semibold text-black">
                     Thanh toán tại phòng khám
-                  </span>
-                  <span class="text-sm font-semibold text-gray-500 text-right" style="
-                      font-family: 'Nunito Sans', sans-serif;
-                      max-width: 119px;
-                    ">
-                    Thanh toán khi đến khám
                   </span>
                 </div>
               </div>
@@ -362,28 +332,27 @@
         <div class="flex items-center justify-end gap-6">
           <button v-if="currentStep > 0" @click="previousStep"
             class="h-9 px-4 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition-colors">
-            <span class="text-sm font-semibold text-black" style="font-family: 'Nunito Sans', sans-serif">
+            <span class="text-sm font-semibold text-black">
               Quay lại
             </span>
           </button>
           <button v-if="currentStep < 3" @click="nextStep" :disabled="!canProceed" :class="[
             'h-9 px-4 rounded-lg transition-colors',
             canProceed
-              ? 'bg-teal-600 hover:bg-teal-700 text-white'
+              ? 'bg-[#5A9690] hover:bg-[#5A9690] text-white'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed',
           ]">
-            <span class="text-sm font-semibold" style="font-family: 'Nunito Sans', sans-serif">
+            <span class="text-sm font-semibold ">
               Tiếp tục
             </span>
           </button>
           <button v-if="currentStep === 3" @click="confirmBooking" :disabled="!canConfirm || isSubmitting" :class="[
             'h-9 px-3 rounded-lg flex items-center gap-2 transition-colors',
             canConfirm && !isSubmitting
-              ? 'bg-teal-600 hover:bg-teal-700 text-white'
+              ? 'bg-[#5A9690] hover:bg-[#5A9690] text-white'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed',
           ]">
-            <img :src="iconCheckWhite" alt="Check" class="w-5 h-5" />
-            <span class="text-sm font-semibold" style="font-family: 'Nunito Sans', sans-serif">
+            <span class="text-sm font-semibold">
               Xác nhận đặt lịch
             </span>
           </button>
@@ -398,6 +367,13 @@ import { ref, computed, watch, onMounted } from "vue";
 import axios from "axios";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
 import { getUser } from "@/utils/auth";
+import IconClose from "@/assets/svg/close.svg";
+import Heart1Icon from "@/assets/svg/heart1.svg";
+import AddIcon from "@/assets/svg/add.svg";
+import ClockIcon from "@/assets/svg/clock.svg";
+import SuccessIcon from "@/assets/svg/success.svg";
+import ChevronLeftIcon from "@/assets/svg/chevron-left.svg";
+import ChevronRightIcon from "@/assets/svg/chevron-right.svg";
 
 // Thuộc tính (props)
 const props = defineProps({
@@ -417,26 +393,6 @@ const props = defineProps({
 
 // Sự kiện phát (emits)
 const emit = defineEmits(["close", "confirm", "openAddPet"]);
-
-// Icons (từ Figma API)
-const iconClose =
-  "https://www.figma.com/api/mcp/asset/79d55341-dcb3-431e-8e77-d949b6e94323";
-const iconPet =
-  "https://www.figma.com/api/mcp/asset/ef916bf9-89d0-4f44-af2d-27055eba7ed4";
-const iconPlus =
-  "https://www.figma.com/api/mcp/asset/c50a52f1-d921-4402-92cd-bd9d8d2e8979";
-const iconCheck =
-  "https://www.figma.com/api/mcp/asset/f20026eb-0c07-42a0-9860-ee46dcc236f0";
-const iconClock =
-  "https://www.figma.com/api/mcp/asset/782b4104-3e28-4483-8176-05843a28806e";
-const iconChevronLeft =
-  "https://www.figma.com/api/mcp/asset/0fac0d07-36eb-400c-bc9b-443c185c380e";
-const iconChevronRight =
-  "https://www.figma.com/api/mcp/asset/d4ec99aa-41aa-4aa8-9031-beb16589d32d";
-const iconCheckWhite =
-  "https://www.figma.com/api/mcp/asset/7952c458-389a-4827-9b73-ee00c4328dab";
-const iconSuccess =
-  "https://www.figma.com/api/mcp/asset/c7c04549-7865-402c-ba5c-c220ddf99e13";
 
 // Quản lý bước
 const currentStep = ref(0);

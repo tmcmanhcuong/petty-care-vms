@@ -140,7 +140,7 @@
             ref="notifRef"
             @mouseenter="clearHideNotificationsTimer()"
             @mouseleave="hideNotifications()"
-            class="absolute right-0 mt-2 w-80 bg-white border rounded-lg shadow-lg z-50 p-3"
+            class="absolute right-0 mt-2 w-80 bg-white border !border-black/15 rounded-lg shadow-lg z-50 p-3"
             style="max-height: 320px; overflow: auto"
           >
             <ul class="space-y-3">
@@ -197,7 +197,7 @@
 
           <div
             v-if="dropdownOpen"
-            class="absolute right-0 mt-2 w-56 bg-white border rounded-md shadow-lg z-50"
+            class="absolute right-0 mt-3 w-60 bg-white border !border-black/15 rounded-md shadow-lg z-50"
           >
             <ul class="divide-y">
               <li
@@ -262,7 +262,7 @@
                   >
                     <component :is="CreditCardPay" class="w-4 h-4" />
                   </div>
-                  <span class="text-sm text-gray-800"
+                  <span class="text-sm text-gray-800 "
                     >Hoá đơn & Thanh toán</span
                   >
                 </div>

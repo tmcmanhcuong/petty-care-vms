@@ -33,7 +33,7 @@ const routes = [
     path: "/khach-hang/quan-ly-thong-tin-ca-nhan",
     component: () =>
       import("../components/KhachHang/QuanLyThongTinCaNhan/index.vue"),
-    meta: { layout: "trangchu", requiresAuth: true },
+    meta: { layout: "dangki_dangnhap", requiresAuth: true },
   },
   {
     path: "/khach-hang/tro-giup-lien-he",
