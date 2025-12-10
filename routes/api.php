@@ -70,6 +70,24 @@ Route::middleware('auth:sanctum')->group(function () {
         return response()->json($userData);
     });
 
+    // Debug route để kiểm tra user đang đăng nhập
+    Route::get('/debug-auth', function (Request $request) {
+        $user = $request->user();
+
+        return response()->json([
+            'authenticated' => $user ? true : false,
+            'user_id' => $user ? $user->id : null,
+            'user_email' => $user ? ($user->email ?? $user->email ?? 'N/A') : null,
+            'user_class' => $user ? get_class($user) : null,
+            'is_admin' => $user instanceof \App\Models\Admin,
+            'is_nhanvien' => $user instanceof \App\Models\NhanVien,
+            'is_khachhang' => $user instanceof \App\Models\KhachHang,
+            'is_user' => $user instanceof \App\Models\User,
+            'token_name' => $request->user() ? $request->user()->currentAccessToken()?->name : null,
+            'phan_quyen_id' => $user ? ($user->phan_quyen_id ?? null) : null,
+        ]);
+    });
+
     Route::post('/khach-hang/cap-nhat', [KhachHangController::class, 'capNhat']);
     Route::put('/khach-hang/{id}', [KhachHangController::class, 'update']);
 
