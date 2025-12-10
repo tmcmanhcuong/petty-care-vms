@@ -324,6 +324,43 @@ const mapAppointment = (item) => {
   const hours = ngayGio ? String(ngayGio.getHours()).padStart(2, "0") : "";
   const minutes = ngayGio ? String(ngayGio.getMinutes()).padStart(2, "0") : "";
 
+  // Xử lý tên bác sĩ - ưu tiên nhiều trường hợp
+  let doctorName = "Chưa phân công";
+  
+  if (item.nhanVien) {
+    // Backend trả về relation nhanVien (camelCase)
+    doctorName = item.nhanVien.full_name || 
+                 item.nhanVien.ho_ten || 
+                 item.nhanVien.name || 
+                 item.nhanVien.ten ||
+                 `BS #${item.nhanVien.id}`;
+  } else if (item.nhan_vien) {
+    // Fallback: snake_case format
+    doctorName = item.nhan_vien.full_name || 
+                 item.nhan_vien.ho_ten || 
+                 item.nhan_vien.name || 
+                 item.nhan_vien.ten ||
+                 `BS #${item.nhan_vien.id}`;
+  } else if (item.bacSi) {
+    // Fallback: có thể có trường bacSi
+    doctorName = item.bacSi.full_name || 
+                 item.bacSi.ho_ten || 
+                 item.bacSi.name ||
+                 `BS #${item.bacSi.id}`;
+  } else if (item.bac_si) {
+    // Fallback: snake_case bacSi
+    doctorName = item.bac_si.full_name || 
+                 item.bac_si.ho_ten || 
+                 item.bac_si.name ||
+                 `BS #${item.bac_si.id}`;
+  } else if (item.doctor_name || item.doctorName) {
+    // Fallback: có sẵn tên bác sĩ
+    doctorName = item.doctor_name || item.doctorName;
+  } else if (item.nhan_vien_id) {
+    // Có ID nhưng không có relation
+    doctorName = `Bác sĩ #${item.nhan_vien_id}`;
+  }
+
   return {
     id: item.id || item.ma || `LH${item.id}`,
     raw: item,
@@ -360,9 +397,7 @@ const mapAppointment = (item) => {
       : item.thuCung?.weight
         ? `${item.thuCung.weight} kg`
         : "-",
-    doctor: item.nhanVien
-      ? item.nhanVien.full_name || item.nhanVien.name
-      : "Chưa phân công",
+    doctor: doctorName,
     clinic:
       item.dia_diem || item.clinic || "Phòng khám Petty - Chi nhánh Quận 1",
     address: item.dia_chi || "123 Nguyễn Huệ, Q.1, TP.HCM",
