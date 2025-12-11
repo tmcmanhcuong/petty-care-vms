@@ -16,6 +16,10 @@ class LichHen extends Model
         'ghi_chu',
         'huong_dan',
         'trang_thai',
+        'nguon_goc',
+        'thoi_gian_checkin',
+        'thoi_gian_bat_dau_kham',
+        'thoi_gian_hoan_thanh',
         'khach_hang_id',
         'thu_cung_id',
         'dich_vu_id',
@@ -25,6 +29,9 @@ class LichHen extends Model
 
     protected $casts = [
         'ngay_gio' => 'datetime',
+        'thoi_gian_checkin' => 'datetime',
+        'thoi_gian_bat_dau_kham' => 'datetime',
+        'thoi_gian_hoan_thanh' => 'datetime',
     ];
 
     // Relationships

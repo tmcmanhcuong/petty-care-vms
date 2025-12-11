@@ -25,6 +25,14 @@ class LichLamViec extends Model
         return $this->belongsTo(NhanVien::class, 'nhan_vien_id');
     }
 
+    /**
+     * Quan hệ với LichDangKy
+     */
+    public function lichDangKys()
+    {
+        return $this->hasMany(LichDangKy::class, 'lich_lam_viec_id');
+    }
+
     // Shift keys
     public const CA_SANG = 'ca_sang';
     public const CA_CHIEU = 'ca_chieu';

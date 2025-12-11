@@ -1,6 +1,7 @@
 # 🔧 Quick Fix: Permission Issues After Git Pull
 
 ## Problem
+
 Getting permission errors (403 Forbidden) after pulling code from GitHub?
 
 ## Solution
@@ -29,12 +30,14 @@ php artisan route:cache
 ```
 
 ## What the script does:
+
 ✅ Disables git file mode tracking  
 ✅ Sets correct permissions for storage folders  
 ✅ Clears Laravel cache  
-✅ Recreates optimized cache  
+✅ Recreates optimized cache
 
 ## Need More Help?
+
 See detailed documentation: [HUONG_DAN_SUA_LOI_PHAN_QUYEN.md](./HUONG_DAN_SUA_LOI_PHAN_QUYEN.md)
 
 ---

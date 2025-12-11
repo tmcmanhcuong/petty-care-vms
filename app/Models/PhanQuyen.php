@@ -24,6 +24,12 @@ class PhanQuyen extends Model
         // Lịch làm việc
         'lich_lam_viec_xem',
         'lich_lam_viec_tao',
+        // Lịch nhắc
+        'lich_nhac_xem',
+        'lich_nhac_tao',
+        'lich_nhac_sua',
+        'lich_nhac_xoa',
+        'lich_nhac_gui',
         // Tài chính
         'tai_chinh_xem_doanh_thu',
         'tai_chinh_thu_tien',
@@ -62,6 +68,11 @@ class PhanQuyen extends Model
         'thu_cung_tao',
         'thu_cung_sua',
         'thu_cung_xoa',
+        // Hồ sơ bệnh án
+        'ho_so_benh_an_xem',
+        'ho_so_benh_an_tao',
+        'ho_so_benh_an_sua',
+        'ho_so_benh_an_xoa',
         // Dịch vụ
         'dich_vu_xem',
         'dich_vu_tao',
@@ -118,6 +129,11 @@ class PhanQuyen extends Model
         'lich_hen_xac_nhan' => 'boolean',
         'lich_lam_viec_xem' => 'boolean',
         'lich_lam_viec_tao' => 'boolean',
+        'lich_nhac_xem' => 'boolean',
+        'lich_nhac_tao' => 'boolean',
+        'lich_nhac_sua' => 'boolean',
+        'lich_nhac_xoa' => 'boolean',
+        'lich_nhac_gui' => 'boolean',
         'tai_chinh_xem_doanh_thu' => 'boolean',
         'tai_chinh_thu_tien' => 'boolean',
         'tai_chinh_hoan_tien' => 'boolean',
@@ -149,6 +165,10 @@ class PhanQuyen extends Model
         'thu_cung_tao' => 'boolean',
         'thu_cung_sua' => 'boolean',
         'thu_cung_xoa' => 'boolean',
+        'ho_so_benh_an_xem' => 'boolean',
+        'ho_so_benh_an_tao' => 'boolean',
+        'ho_so_benh_an_sua' => 'boolean',
+        'ho_so_benh_an_xoa' => 'boolean',
         'dich_vu_xem' => 'boolean',
         'dich_vu_tao' => 'boolean',
         'dich_vu_sua' => 'boolean',

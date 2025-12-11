@@ -23,6 +23,7 @@ use App\Http\Controllers\KiemKeController;
 use App\Http\Controllers\PhieuChiController;
 use App\Http\Controllers\KhuyenMaiController;
 use App\Http\Controllers\PhanQuyenController;
+use App\Http\Controllers\LichDangKyController;
 
 
 Route::post('/khach-hang/dang-ki', [KhachHangController::class, 'dangKi']);
@@ -126,6 +127,28 @@ Route::middleware('auth:sanctum')->group(function () {
     // Lịch làm việc: list & view (phải đặt SAU các route cụ thể) - Staff only
     Route::get('/lich-lam-viec', [LichLamViecController::class, 'index'])->middleware(['staff.only', 'permission:lich_lam_viec_xem']);
     Route::get('/lich-lam-viec/{lichLamViec}', [LichLamViecController::class, 'show'])->middleware(['staff.only', 'permission:lich_lam_viec_xem']);
+
+    // Lịch đăng ký - CRUD
+    Route::get('/lich-dang-ky', [LichDangKyController::class, 'index']); // Khách hàng và Staff xem lịch đăng ký
+    Route::post('/lich-dang-ky', [LichDangKyController::class, 'store']); // Tạo mới lịch đăng ký
+    Route::get('/lich-dang-ky/statuses', [LichDangKyController::class, 'getStatuses']); // Lấy danh sách trạng thái
+    Route::get('/lich-dang-ky/chua-xac-nhan', [LichDangKyController::class, 'chuaXacNhan'])->middleware('staff.only'); // Lịch chưa xác nhận
+    Route::get('/lich-dang-ky/da-xac-nhan', [LichDangKyController::class, 'daXacNhan'])->middleware('staff.only'); // Lịch đã xác nhận
+    Route::get('/lich-dang-ky/tu-choi', [LichDangKyController::class, 'danhSachTuChoi'])->middleware('staff.only'); // Lịch từ chối
+
+    // Nhân viên tự đăng ký lịch làm việc
+    Route::post('/lich-dang-ky/dang-ky-nhan-vien', [LichDangKyController::class, 'dangKyNhanVien'])->middleware('staff.only'); // Nhân viên tự đăng ký
+    Route::get('/lich-dang-ky/lich-cua-toi', [LichDangKyController::class, 'lichCuaToi'])->middleware('staff.only'); // Xem tất cả lịch của mình
+    Route::get('/lich-dang-ky/ca-da-xac-nhan/cua-toi', [LichDangKyController::class, 'caDaXacNhanCuaToi'])->middleware('staff.only'); // Xem ca đã đăng ký (đã xác nhận)
+
+    Route::get('/lich-dang-ky/{lichDangKy}', [LichDangKyController::class, 'show']); // Xem chi tiết
+    Route::match(['put', 'patch'], '/lich-dang-ky/{lichDangKy}', [LichDangKyController::class, 'update']); // Cập nhật
+    Route::delete('/lich-dang-ky/{lichDangKy}', [LichDangKyController::class, 'destroy']); // Xóa
+
+    // Lịch đăng ký - Chức năng đặc biệt (Staff only)
+    Route::put('/lich-dang-ky/{lichDangKy}/xac-nhan', [LichDangKyController::class, 'xacNhan'])->middleware('staff.only'); // Xác nhận lịch
+    Route::put('/lich-dang-ky/{lichDangKy}/tu-choi', [LichDangKyController::class, 'tuChoi'])->middleware('staff.only'); // Từ chối lịch
+    Route::put('/lich-dang-ky/{lichDangKy}/doi-trang-thai', [LichDangKyController::class, 'doiTrangThai'])->middleware('staff.only'); // Đổi trạng thái
 });
 
 // Public: list services

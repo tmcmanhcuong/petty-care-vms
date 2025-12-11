@@ -23,6 +23,12 @@ return new class extends Migration
             // status (e.g. pending, confirmed, completed, cancelled)
             $table->string('trang_thai', 50)->default('pending')->index();
 
+            // additional fields
+            $table->string('nguon_goc', 100)->nullable()->comment('Nguồn gốc đặt lịch (online, phone, walk-in, etc.)');
+            $table->dateTime('thoi_gian_checkin')->nullable()->comment('Thời gian khách hàng check-in');
+            $table->dateTime('thoi_gian_bat_dau_kham')->nullable()->comment('Thời gian bắt đầu khám');
+            $table->dateTime('thoi_gian_hoan_thanh')->nullable()->comment('Thời gian hoàn thành khám');
+
             // relationships
             // customer (khach_hangs) - should exist earlier
             $table->foreignId('khach_hang_id')->constrained('khach_hangs')->cascadeOnDelete();

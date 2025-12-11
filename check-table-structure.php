@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Script kiểm tra các cột trong bảng phan_quyens
  */
@@ -41,7 +42,6 @@ try {
     }
 
     echo "\n";
-
 } catch (\Exception $e) {
     echo "\n❌ LỖI: " . $e->getMessage() . "\n\n";
     exit(1);

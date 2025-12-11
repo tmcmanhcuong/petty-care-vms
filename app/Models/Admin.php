@@ -45,6 +45,14 @@ class Admin extends Model
     }
 
     /**
+     * Quan hệ với bảng LichDangKy
+     */
+    public function lichDangKys()
+    {
+        return $this->hasMany(LichDangKy::class, 'admin_id');
+    }
+
+    /**
      * Quan hệ với bảng PhanQuyen
      */
     public function phanQuyen()

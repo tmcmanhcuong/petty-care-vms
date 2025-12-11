@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Log;
 
 class CheckPermission
 {
@@ -31,6 +32,24 @@ class CheckPermission
             return $next($request);
         }
 
+        // AUTO-FIX: Tự động gán quyền nếu chưa có
+        if (($user instanceof \App\Models\Admin || $user instanceof \App\Models\NhanVien) && empty($user->phan_quyen_id)) {
+            \Log::warning("User #{$user->id} chưa có phan_quyen_id, tự động gán...");
+
+            if ($user instanceof \App\Models\Admin) {
+                $user->update(['phan_quyen_id' => 1]); // Admin mặc định
+                $user->refresh();
+            } elseif ($user instanceof \App\Models\NhanVien) {
+                $roleMap = [
+                    'Bác sĩ' => 2,
+                    'Điều dưỡng' => 3,
+                    'Lễ tân' => 4,
+                ];
+                $user->update(['phan_quyen_id' => $roleMap[$user->vai_tro] ?? 2]);
+                $user->refresh();
+            }
+        }
+
         // Kiểm tra xem user có phương thức hasPermission không (cho Admin và NhanVien)
         if (!method_exists($user, 'hasPermission')) {
             return response()->json([
@@ -50,6 +69,8 @@ class CheckPermission
             }
         } catch (\Exception $e) {
             // Nếu có lỗi khi check permission (ví dụ: phanQuyen null)
+            \Log::error("Lỗi kiểm tra quyền: " . $e->getMessage());
+
             return response()->json([
                 'success' => false,
                 'message' => 'Tài khoản chưa được phân quyền. Vui lòng liên hệ quản trị viên.',

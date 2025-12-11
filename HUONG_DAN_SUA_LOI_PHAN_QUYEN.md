@@ -3,9 +3,10 @@
 ## 🔧 Vấn đề
 
 Khi pull code từ GitHub về, có thể gặp lỗi:
-- Lỗi phân quyền middleware (403 Forbidden)
-- Không thể truy cập các endpoint API
-- Lỗi "Tài khoản chưa được phân quyền"
+
+-   Lỗi phân quyền middleware (403 Forbidden)
+-   Không thể truy cập các endpoint API
+-   Lỗi "Tài khoản chưa được phân quyền"
 
 ## ✅ Giải pháp
 
@@ -17,6 +18,7 @@ Khi pull code từ GitHub về, có thể gặp lỗi:
 ```
 
 Script này sẽ tự động:
+
 1. Tắt git file mode tracking
 2. Cấp quyền cho thư mục storage
 3. Cấp quyền cho bootstrap/cache
@@ -93,12 +95,13 @@ Authorization: Bearer {admin_token}
 
 ### 2. Kiểm tra các middleware
 
-- `CheckPermission` - Kiểm tra quyền hạn chi tiết
-- `StaffOnly` - Chỉ cho phép Admin và NhanVien
+-   `CheckPermission` - Kiểm tra quyền hạn chi tiết
+-   `StaffOnly` - Chỉ cho phép Admin và NhanVien
 
 ### 3. Response mong đợi
 
 **Khách hàng truy cập endpoint staff only:**
+
 ```json
 {
     "success": false,
@@ -108,6 +111,7 @@ Authorization: Bearer {admin_token}
 ```
 
 **Nhân viên không có quyền:**
+
 ```json
 {
     "success": false,
@@ -135,6 +139,7 @@ git add config/
 ### 2. Cấu hình .gitignore đúng
 
 File `.gitignore` đã có:
+
 ```
 /storage/*.key
 /storage/framework/*
@@ -144,6 +149,7 @@ File `.gitignore` đã có:
 ### 3. Config git toàn cục
 
 Để tránh lỗi cho tất cả project:
+
 ```powershell
 git config --global core.fileMode false
 ```
@@ -153,6 +159,7 @@ git config --global core.fileMode false
 ### Kiểm tra middleware đã được đăng ký chưa
 
 File `bootstrap/app.php` phải có:
+
 ```php
 ->withMiddleware(function (Middleware $middleware): void {
     $middleware->alias([
@@ -165,6 +172,7 @@ File `bootstrap/app.php` phải có:
 ### Kiểm tra routes
 
 File `routes/api.php` - các route staff only phải có:
+
 ```php
 Route::get('/lich-hen', [LichHenController::class, 'index'])
     ->middleware(['staff.only', 'permission:lich_hen_xem']);
@@ -173,15 +181,16 @@ Route::get('/lich-hen', [LichHenController::class, 'index'])
 ### Kiểm tra model có phương thức hasPermission
 
 Trong `app/Models/Admin.php` và `app/Models/NhanVien.php`:
+
 ```php
 public function hasPermission(string $permission): bool
 {
     if (!$this->phanQuyen) {
         return false;
     }
-    
+
     $permissions = $this->phanQuyen->permissions ?? [];
-    return in_array($permission, $permissions) || 
+    return in_array($permission, $permissions) ||
            ($permissions[$permission] ?? false) === true;
 }
 ```
@@ -198,18 +207,21 @@ Nếu vẫn gặp lỗi sau khi làm theo hướng dẫn:
 ## 🎯 Tổng kết
 
 **Nguyên nhân lỗi phân quyền khi pull:**
+
 1. Git tracking file mode (executable permissions)
 2. Cache Laravel cũ không được clear
 3. Middleware chưa được đăng ký đúng
 4. Route không áp dụng middleware đúng
 
 **Giải pháp:**
+
 1. Tắt git file mode: `git config core.fileMode false`
 2. Clear cache: `php artisan cache:clear`
 3. Cấp quyền thư mục: `icacls storage /grant Everyone:F /T /C /Q`
 4. Kiểm tra middleware và routes
 
 **Phòng tránh:**
+
 1. Luôn chạy script fix-permissions.ps1 sau khi pull
 2. Không commit file trong storage/ và bootstrap/cache/
 3. Config git global để tắt file mode tracking
