@@ -112,13 +112,24 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::match(['put', 'patch'], '/lich-hen/{lichHen}', [LichHenController::class, 'update'])->middleware(['staff.only', 'permission:lich_hen_sua']);
     Route::patch('/lich-hen/{lichHen}/xac-nhan', [LichHenController::class, 'confirm'])->middleware(['staff.only', 'permission:lich_hen_xac_nhan']);
 
+    // Lịch hẹn - Check-in (Y tá)
+    Route::post('/lich-hen/{lichHen}/check-in', [LichHenController::class, 'checkIn'])->middleware('staff.only'); // Y tá check-in lịch hẹn
+    Route::get('/lich-hen-cho-check-in', [LichHenController::class, 'lichHenChoCheckIn'])->middleware('staff.only'); // Danh sách lịch hẹn chờ check-in
+    Route::get('/lich-hen-da-check-in', [LichHenController::class, 'lichHenDaCheckIn'])->middleware('staff.only'); // Danh sách lịch hẹn đã check-in
+
+    // Lịch hẹn - Khám bệnh (Bác sĩ)
+    Route::get('/benh-nhan-cho-kham', [LichHenController::class, 'benhNhanChoKham'])->middleware('staff.only'); // Danh sách bệnh nhân chờ khám
+    Route::post('/lich-hen/{lichHen}/bat-dau-kham', [LichHenController::class, 'batDauKham'])->middleware('staff.only'); // Bác sĩ bắt đầu khám
+    Route::get('/benh-nhan-dang-kham', [LichHenController::class, 'benhNhanDangKham'])->middleware('staff.only'); // Danh sách bệnh nhân đang khám
+    Route::post('/lich-hen/{lichHen}/hoan-thanh-kham', [LichHenController::class, 'hoanThanhKham'])->middleware('staff.only'); // Hoàn thành khám
+
     // Lịch làm việc: tạo mới - Staff only
     Route::post('/lich-lam-viec', [LichLamViecController::class, 'store'])->middleware(['staff.only', 'permission:lich_lam_viec_tao']);
 
     // Lịch làm việc của bác sĩ/nhân viên đang đăng nhập (phải đặt TRƯỚC route có {lichLamViec})
     // Cho phép cả khách hàng xem (để đặt lịch hẹn)
-    Route::get('/lich-lam-viec/cua-toi', [LichLamViecController::class, 'getMySchedule']);
-    Route::get('/lich-lam-viec/cua-toi/hom-nay', [LichLamViecController::class, 'getMyTodaySchedule']);
+    Route::get('/lich-lam-viec/cua-toi', [LichLamViecController::class, 'getMySchedule'])->middleware('auth:sanctum');
+    Route::get('/lich-lam-viec/cua-toi/hom-nay', [LichLamViecController::class, 'getMyTodaySchedule'])->middleware('auth:sanctum');
 
     // Lịch làm việc và lịch hẹn của bác sĩ/nhân viên (cho admin) - Staff only
     Route::get('/lich-lam-viec/bac-si/{nhanVienId}', [LichLamViecController::class, 'getScheduleByDoctor'])->middleware(['staff.only', 'permission:lich_lam_viec_xem']);
@@ -135,6 +146,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/lich-dang-ky/chua-xac-nhan', [LichDangKyController::class, 'chuaXacNhan'])->middleware('staff.only'); // Lịch chưa xác nhận
     Route::get('/lich-dang-ky/da-xac-nhan', [LichDangKyController::class, 'daXacNhan'])->middleware('staff.only'); // Lịch đã xác nhận
     Route::get('/lich-dang-ky/tu-choi', [LichDangKyController::class, 'danhSachTuChoi'])->middleware('staff.only'); // Lịch từ chối
+
+    // Xem danh sách lịch theo từng nhân viên
+    Route::get('/lich-dang-ky/theo-nhan-vien', [LichDangKyController::class, 'danhSachTheoNhanVien'])->middleware('staff.only'); // Danh sách lịch nhóm theo nhân viên
 
     // Nhân viên tự đăng ký lịch làm việc
     Route::post('/lich-dang-ky/dang-ky-nhan-vien', [LichDangKyController::class, 'dangKyNhanVien'])->middleware('staff.only'); // Nhân viên tự đăng ký

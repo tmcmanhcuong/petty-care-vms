@@ -10,10 +10,14 @@ class LichDangKyController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * Nếu là nhân viên: chỉ xem lịch của chính họ
+     * Nếu là admin: xem tất cả lịch
      */
     public function index(Request $request)
     {
         try {
+            $user = $request->user();
+
             $query = LichDangKy::with([
                 'nhanVien',
                 'admin',
@@ -22,6 +26,25 @@ class LichDangKyController extends Controller
                 'thuCung',
                 'dichVu'
             ]);
+
+            // Nếu là nhân viên, chỉ lấy lịch của chính họ
+            if ($user instanceof \App\Models\NhanVien) {
+                $query->where('nhan_vien_id', $user->id);
+            }
+            // Nếu là Admin, có thể xem tất cả hoặc filter theo nhan_vien_id
+            elseif ($user instanceof \App\Models\Admin) {
+                // Admin có thể filter theo nhan_vien_id nếu muốn
+                if ($request->has('nhan_vien_id')) {
+                    $query->where('nhan_vien_id', $request->nhan_vien_id);
+                }
+            }
+            // Nếu không phải nhân viên hay admin (có thể là khách hàng)
+            else {
+                // Khách hàng chỉ xem lịch của chính họ
+                if ($user && method_exists($user, 'getKey')) {
+                    $query->where('khach_hang_id', $user->id);
+                }
+            }
 
             // Filter by status
             if ($request->has('trang_thai')) {
@@ -38,18 +61,13 @@ class LichDangKyController extends Controller
                 $query->trongKhoang($request->tu_ngay, $request->den_ngay);
             }
 
-            // Filter by nhan_vien_id
-            if ($request->has('nhan_vien_id')) {
-                $query->where('nhan_vien_id', $request->nhan_vien_id);
-            }
-
-            // Filter by admin_id
-            if ($request->has('admin_id')) {
+            // Filter by admin_id (chỉ Admin mới có thể dùng)
+            if ($request->has('admin_id') && $user instanceof \App\Models\Admin) {
                 $query->where('admin_id', $request->admin_id);
             }
 
-            // Filter by khach_hang_id
-            if ($request->has('khach_hang_id')) {
+            // Filter by khach_hang_id (chỉ Admin mới có thể dùng)
+            if ($request->has('khach_hang_id') && $user instanceof \App\Models\Admin) {
                 $query->where('khach_hang_id', $request->khach_hang_id);
             }
 
@@ -331,10 +349,14 @@ class LichDangKyController extends Controller
     /**
      * Lấy danh sách lịch chưa xác nhận
      * Hiển thị: tên nhân viên, thời gian, ghi chú, trạng thái
+     * Nếu là nhân viên: chỉ xem lịch của chính họ
+     * Nếu là admin: xem tất cả lịch
      */
     public function chuaXacNhan(Request $request)
     {
         try {
+            $user = $request->user();
+
             $query = LichDangKy::chuaXacNhan()
                 ->with([
                     'nhanVien:id,full_name,email', // Lấy tên nhân viên (full_name chứ không phải ho_ten)
@@ -346,9 +368,15 @@ class LichDangKyController extends Controller
                 ])
                 ->orderBy('ngay_gio', 'asc');
 
-            // Filter by nhan_vien_id
-            if ($request->has('nhan_vien_id')) {
-                $query->where('nhan_vien_id', $request->nhan_vien_id);
+            // Nếu là nhân viên, chỉ lấy lịch của chính họ
+            if ($user instanceof \App\Models\NhanVien) {
+                $query->where('nhan_vien_id', $user->id);
+            }
+            // Nếu là Admin, có thể filter theo nhan_vien_id
+            elseif ($user instanceof \App\Models\Admin) {
+                if ($request->has('nhan_vien_id')) {
+                    $query->where('nhan_vien_id', $request->nhan_vien_id);
+                }
             }
 
             // Filter by date
@@ -392,10 +420,15 @@ class LichDangKyController extends Controller
 
     /**
      * Lấy danh sách lịch đã xác nhận
+     * Có thể filter theo nhan_vien_id
+     * Nếu là nhân viên: chỉ xem lịch của chính họ
+     * Nếu là admin: xem tất cả lịch
      */
     public function daXacNhan(Request $request)
     {
         try {
+            $user = $request->user();
+
             $query = LichDangKy::daXacNhan()
                 ->with([
                     'nhanVien',
@@ -406,6 +439,27 @@ class LichDangKyController extends Controller
                     'dichVu'
                 ])
                 ->orderBy('ngay_gio', 'asc');
+
+            // Nếu là nhân viên, chỉ lấy lịch của chính họ
+            if ($user instanceof \App\Models\NhanVien) {
+                $query->where('nhan_vien_id', $user->id);
+            }
+            // Nếu là Admin, có thể filter theo nhan_vien_id
+            elseif ($user instanceof \App\Models\Admin) {
+                if ($request->has('nhan_vien_id')) {
+                    $query->where('nhan_vien_id', $request->nhan_vien_id);
+                }
+            }
+
+            // Filter by date
+            if ($request->has('ngay')) {
+                $query->theoNgay($request->ngay);
+            }
+
+            // Filter by date range
+            if ($request->has('tu_ngay') && $request->has('den_ngay')) {
+                $query->trongKhoang($request->tu_ngay, $request->den_ngay);
+            }
 
             $lichDangKys = $query->paginate($request->input('per_page', 15));
 
@@ -424,10 +478,15 @@ class LichDangKyController extends Controller
 
     /**
      * Lấy danh sách lịch từ chối
+     * Có thể filter theo nhan_vien_id
+     * Nếu là nhân viên: chỉ xem lịch của chính họ
+     * Nếu là admin: xem tất cả lịch
      */
     public function danhSachTuChoi(Request $request)
     {
         try {
+            $user = $request->user();
+
             $query = LichDangKy::tuChoi()
                 ->with([
                     'nhanVien',
@@ -438,6 +497,27 @@ class LichDangKyController extends Controller
                     'dichVu'
                 ])
                 ->orderBy('ngay_gio', 'desc');
+
+            // Nếu là nhân viên, chỉ lấy lịch của chính họ
+            if ($user instanceof \App\Models\NhanVien) {
+                $query->where('nhan_vien_id', $user->id);
+            }
+            // Nếu là Admin, có thể filter theo nhan_vien_id
+            elseif ($user instanceof \App\Models\Admin) {
+                if ($request->has('nhan_vien_id')) {
+                    $query->where('nhan_vien_id', $request->nhan_vien_id);
+                }
+            }
+
+            // Filter by date
+            if ($request->has('ngay')) {
+                $query->theoNgay($request->ngay);
+            }
+
+            // Filter by date range
+            if ($request->has('tu_ngay') && $request->has('den_ngay')) {
+                $query->trongKhoang($request->tu_ngay, $request->den_ngay);
+            }
 
             $lichDangKys = $query->paginate($request->input('per_page', 15));
 
@@ -518,22 +598,38 @@ class LichDangKyController extends Controller
 
     /**
      * Lấy danh sách lịch đăng ký của nhân viên đang đăng nhập
+     * Hoặc Admin xem lịch của nhân viên cụ thể (truyền nhan_vien_id)
      */
     public function lichCuaToi(Request $request)
     {
         try {
             $user = $request->user();
 
-            // Kiểm tra xem user có phải là nhân viên không
-            if (!$user instanceof \App\Models\NhanVien) {
+            // Kiểm tra xem user có phải là nhân viên hoặc admin không
+            if (!($user instanceof \App\Models\NhanVien) && !($user instanceof \App\Models\Admin)) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Chỉ nhân viên mới có thể xem lịch của mình',
+                    'message' => 'Chỉ nhân viên và quản trị viên mới có thể xem lịch',
                 ], 403);
             }
 
-            $query = LichDangKy::where('nhan_vien_id', $user->id)
+            // Nếu là Admin, phải truyền nhan_vien_id
+            if ($user instanceof \App\Models\Admin) {
+                if (!$request->has('nhan_vien_id')) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Admin phải cung cấp nhan_vien_id để xem lịch nhân viên',
+                    ], 400);
+                }
+                $nhanVienId = $request->get('nhan_vien_id');
+            } else {
+                // Nếu là NhanVien, lấy lịch của chính họ
+                $nhanVienId = $user->id;
+            }
+
+            $query = LichDangKy::where('nhan_vien_id', $nhanVienId)
                 ->with([
+                    'nhanVien',
                     'admin',
                     'lichLamViec',
                     'khachHang',
@@ -557,7 +653,7 @@ class LichDangKyController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Lấy danh sách lịch của bạn thành công',
+                'message' => 'Lấy danh sách lịch thành công',
                 'data' => $lichDangKys,
             ], 200);
         } catch (\Exception $e) {
@@ -570,21 +666,36 @@ class LichDangKyController extends Controller
 
     /**
      * Hiển thị ca đã đăng ký của nhân viên
+     * Hoặc Admin xem ca đã xác nhận của nhân viên cụ thể (truyền nhan_vien_id)
      */
     public function caDaXacNhanCuaToi(Request $request)
     {
         try {
             $user = $request->user();
 
-            // Kiểm tra xem user có phải là nhân viên không
-            if (!$user instanceof \App\Models\NhanVien) {
+            // Kiểm tra xem user có phải là nhân viên hoặc admin không
+            if (!($user instanceof \App\Models\NhanVien) && !($user instanceof \App\Models\Admin)) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Chỉ nhân viên mới có thể xem ca đã đăng ký',
+                    'message' => 'Chỉ nhân viên và quản trị viên mới có thể xem ca đã đăng ký',
                 ], 403);
             }
 
-            $query = LichDangKy::where('nhan_vien_id', $user->id)
+            // Nếu là Admin, phải truyền nhan_vien_id
+            if ($user instanceof \App\Models\Admin) {
+                if (!$request->has('nhan_vien_id')) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Admin phải cung cấp nhan_vien_id để xem ca đã xác nhận',
+                    ], 400);
+                }
+                $nhanVienId = $request->get('nhan_vien_id');
+            } else {
+                // Nếu là NhanVien, lấy lịch của chính họ
+                $nhanVienId = $user->id;
+            }
+
+            $query = LichDangKy::where('nhan_vien_id', $nhanVienId)
                 ->where('trang_thai', 'da_xac_nhan')
                 ->with([
                     'nhanVien',
@@ -681,6 +792,116 @@ class LichDangKyController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Lỗi khi đổi trạng thái: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Lấy danh sách lịch đăng ký nhóm theo từng nhân viên
+     * Hiển thị: Thông tin nhân viên và danh sách lịch đăng ký của họ
+     * Staff only
+     */
+    public function danhSachTheoNhanVien(Request $request)
+    {
+        try {
+            // Lấy tất cả nhân viên có lịch đăng ký
+            $query = \App\Models\NhanVien::whereHas('lichDangKys');
+
+            // Lọc theo trạng thái hoạt động của nhân viên nếu cần
+            if ($request->has('trang_thai_nhan_vien')) {
+                $query->where('trang_thai', $request->trang_thai_nhan_vien);
+            }
+
+            $nhanViens = $query->with(['lichDangKys' => function ($q) use ($request) {
+                // Eager load các quan hệ của lịch đăng ký
+                $q->with([
+                    'admin:id,ho_ten,email',
+                    'lichLamViec',
+                    'khachHang:id,full_name,email,phone',
+                    'thuCung:id,ten_thu_cung',
+                    'dichVu:id,ten_dich_vu'
+                ]);
+
+                // Filter by trang_thai của lịch đăng ký
+                if ($request->has('trang_thai')) {
+                    $q->where('trang_thai', $request->trang_thai);
+                }
+
+                // Filter by ngày
+                if ($request->has('ngay')) {
+                    $q->theoNgay($request->ngay);
+                }
+
+                // Filter by khoảng thời gian
+                if ($request->has('tu_ngay') && $request->has('den_ngay')) {
+                    $q->trongKhoang($request->tu_ngay, $request->den_ngay);
+                }
+
+                // Sắp xếp theo ngày giờ
+                $q->orderBy('ngay_gio', $request->input('sort', 'desc'));
+            }])->get();
+
+            // Format dữ liệu theo nhân viên
+            $result = $nhanViens->map(function ($nhanVien) {
+                return [
+                    'nhan_vien' => [
+                        'id' => $nhanVien->id,
+                        'full_name' => $nhanVien->full_name,
+                        'email' => $nhanVien->email,
+                        'phone' => $nhanVien->phone,
+                        'chuc_danh' => $nhanVien->chuc_danh,
+                        'vai_tro' => $nhanVien->vai_tro,
+                        'trang_thai' => $nhanVien->trang_thai,
+                    ],
+                    'thong_ke' => [
+                        'tong_so_lich' => $nhanVien->lichDangKys->count(),
+                        'chua_xac_nhan' => $nhanVien->lichDangKys->where('trang_thai', 'chua_xac_nhan')->count(),
+                        'da_xac_nhan' => $nhanVien->lichDangKys->where('trang_thai', 'da_xac_nhan')->count(),
+                        'tu_choi' => $nhanVien->lichDangKys->where('trang_thai', 'tu_choi')->count(),
+                    ],
+                    'danh_sach_lich' => $nhanVien->lichDangKys->map(function ($lich) {
+                        return [
+                            'id' => $lich->id,
+                            'ngay_gio' => $lich->ngay_gio->format('Y-m-d H:i:s'),
+                            'ghi_chu' => $lich->ghi_chu,
+                            'trang_thai' => $lich->trang_thai,
+                            'trang_thai_text' => LichDangKy::TRANG_THAI[$lich->trang_thai] ?? 'N/A',
+                            'admin' => $lich->admin ? [
+                                'id' => $lich->admin->id,
+                                'ho_ten' => $lich->admin->ho_ten,
+                                'email' => $lich->admin->email,
+                            ] : null,
+                            'khach_hang' => $lich->khachHang ? [
+                                'id' => $lich->khachHang->id,
+                                'full_name' => $lich->khachHang->full_name,
+                                'email' => $lich->khachHang->email,
+                                'phone' => $lich->khachHang->phone,
+                            ] : null,
+                            'thu_cung' => $lich->thuCung ? [
+                                'id' => $lich->thuCung->id,
+                                'ten_thu_cung' => $lich->thuCung->ten_thu_cung,
+                            ] : null,
+                            'dich_vu' => $lich->dichVu ? [
+                                'id' => $lich->dichVu->id,
+                                'ten_dich_vu' => $lich->dichVu->ten_dich_vu,
+                            ] : null,
+                            'created_at' => $lich->created_at->format('Y-m-d H:i:s'),
+                            'updated_at' => $lich->updated_at->format('Y-m-d H:i:s'),
+                        ];
+                    }),
+                ];
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Lấy danh sách lịch đăng ký theo nhân viên thành công',
+                'data' => $result,
+                'tong_so_nhan_vien' => $result->count(),
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lỗi khi lấy danh sách: ' . $e->getMessage(),
             ], 500);
         }
     }

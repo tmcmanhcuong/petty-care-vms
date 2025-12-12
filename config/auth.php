@@ -65,6 +65,21 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+
+        'nhan_viens' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\NhanVien::class,
+        ],
+
+        'khach_hangs' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\KhachHang::class,
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

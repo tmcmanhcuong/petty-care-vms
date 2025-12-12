@@ -257,12 +257,26 @@ class LichLamViecController extends Controller
         // Lấy thông tin user đang đăng nhập
         $user = $request->user();
 
-        // Kiểm tra xem user có phải là nhân viên không
-        if (!($user instanceof \App\Models\NhanVien)) {
+        // Kiểm tra xem user có phải là nhân viên hoặc admin không
+        if (!($user instanceof \App\Models\NhanVien) && !($user instanceof \App\Models\Admin)) {
             return response()->json([
                 'status' => false,
-                'message' => 'Chỉ nhân viên mới có thể xem lịch làm việc của mình.',
+                'message' => 'Chỉ nhân viên và quản trị viên mới có thể xem lịch làm việc.',
             ], 403);
+        }
+
+        // Nếu là Admin, lấy nhan_vien_id từ query parameter
+        if ($user instanceof \App\Models\Admin) {
+            if (!$request->has('nhan_vien_id')) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Admin phải cung cấp nhan_vien_id để xem lịch.',
+                ], 400);
+            }
+            $nhanVienId = $request->get('nhan_vien_id');
+        } else {
+            // Nếu là NhanVien, lấy lịch của chính họ
+            $nhanVienId = $user->id;
         }
 
         // Validate parameters
@@ -274,16 +288,16 @@ class LichLamViecController extends Controller
         $startDate = $request->get('start_date', now()->startOfMonth()->format('Y-m-d'));
         $endDate = $request->get('end_date', now()->endOfMonth()->format('Y-m-d'));
 
-        // Lấy lịch làm việc của nhân viên đang đăng nhập
-        $lichLamViecs = LichLamViec::where('nhan_vien_id', $user->id)
+        // Lấy lịch làm việc của nhân viên
+        $lichLamViecs = LichLamViec::where('nhan_vien_id', $nhanVienId)
             ->whereBetween('ngay_lam', [$startDate, $endDate])
             ->orderBy('ngay_lam', 'asc')
             ->orderBy('thoi_gian_truc', 'asc')
             ->get();
 
-        // Lấy lịch hẹn của nhân viên đang đăng nhập
+        // Lấy lịch hẹn của nhân viên
         $lichHens = \App\Models\LichHen::with(['khachHang', 'thuCung', 'dichVu'])
-            ->where('nhan_vien_id', $user->id)
+            ->where('nhan_vien_id', $nhanVienId)
             ->whereBetween('ngay_gio', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
             ->orderBy('ngay_gio', 'asc')
             ->get();
@@ -336,16 +350,19 @@ class LichLamViecController extends Controller
         // Sắp xếp theo ngày
         ksort($scheduleByDate);
 
+        // Lấy thông tin nhân viên
+        $nhanVien = \App\Models\NhanVien::find($nhanVienId);
+
         return response()->json([
             'status' => true,
             'data' => [
-                'nhan_vien' => [
-                    'id' => $user->id,
-                    'full_name' => $user->full_name,
-                    'email' => $user->email,
-                    'vai_tro' => $user->vai_tro,
-                    'chuc_danh' => $user->chuc_danh,
-                ],
+                'nhan_vien' => $nhanVien ? [
+                    'id' => $nhanVien->id,
+                    'full_name' => $nhanVien->full_name,
+                    'email' => $nhanVien->email,
+                    'vai_tro' => $nhanVien->vai_tro,
+                    'chuc_danh' => $nhanVien->chuc_danh,
+                ] : null,
                 'period' => [
                     'start_date' => $startDate,
                     'end_date' => $endDate,
@@ -368,25 +385,39 @@ class LichLamViecController extends Controller
         // Lấy thông tin user đang đăng nhập
         $user = $request->user();
 
-        // Kiểm tra xem user có phải là nhân viên không
-        if (!($user instanceof \App\Models\NhanVien)) {
+        // Kiểm tra xem user có phải là nhân viên hoặc admin không
+        if (!($user instanceof \App\Models\NhanVien) && !($user instanceof \App\Models\Admin)) {
             return response()->json([
                 'status' => false,
-                'message' => 'Chỉ nhân viên mới có thể xem lịch làm việc của mình.',
+                'message' => 'Chỉ nhân viên và quản trị viên mới có thể xem lịch làm việc.',
             ], 403);
+        }
+
+        // Nếu là Admin, lấy nhan_vien_id từ query parameter
+        if ($user instanceof \App\Models\Admin) {
+            if (!$request->has('nhan_vien_id')) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Admin phải cung cấp nhan_vien_id để xem lịch.',
+                ], 400);
+            }
+            $nhanVienId = $request->get('nhan_vien_id');
+        } else {
+            // Nếu là NhanVien, lấy lịch của chính họ
+            $nhanVienId = $user->id;
         }
 
         $today = now()->format('Y-m-d');
 
         // Lấy lịch làm việc hôm nay
-        $lichLamViecs = LichLamViec::where('nhan_vien_id', $user->id)
+        $lichLamViecs = LichLamViec::where('nhan_vien_id', $nhanVienId)
             ->whereDate('ngay_lam', $today)
             ->orderBy('thoi_gian_truc', 'asc')
             ->get();
 
         // Lấy lịch hẹn hôm nay
         $lichHens = \App\Models\LichHen::with(['khachHang', 'thuCung', 'dichVu'])
-            ->where('nhan_vien_id', $user->id)
+            ->where('nhan_vien_id', $nhanVienId)
             ->whereDate('ngay_gio', $today)
             ->orderBy('ngay_gio', 'asc')
             ->get();
@@ -414,16 +445,19 @@ class LichLamViecController extends Controller
             ];
         });
 
+        // Lấy thông tin nhân viên
+        $nhanVien = \App\Models\NhanVien::find($nhanVienId);
+
         return response()->json([
             'status' => true,
             'data' => [
                 'date' => $today,
-                'nhan_vien' => [
-                    'id' => $user->id,
-                    'full_name' => $user->full_name,
-                    'vai_tro' => $user->vai_tro,
-                    'chuc_danh' => $user->chuc_danh,
-                ],
+                'nhan_vien' => $nhanVien ? [
+                    'id' => $nhanVien->id,
+                    'full_name' => $nhanVien->full_name,
+                    'vai_tro' => $nhanVien->vai_tro,
+                    'chuc_danh' => $nhanVien->chuc_danh,
+                ] : null,
                 'lich_lam_viec' => $formattedLichLamViec,
                 'lich_hen' => $formattedLichHen,
                 'statistics' => [

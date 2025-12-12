@@ -435,4 +435,515 @@ class LichHenController extends Controller
             'message' => \Illuminate\Support\Facades\Lang::get('messages.appointment_deleted_success'),
         ]);
     }
+
+    /**
+     * Check-in lịch hẹn
+     * Chỉ nhân viên có vai trò Y tá mới có thể check-in
+     */
+    public function checkIn(Request $request, LichHen $lichHen): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            // Kiểm tra xem user có phải là nhân viên không
+            if (!$user instanceof \App\Models\NhanVien) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Chỉ nhân viên mới có thể thực hiện check-in',
+                ], 403);
+            }
+
+            // Kiểm tra vai trò của nhân viên (chỉ Y tá mới được check-in)
+            // Giả sử vai_tro có các giá trị: 'bac_si', 'y_ta', 'le_tan', etc.
+            if (!in_array(strtolower($user->vai_tro), ['y_ta', 'y tá', 'nurse'])) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Chỉ nhân viên có vai trò Y tá mới có thể thực hiện check-in',
+                ], 403);
+            }
+
+            // Kiểm tra trạng thái lịch hẹn
+            if (!in_array($lichHen->trang_thai, ['pending', 'confirmed'])) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Lịch hẹn không thể check-in. Trạng thái hiện tại: ' . $lichHen->trang_thai,
+                ], 422);
+            }
+
+            // Kiểm tra xem đã check-in chưa
+            if ($lichHen->thoi_gian_checkin !== null) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Lịch hẹn đã được check-in lúc: ' . $lichHen->thoi_gian_checkin->format('d/m/Y H:i:s'),
+                    'data' => [
+                        'thoi_gian_checkin' => $lichHen->thoi_gian_checkin->format('Y-m-d H:i:s'),
+                    ],
+                ], 422);
+            }
+
+            // Thực hiện check-in
+            $lichHen->thoi_gian_checkin = now();
+            $lichHen->trang_thai = 'in-progress'; // Chuyển sang trạng thái đang khám
+
+            // Có thể lưu ID nhân viên check-in (nếu chưa có nhan_vien_id)
+            if (!$lichHen->nhan_vien_id) {
+                $lichHen->nhan_vien_id = $user->id;
+            }
+
+            $lichHen->save();
+
+            // Load relationships để trả lại dữ liệu đầy đủ
+            $lichHen->load(['khachHang', 'thuCung', 'dichVu', 'nhanVien', 'thanhToan']);
+
+            $payload = $this->transformData($lichHen);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Check-in lịch hẹn thành công',
+                'data' => $payload,
+                'thoi_gian_checkin' => $lichHen->thoi_gian_checkin->format('Y-m-d H:i:s'),
+                'checked_in_by' => [
+                    'id' => $user->id,
+                    'full_name' => $user->full_name,
+                    'vai_tro' => $user->vai_tro,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi khi check-in lịch hẹn: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Danh sách lịch hẹn cần check-in
+     * Lấy các lịch hẹn có trạng thái confirmed và chưa check-in
+     */
+    public function lichHenChoCheckIn(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            // Chỉ nhân viên mới xem được
+            if (!($user instanceof \App\Models\NhanVien) && !($user instanceof \App\Models\Admin)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Chỉ nhân viên mới có thể xem danh sách lịch hẹn chờ check-in',
+                ], 403);
+            }
+
+            $query = LichHen::with(['khachHang', 'thuCung', 'dichVu', 'nhanVien'])
+                ->whereIn('trang_thai', ['pending', 'confirmed'])
+                ->whereNull('thoi_gian_checkin');
+
+            // Filter theo ngày nếu có
+            if ($request->filled('ngay')) {
+                try {
+                    $ngay = Carbon::parse($request->get('ngay'))->format('Y-m-d');
+                    $query->whereDate('ngay_gio', $ngay);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Định dạng ngày không hợp lệ',
+                    ], 422);
+                }
+            } else {
+                // Mặc định lấy lịch hẹn của hôm nay
+                $query->whereDate('ngay_gio', today());
+            }
+
+            // Sắp xếp theo thời gian
+            $query->orderBy('ngay_gio', 'asc');
+
+            // Pagination
+            $perPage = (int) $request->get('per_page', 15);
+            $data = $query->paginate($perPage);
+
+            $payload = $this->transformData($data);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Lấy danh sách lịch hẹn chờ check-in thành công',
+                'data' => $payload,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi khi lấy danh sách: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Danh sách lịch hẹn đã check-in
+     */
+    public function lichHenDaCheckIn(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            // Chỉ nhân viên mới xem được
+            if (!($user instanceof \App\Models\NhanVien) && !($user instanceof \App\Models\Admin)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Chỉ nhân viên mới có thể xem danh sách lịch hẹn đã check-in',
+                ], 403);
+            }
+
+            $query = LichHen::with(['khachHang', 'thuCung', 'dichVu', 'nhanVien'])
+                ->whereNotNull('thoi_gian_checkin');
+
+            // Filter theo ngày nếu có
+            if ($request->filled('ngay')) {
+                try {
+                    $ngay = Carbon::parse($request->get('ngay'))->format('Y-m-d');
+                    $query->whereDate('thoi_gian_checkin', $ngay);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Định dạng ngày không hợp lệ',
+                    ], 422);
+                }
+            } else {
+                // Mặc định lấy lịch hẹn đã check-in hôm nay
+                $query->whereDate('thoi_gian_checkin', today());
+            }
+
+            // Filter theo trạng thái
+            if ($request->filled('trang_thai')) {
+                $query->where('trang_thai', $request->get('trang_thai'));
+            }
+
+            // Sắp xếp theo thời gian check-in
+            $query->orderBy('thoi_gian_checkin', 'desc');
+
+            // Pagination
+            $perPage = (int) $request->get('per_page', 15);
+            $data = $query->paginate($perPage);
+
+            $payload = $this->transformData($data);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Lấy danh sách lịch hẹn đã check-in thành công',
+                'data' => $payload,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi khi lấy danh sách: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Danh sách bệnh nhân chờ khám (cho Bác sĩ)
+     * Lấy các lịch hẹn đã check-in nhưng chưa bắt đầu khám
+     */
+    public function benhNhanChoKham(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            // Chỉ nhân viên (Bác sĩ) mới xem được
+            if (!($user instanceof \App\Models\NhanVien) && !($user instanceof \App\Models\Admin)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Chỉ bác sĩ mới có thể xem danh sách bệnh nhân chờ khám',
+                ], 403);
+            }
+
+            $query = LichHen::with(['khachHang', 'thuCung', 'dichVu', 'nhanVien'])
+                ->whereNotNull('thoi_gian_checkin') // Đã check-in
+                ->where('trang_thai', 'in-progress') // Đang chờ khám
+                ->whereNull('thoi_gian_bat_dau_kham'); // Chưa bắt đầu khám
+
+            // Nếu là bác sĩ, chỉ xem bệnh nhân được phân công cho mình
+            if ($user instanceof \App\Models\NhanVien) {
+                // Kiểm tra vai trò (chỉ bác sĩ)
+                if (in_array(strtolower($user->vai_tro), ['bac_si', 'bác sĩ', 'doctor'])) {
+                    // Bác sĩ chỉ xem bệnh nhân được phân cho mình hoặc chưa phân bác sĩ
+                    $query->where(function ($q) use ($user) {
+                        $q->where('nhan_vien_id', $user->id)
+                            ->orWhereNull('nhan_vien_id');
+                    });
+                }
+                // Admin xem tất cả
+            }
+
+            // Filter theo ngày nếu có
+            if ($request->filled('ngay')) {
+                try {
+                    $ngay = Carbon::parse($request->get('ngay'))->format('Y-m-d');
+                    $query->whereDate('thoi_gian_checkin', $ngay);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Định dạng ngày không hợp lệ',
+                    ], 422);
+                }
+            } else {
+                // Mặc định lấy bệnh nhân chờ khám hôm nay
+                $query->whereDate('thoi_gian_checkin', today());
+            }
+
+            // Sắp xếp theo thời gian check-in (ai check-in trước khám trước)
+            $query->orderBy('thoi_gian_checkin', 'asc');
+
+            // Pagination
+            $perPage = (int) $request->get('per_page', 15);
+            $data = $query->paginate($perPage);
+
+            $payload = $this->transformData($data);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Lấy danh sách bệnh nhân chờ khám thành công',
+                'data' => $payload,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi khi lấy danh sách: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Bác sĩ bắt đầu khám bệnh
+     */
+    public function batDauKham(Request $request, LichHen $lichHen): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            // Kiểm tra xem user có phải là bác sĩ không
+            if (!$user instanceof \App\Models\NhanVien) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Chỉ bác sĩ mới có thể bắt đầu khám',
+                ], 403);
+            }
+
+            // Kiểm tra vai trò bác sĩ
+            if (!in_array(strtolower($user->vai_tro), ['bac_si', 'bác sĩ', 'doctor'])) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Chỉ nhân viên có vai trò Bác sĩ mới có thể bắt đầu khám',
+                ], 403);
+            }
+
+            // Kiểm tra trạng thái lịch hẹn
+            if ($lichHen->trang_thai !== 'in-progress') {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Lịch hẹn không thể bắt đầu khám. Trạng thái hiện tại: ' . $lichHen->trang_thai,
+                ], 422);
+            }
+
+            // Kiểm tra đã check-in chưa
+            if ($lichHen->thoi_gian_checkin === null) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Bệnh nhân chưa check-in',
+                ], 422);
+            }
+
+            // Kiểm tra đã bắt đầu khám chưa
+            if ($lichHen->thoi_gian_bat_dau_kham !== null) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Đã bắt đầu khám lúc: ' . $lichHen->thoi_gian_bat_dau_kham->format('d/m/Y H:i:s'),
+                    'data' => [
+                        'thoi_gian_bat_dau_kham' => $lichHen->thoi_gian_bat_dau_kham->format('Y-m-d H:i:s'),
+                        'bac_si' => $lichHen->nhanVien ? [
+                            'id' => $lichHen->nhanVien->id,
+                            'full_name' => $lichHen->nhanVien->full_name,
+                        ] : null,
+                    ],
+                ], 422);
+            }
+
+            // Gán bác sĩ và bắt đầu khám
+            $lichHen->nhan_vien_id = $user->id; // Gán bác sĩ đang khám
+            $lichHen->thoi_gian_bat_dau_kham = now();
+            $lichHen->save();
+
+            // Load relationships
+            $lichHen->load(['khachHang', 'thuCung', 'dichVu', 'nhanVien', 'thanhToan']);
+
+            $payload = $this->transformData($lichHen);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Bắt đầu khám bệnh thành công',
+                'data' => $payload,
+                'thoi_gian_bat_dau_kham' => $lichHen->thoi_gian_bat_dau_kham->format('Y-m-d H:i:s'),
+                'bac_si' => [
+                    'id' => $user->id,
+                    'full_name' => $user->full_name,
+                    'vai_tro' => $user->vai_tro,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi khi bắt đầu khám: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Danh sách bệnh nhân đang khám (của bác sĩ)
+     */
+    public function benhNhanDangKham(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            // Chỉ bác sĩ mới xem được
+            if (!($user instanceof \App\Models\NhanVien) && !($user instanceof \App\Models\Admin)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Chỉ bác sĩ mới có thể xem danh sách bệnh nhân đang khám',
+                ], 403);
+            }
+
+            $query = LichHen::with(['khachHang', 'thuCung', 'dichVu', 'nhanVien'])
+                ->whereNotNull('thoi_gian_bat_dau_kham') // Đã bắt đầu khám
+                ->whereNull('thoi_gian_hoan_thanh') // Chưa hoàn thành
+                ->where('trang_thai', 'in-progress');
+
+            // Nếu là bác sĩ, chỉ xem bệnh nhân của mình
+            if ($user instanceof \App\Models\NhanVien) {
+                if (in_array(strtolower($user->vai_tro), ['bac_si', 'bác sĩ', 'doctor'])) {
+                    $query->where('nhan_vien_id', $user->id);
+                }
+            }
+
+            // Filter theo ngày
+            if ($request->filled('ngay')) {
+                try {
+                    $ngay = Carbon::parse($request->get('ngay'))->format('Y-m-d');
+                    $query->whereDate('thoi_gian_bat_dau_kham', $ngay);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Định dạng ngày không hợp lệ',
+                    ], 422);
+                }
+            } else {
+                // Mặc định lấy bệnh nhân đang khám hôm nay
+                $query->whereDate('thoi_gian_bat_dau_kham', today());
+            }
+
+            // Sắp xếp theo thời gian bắt đầu khám
+            $query->orderBy('thoi_gian_bat_dau_kham', 'asc');
+
+            // Pagination
+            $perPage = (int) $request->get('per_page', 15);
+            $data = $query->paginate($perPage);
+
+            $payload = $this->transformData($data);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Lấy danh sách bệnh nhân đang khám thành công',
+                'data' => $payload,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi khi lấy danh sách: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Hoàn thành khám bệnh
+     */
+    public function hoanThanhKham(Request $request, LichHen $lichHen): JsonResponse
+    {
+        try {
+            $user = $request->user();
+
+            // Kiểm tra xem user có phải là bác sĩ không
+            if (!$user instanceof \App\Models\NhanVien) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Chỉ bác sĩ mới có thể hoàn thành khám',
+                ], 403);
+            }
+
+            // Kiểm tra vai trò bác sĩ
+            if (!in_array(strtolower($user->vai_tro), ['bac_si', 'bác sĩ', 'doctor'])) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Chỉ nhân viên có vai trò Bác sĩ mới có thể hoàn thành khám',
+                ], 403);
+            }
+
+            // Kiểm tra có phải bác sĩ đang khám không
+            if ($lichHen->nhan_vien_id !== $user->id) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Bạn không phải bác sĩ đang khám bệnh nhân này',
+                ], 403);
+            }
+
+            // Kiểm tra đã bắt đầu khám chưa
+            if ($lichHen->thoi_gian_bat_dau_kham === null) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Chưa bắt đầu khám',
+                ], 422);
+            }
+
+            // Kiểm tra đã hoàn thành chưa
+            if ($lichHen->thoi_gian_hoan_thanh !== null) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Đã hoàn thành khám lúc: ' . $lichHen->thoi_gian_hoan_thanh->format('d/m/Y H:i:s'),
+                ], 422);
+            }
+
+            // Validation cho dữ liệu bổ sung (nếu có)
+            $validated = $request->validate([
+                'ghi_chu' => 'nullable|string',
+                'huong_dan' => 'nullable|string',
+            ]);
+
+            // Hoàn thành khám
+            $lichHen->thoi_gian_hoan_thanh = now();
+            $lichHen->trang_thai = 'completed';
+
+            if (isset($validated['ghi_chu'])) {
+                $lichHen->ghi_chu = $validated['ghi_chu'];
+            }
+
+            if (isset($validated['huong_dan'])) {
+                $lichHen->huong_dan = $validated['huong_dan'];
+            }
+
+            $lichHen->save();
+
+            // Load relationships
+            $lichHen->load(['khachHang', 'thuCung', 'dichVu', 'nhanVien', 'thanhToan']);
+
+            $payload = $this->transformData($lichHen);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Hoàn thành khám bệnh thành công',
+                'data' => $payload,
+                'thoi_gian_hoan_thanh' => $lichHen->thoi_gian_hoan_thanh->format('Y-m-d H:i:s'),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Lỗi khi hoàn thành khám: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 }

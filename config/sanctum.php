@@ -38,6 +38,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Sanctum Authenticatable Models
+    |--------------------------------------------------------------------------
+    |
+    | When issuing API tokens, Sanctum needs to store token information. By
+    | default, the "users" table is used. However, you may use the models
+    | option below to specify the models Sanctum should use for tokens.
+    |
+    */
+
+    'models' => [
+        App\Models\Admin::class,
+        App\Models\NhanVien::class,
+        App\Models\KhachHang::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Expiration Minutes
     |--------------------------------------------------------------------------
     |
