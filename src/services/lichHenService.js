@@ -205,6 +205,80 @@ export const getCheckedInAppointments = async (params = {}) => {
   }
 };
 
+/**
+ * ========================================
+ * KHÁM BỆNH FUNCTIONS (Dành cho Bác sĩ)
+ * ========================================
+ */
+
+/**
+ * Lấy danh sách bệnh nhân chờ khám
+ * Bệnh nhân đã check-in nhưng chưa bắt đầu khám
+ * @param {Object} params - Filter parameters
+ * @param {string} params.ngay - Filter by date (format: YYYY-MM-DD), default: today
+ * @param {number} params.per_page - Items per page
+ * @returns {Promise}
+ */
+export const getPatientsWaitingExam = async (params = {}) => {
+  try {
+    const response = await api.get("/benh-nhan-cho-kham", { params });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching patients waiting exam:", error);
+    throw error;
+  }
+};
+
+/**
+ * Bác sĩ bắt đầu khám bệnh
+ * @param {number} id - Appointment ID
+ * @returns {Promise}
+ */
+export const startExamination = async (id) => {
+  try {
+    const response = await api.post(`/lich-hen/${id}/bat-dau-kham`);
+    return response.data;
+  } catch (error) {
+    console.error("Error starting examination:", error);
+    throw error;
+  }
+};
+
+/**
+ * Lấy danh sách bệnh nhân đang khám
+ * @param {Object} params - Filter parameters
+ * @param {string} params.ngay - Filter by date (format: YYYY-MM-DD), default: today
+ * @param {number} params.per_page - Items per page
+ * @returns {Promise}
+ */
+export const getExaminingPatients = async (params = {}) => {
+  try {
+    const response = await api.get("/benh-nhan-dang-kham", { params });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching examining patients:", error);
+    throw error;
+  }
+};
+
+/**
+ * Hoàn thành khám bệnh
+ * @param {number} id - Appointment ID
+ * @param {Object} data - Completion data
+ * @param {string} data.ghi_chu - Medical notes (optional)
+ * @param {string} data.huong_dan - Treatment instructions (optional)
+ * @returns {Promise}
+ */
+export const completeExamination = async (id, data = {}) => {
+  try {
+    const response = await api.post(`/lich-hen/${id}/hoan-thanh-kham`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error completing examination:", error);
+    throw error;
+  }
+};
+
 export default {
   getAllAppointments,
   getMyAppointments,
@@ -217,4 +291,8 @@ export default {
   checkInAppointment,
   getAppointmentsWaitingCheckIn,
   getCheckedInAppointments,
+  getPatientsWaitingExam,
+  startExamination,
+  getExaminingPatients,
+  completeExamination,
 };

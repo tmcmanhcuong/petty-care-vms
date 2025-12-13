@@ -320,7 +320,26 @@ const activeTab = ref("waiting"); // Mặc định tab "Chờ khám"
 const formatDate = (date) => format(date, "dd/MM/yyyy");
 const formatTime = (dateString) => {
   if (!dateString) return "--:--";
-  return format(parseISO(dateString), "HH:mm");
+  try {
+    // Xử lý nhiều format datetime
+    let date;
+    if (typeof dateString === "string") {
+      // Nếu là string có dạng "YYYY-MM-DD HH:mm:ss" (MySQL format)
+      date = new Date(dateString.replace(" ", "T"));
+    } else {
+      date = new Date(dateString);
+    }
+
+    if (isNaN(date.getTime())) {
+      // Fallback: thử parseISO
+      date = parseISO(dateString);
+    }
+
+    return format(date, "HH:mm");
+  } catch (error) {
+    console.error("Error formatting time:", dateString, error);
+    return "--:--";
+  }
 };
 const currentDateText = computed(() => {
   return format(currentDate.value, "EEEE, dd/MM/yyyy", { locale: vi }).replace(
@@ -340,6 +359,21 @@ const calculateAge = (birthDate) => {
 const getStatus = (appt) => {
   const now = new Date();
 
+  // Helper function to parse datetime
+  const parseDateTime = (dateString) => {
+    if (!dateString) return null;
+    try {
+      if (typeof dateString === "string") {
+        // MySQL datetime format: "YYYY-MM-DD HH:mm:ss"
+        return new Date(dateString.replace(" ", "T"));
+      }
+      return new Date(dateString);
+    } catch (error) {
+      console.error("Error parsing datetime:", dateString, error);
+      return null;
+    }
+  };
+
   // Hoàn thành khám
   if (appt.trang_thai === "completed" && appt.thoi_gian_hoan_thanh) {
     return { type: "completed", label: "Hoàn thành", color: "green" };
@@ -347,10 +381,8 @@ const getStatus = (appt) => {
 
   // Đang khám: có thoi_gian_bat_dau_kham nhưng chưa hoàn thành
   if (appt.thoi_gian_bat_dau_kham && !appt.thoi_gian_hoan_thanh) {
-    const examMinutes = differenceInMinutes(
-      now,
-      parseISO(appt.thoi_gian_bat_dau_kham)
-    );
+    const startTime = parseDateTime(appt.thoi_gian_bat_dau_kham);
+    const examMinutes = startTime ? differenceInMinutes(now, startTime) : 0;
     return {
       type: "examining",
       label: "Đang khám",
@@ -361,10 +393,8 @@ const getStatus = (appt) => {
 
   // Chờ khám: đã check-in nhưng chưa bắt đầu khám
   if (appt.thoi_gian_checkin && !appt.thoi_gian_bat_dau_kham) {
-    const waitMinutes = differenceInMinutes(
-      now,
-      parseISO(appt.thoi_gian_checkin)
-    );
+    const checkInTime = parseDateTime(appt.thoi_gian_checkin);
+    const waitMinutes = checkInTime ? differenceInMinutes(now, checkInTime) : 0;
     return {
       type: "waiting",
       label: "Chờ khám",
@@ -443,7 +473,17 @@ const fetchAppointments = async () => {
       }
     }
 
-    console.log("Processed data:", data);
+    console.log("Processed data count:", data.length);
+    if (data.length > 0) {
+      console.log("Sample appointment:", {
+        id: data[0].id,
+        ngay_gio: data[0].ngay_gio,
+        thoi_gian_checkin: data[0].thoi_gian_checkin,
+        trang_thai: data[0].trang_thai,
+        khach_hang: data[0].khach_hang,
+        thu_cung: data[0].thu_cung?.ten_thu_cung,
+      });
+    }
 
     appointments.value = data.map((appt) => ({
       ...appt,
