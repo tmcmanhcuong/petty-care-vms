@@ -48,10 +48,10 @@ export default {
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css");
 
 .page-wrapper {
-    padding-top: 40px;
-    margin-top: 64px;
+    padding-top: 40px !important;
+    margin-top: 64px !important;
 }
 .page-content {
-    padding: 0px;
+    padding: 0px !important;
 }
 </style>

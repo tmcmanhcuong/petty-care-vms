@@ -1,9 +1,9 @@
 <template>
   <div
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center"
   >
     <div
-      class="bg-white border border-gray-200/60 rounded-[10px] shadow-lg w-[656px] max-h-[90vh] overflow-y-auto relative"
+      class="bg-white border !border-gray-300 rounded-[10px] shadow-lg w-[656px] max-h-[90vh] overflow-y-auto relative"
     >
       <!-- Loading State -->
       <div v-if="isLoading" class="flex items-center justify-center py-20">
@@ -37,7 +37,7 @@
         <div class="flex flex-col gap-6 px-6 py-4">
           <!-- General Info Section -->
           <div
-            class="bg-gray-50 border border-gray-200/60 rounded-[10px] p-[17px] flex flex-col gap-3"
+            class="bg-gray-50 border !border-gray-300 rounded-[10px] p-[17px] flex flex-col gap-3"
           >
             <h3
               class="font-nunito text-sm leading-5 text-[#364153] tracking-tight"
@@ -108,9 +108,7 @@
             </h3>
 
             <!-- Items Table -->
-            <div
-              class="border border-gray-200/60 rounded-[10px] overflow-hidden"
-            >
+            <div class="border !border-gray-300 rounded-[10px] overflow-hidden">
               <table class="w-full">
                 <thead class="bg-gray-50">
                   <tr class="border-b border-gray-200/60">
@@ -288,7 +286,7 @@
         >
           <button
             @click="$emit('close')"
-            class="bg-white border border-gray-200/60 rounded-lg h-9 px-[17px] py-[9px] hover:bg-gray-50 transition-colors"
+            class="bg-white border !border-gray-400 rounded-lg h-9 px-4 py-2 hover:bg-gray-50 transition-colors"
             :disabled="isPrinting"
           >
             <span
@@ -298,7 +296,7 @@
           </button>
           <button
             @click="handlePrint"
-            class="bg-[#009689] rounded-lg h-9 px-3 py-2 flex items-center gap-2 hover:bg-[#007d72] transition-colors"
+            class="bg-[#5a9690] rounded-lg h-9 px-3 py-2 flex items-center gap-2 hover:bg-[#007d72] transition-colors"
             :disabled="isPrinting || isLoading"
             :class="{
               'opacity-50 cursor-not-allowed': isPrinting || isLoading,
@@ -309,7 +307,6 @@
               v-if="isPrinting"
               class="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"
             ></div>
-            <img v-else :src="iconPrint" alt="" class="w-4 h-4" />
             <span
               class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
               >{{ isPrinting ? "Đang xuất PDF..." : "In phiếu nhập" }}</span

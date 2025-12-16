@@ -3,14 +3,14 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
   >
     <div
-      class="bg-white border border-gray-200/60 rounded-[10px] shadow-lg w-[510px] max-h-[90vh] overflow-y-auto relative"
+      class="bg-white border !border-gray-300 rounded-[10px] shadow-lg w-[510px] max-h-[90vh] overflow-y-auto relative"
     >
       <!-- Close Button -->
       <button
         @click="$emit('close')"
-        class="absolute right-4 top-4 w-4 h-4 opacity-70 hover:opacity-100 transition-opacity"
+        class="absolute right-6 top-4 w-4 h-4 opacity-70 hover:opacity-100 transition-opacity"
       >
-        <img :src="iconClose" alt="Close" class="w-full h-full" />
+        <CloseIcon />
       </button>
 
       <!-- Header -->
@@ -180,7 +180,7 @@
         </button>
         <button
           @click="handleSubmit"
-          class="bg-[#009689] rounded-lg h-9 px-4 py-2 hover:bg-[#007d72] transition-colors"
+          class="bg-[#5a9690] rounded-lg h-9 px-4 py-2 hover:bg-[#007d72] transition-colors"
           :disabled="!isFormValid || isSubmitting"
           :class="{
             'opacity-50 cursor-not-allowed': !isFormValid || isSubmitting,
@@ -199,7 +199,8 @@
 import { ref, computed } from "vue";
 import { updateNhaCungCap } from "@/utils/nhaCungCap";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
-
+//Icon SVG
+import CloseIcon from "@/assets/svg/close.svg";
 // Props
 const props = defineProps({
   supplier: {
@@ -210,10 +211,6 @@ const props = defineProps({
 
 // Emits
 const emit = defineEmits(["close", "save"]);
-
-// Icons from Figma (expire in 7 days)
-const iconClose =
-  "https://www.figma.com/api/mcp/asset/ce7cfa47-4f81-4cba-8129-ffee46fef68b";
 
 // Form Data - pre-populated with supplier data
 const formData = ref({

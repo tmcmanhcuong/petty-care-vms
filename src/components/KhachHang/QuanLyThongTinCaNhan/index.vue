@@ -12,9 +12,14 @@
         <div class="flex flex-col lg:flex-row gap-8">
           <div class="flex flex-col items-center gap-4">
             <div
-              class="w-32 h-32 bg-teal-200 rounded-full flex items-center justify-center text-2xl font-semibold text-[#2f5755] overflow-hidden">
+              class="w-32 h-32 bg-teal-200 rounded-full flex items-center justify-center text-2xl font-semibold text-[#2f5755] overflow-hidden"
+            >
               <template v-if="avatarPreview">
-                <img :src="avatarPreview" alt="avatar" class="w-full h-full object-cover" />
+                <img
+                  :src="avatarPreview"
+                  alt="avatar"
+                  class="w-full h-full object-cover"
+                />
               </template>
               <template v-else>
                 <span>{{ initials }}</span>
@@ -22,15 +27,27 @@
             </div>
 
             <div class="flex items-center gap-2">
-              <input ref="fileInputRef" type="file" accept="image/*" class="hidden" @change="handleFileChange" />
-              <button @click="onAvatarClick"
-                class="flex items-center gap-3 px-4 py-2 border border-black/40 rounded-lg hover:bg-gray-100 transition">
-                <CameraSmIcon  />
+              <input
+                ref="fileInputRef"
+                type="file"
+                accept="image/*"
+                class="hidden"
+                @change="handleFileChange"
+              />
+              <button
+                @click="onAvatarClick"
+                class="flex items-center gap-3 px-4 py-2 border border-black/40 rounded-lg hover:bg-gray-100 transition"
+              >
+                <CameraSmIcon />
                 <span class="font-semibold">Chọn ảnh</span>
               </button>
 
-              <button v-if="avatarFile" @click="uploadAvatar" :disabled="avatarUploading"
-                class="px-3 py-2 border rounded-lg bg-white hover:bg-gray-50 text-sm">
+              <button
+                v-if="avatarFile"
+                @click="uploadAvatar"
+                :disabled="avatarUploading"
+                class="px-3 py-2 border rounded-lg bg-white hover:bg-gray-50 text-sm"
+              >
                 <span v-if="!avatarUploading">Tải lên</span>
                 <span v-else>Đang tải...</span>
               </button>
@@ -40,14 +57,21 @@
           <form class="flex-1 space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block font-semibold text-lg mb-2">Họ và tên *</label>
-                <input ref="nameRef" v-model="form.name" type="text" :readonly="!isEditing"
+                <label class="block font-semibold text-lg mb-2"
+                  >Họ và tên *</label
+                >
+                <input
+                  ref="nameRef"
+                  v-model="form.name"
+                  type="text"
+                  :readonly="!isEditing"
                   class="w-full h-11 bg-gray-200 border border-black/10 rounded-lg px-3 font-semibold text-base focus:outline-none focus:border-teal-600"
                   :class="{
                     'opacity-50': !isEditing,
                     'opacity-100': isEditing,
-                  }" />
-                <div class="mt-2 text-sm text-gray-600 flex gap-4">
+                  }"
+                />
+                <!-- <div class="mt-2 text-sm text-gray-600 flex gap-4">
                   <div>
                     <span class="font-medium">Họ lót:</span>
                     <span>{{ hoLot }}</span>
@@ -55,17 +79,27 @@
                   <div>
                     <span class="font-medium">Tên:</span> <span>{{ ten }}</span>
                   </div>
-                </div>
+                </div> -->
               </div>
               <div>
-                <label class="block font-semibold text-lg mb-2">Số điện thoại *</label>
-                <input ref="phoneRef" v-model="form.phone" type="tel" :readonly="!isEditing"
+                <label class="block font-semibold text-lg mb-2"
+                  >Số điện thoại *</label
+                >
+                <input
+                  ref="phoneRef"
+                  v-model="form.phone"
+                  type="tel"
+                  :readonly="!isEditing"
                   class="w-full h-11 bg-gray-200 border border-black/10 rounded-lg px-3 font-semibold text-base focus:outline-none focus:border-teal-600"
                   :class="{
                     'opacity-50': !isEditing,
                     'opacity-100': isEditing,
-                  }" />
-                <p v-if="errors.so_dien_thoai" class="text-sm text-red-600 mt-1">
+                  }"
+                />
+                <p
+                  v-if="errors.so_dien_thoai"
+                  class="text-sm text-red-600 mt-1"
+                >
                   {{ errors.so_dien_thoai[0] }}
                 </p>
               </div>
@@ -73,8 +107,13 @@
 
             <div>
               <label class="block font-semibold text-lg mb-2">Email *</label>
-              <input ref="emailRef" v-model="form.email" type="email" readonly
-                class="w-full h-11 bg-gray-200 border border-black/10 rounded-lg px-3 font-semibold text-base focus:outline-none focus:border-teal-600 opacity-70" />
+              <input
+                ref="emailRef"
+                v-model="form.email"
+                type="email"
+                readonly
+                class="w-full h-11 bg-gray-200 border border-black/10 rounded-lg px-3 font-semibold text-base focus:outline-none focus:border-teal-600 opacity-70"
+              />
               <p v-if="errors.email" class="text-sm text-red-600 mt-1">
                 {{ errors.email[0] }}
               </p>
@@ -82,16 +121,25 @@
 
             <div>
               <label class="block font-semibold text-lg mb-2">Địa chỉ</label>
-              <input ref="addressRef" v-model="form.address" type="text" :readonly="!isEditing"
+              <input
+                ref="addressRef"
+                v-model="form.address"
+                type="text"
+                :readonly="!isEditing"
                 class="w-full h-11 bg-gray-200 border border-black/10 rounded-lg px-3 font-semibold text-base focus:outline-none focus:border-teal-600"
-                :class="{ 'opacity-50': !isEditing, 'opacity-100': isEditing }" />
+                :class="{ 'opacity-50': !isEditing, 'opacity-100': isEditing }"
+              />
               <p v-if="errors.dia_chi" class="text-sm text-red-600 mt-1">
                 {{ errors.dia_chi[0] }}
               </p>
             </div>
 
-            <button type="button" @click="toggleEdit" :disabled="saving"
-              class="px-5 py-2 border border-black/30 rounded-lg font-semibold text-lg hover:bg-gray-100 transition disabled:opacity-60">
+            <button
+              type="button"
+              @click="toggleEdit"
+              :disabled="saving"
+              class="px-5 py-2 border border-black/30 rounded-lg font-semibold text-lg hover:bg-gray-100 transition disabled:opacity-60"
+            >
               <span v-if="!isEditing">Chỉnh sửa thông tin</span>
               <span v-else>{{ saving ? "Đang lưu..." : "Lưu thông tin" }}</span>
             </button>
@@ -109,15 +157,18 @@
 
         <div class="space-y-6">
           <div
-            class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-4 border !border-gray-300 rounded-xl">
+            class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-4 border !border-gray-300 rounded-xl"
+          >
             <div>
               <h3 class="font-semibold text-lg">Mật khẩu</h3>
               <p class="font-semibold text-gray-600">
                 Thay đổi mật khẩu định kỳ để bảo vệ tài khoản
               </p>
             </div>
-            <button @click="onChangePassword"
-              class="flex items-center gap-2 px-4 py-2 border border-black/70 rounded-lg hover:bg-gray-100 transition">
+            <button
+              @click="onChangePassword"
+              class="flex items-center gap-2 px-4 py-2 border border-black/70 rounded-lg hover:bg-gray-100 transition"
+            >
               <KeyIcon />
               <span class="font-semibold">Đổi mật khẩu</span>
             </button>
@@ -126,7 +177,8 @@
           <hr class="border-t !border-gray-500" />
 
           <div
-            class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-4 border !border-gray-300 rounded-xl">
+            class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 p-4 border !border-gray-300 rounded-xl"
+          >
             <div>
               <h3 class="font-semibold text-lg">
                 Đăng xuất khỏi tất cả thiết bị
@@ -135,8 +187,10 @@
                 Đăng xuất khỏi tất cả các phiên đăng nhập khác
               </p>
             </div>
-            <button @click="onLogoutAll"
-              class="flex items-center gap-2 px-4 py-2 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition">
+            <button
+              @click="onLogoutAll"
+              class="flex items-center gap-2 px-4 py-2 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition"
+            >
               <LogoutIcon />
               <span class="font-semibold">Đăng xuất tất cả</span>
             </button>
@@ -153,11 +207,15 @@
         </div>
 
         <div class="space-y-4">
-          <div class="flex items-center justify-between p-4 border !border-gray-300 rounded-xl">
+          <div
+            class="flex items-center justify-between p-4 border !border-gray-300 rounded-xl"
+          >
             <div class="flex items-center gap-4">
-              <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center border">
-                <span class="text-sm font-bold text-red-500">G</span>
-              </div>
+              <img
+                src="@/assets/img_imports/public_img/google.png"
+                alt="Google"
+                class="w-10 h-10"
+              />
               <div>
                 <div class="font-semibold">Google</div>
                 <div class="text-sm text-gray-500">
@@ -166,17 +224,24 @@
               </div>
             </div>
             <div>
-              <button @click="onUnlinkGoogle" class="px-3 py-1.5 border rounded-md bg-white hover:bg-gray-50 text-sm">
+              <button
+                @click="onUnlinkGoogle"
+                class="px-3 py-1.5 font-semibold border !border-red-500 !text-red-500 rounded-md bg-white hover:bg-gray-50 text-sm"
+              >
                 Hủy liên kết
               </button>
             </div>
           </div>
 
-          <div class="flex items-center justify-between p-4 border !border-gray-300 rounded-xl">
+          <div
+            class="flex items-center justify-between p-4 border !border-gray-300 rounded-xl"
+          >
             <div class="flex items-center gap-4">
-              <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center border">
-                <span class="text-sm font-bold text-blue-600">f</span>
-              </div>
+              <img
+                src="@/assets/img_imports/public_img/facebook.png"
+                alt="Facebook"
+                class="w-10 h-10"
+              />
               <div>
                 <div class="font-semibold">Facebook</div>
                 <div class="text-sm text-gray-500">
@@ -185,7 +250,10 @@
               </div>
             </div>
             <div>
-              <button @click="onLinkFacebook" class="px-3 py-1.5 border rounded-md bg-white hover:bg-gray-50 text-sm">
+              <button
+                @click="onLinkFacebook"
+                class="px-3 py-1.5 font-semibold border !border-blue-500 !text-blue-500 rounded-md bg-white hover:bg-gray-50 text-sm"
+              >
                 Liên kết
               </button>
             </div>
@@ -197,11 +265,11 @@
         <div class="space-y-4">
           <div class="flex justify-between">
             <span class="font-medium">Loại tài khoản:</span>
-            <span class="font-bold text-[#2f5755]">Silver</span>
+            <span class="font-bold text-gray-400">Silver</span>
           </div>
           <div class="flex justify-between">
             <span class="font-medium">Ngày tham gia:</span>
-            <span class="font-bold text-lime-800">15/01/2024</span>
+            <span class="font-bold text-gray-600">15/01/2024</span>
           </div>
           <div class="flex justify-between">
             <span class="font-medium">Số thú cưng đã đăng ký:</span>
@@ -319,7 +387,7 @@ watch(isEditing, (val) => {
         } else if (nameRef.value && typeof nameRef.value.focus === "function") {
           nameRef.value.focus();
         }
-      } catch (e) { }
+      } catch (e) {}
     });
   }
 });
@@ -355,7 +423,7 @@ function ensureAuthHeader() {
   try {
     const t = getToken();
     if (t) axios.defaults.headers.common["Authorization"] = `Bearer ${t}`;
-  } catch (e) { }
+  } catch (e) {}
 }
 
 const nameRef = ref(null);
@@ -397,7 +465,7 @@ function focusFirstError(errs) {
           typeof addressRef.value.focus === "function"
         )
           return addressRef.value.focus();
-      } catch (e) { }
+      } catch (e) {}
       break;
     }
   }
@@ -419,7 +487,7 @@ function handleFileChange(e) {
   if (avatarLocalUrl.value) {
     try {
       URL.revokeObjectURL(avatarLocalUrl.value);
-    } catch (e) { }
+    } catch (e) {}
   }
   const url = URL.createObjectURL(file);
   avatarLocalUrl.value = url;
@@ -430,7 +498,7 @@ onBeforeUnmount(() => {
   if (avatarLocalUrl.value) {
     try {
       URL.revokeObjectURL(avatarLocalUrl.value);
-    } catch (e) { }
+    } catch (e) {}
     avatarLocalUrl.value = null;
   }
 });
@@ -463,7 +531,7 @@ async function uploadAvatar() {
       try {
         const token = getToken();
         if (token) setAuth(token, updatedUser, true);
-      } catch (e) { }
+      } catch (e) {}
     }
 
     toast.success("Ảnh đại diện đã được cập nhật");
@@ -471,7 +539,7 @@ async function uploadAvatar() {
     if (avatarLocalUrl.value) {
       try {
         URL.revokeObjectURL(avatarLocalUrl.value);
-      } catch (e) { }
+      } catch (e) {}
       avatarLocalUrl.value = null;
     }
   } catch (e) {
@@ -527,7 +595,7 @@ async function saveProfile() {
     try {
       const token = getToken();
       if (token) setAuth(token, updatedUser, true);
-    } catch (e) { }
+    } catch (e) {}
 
     if (updatedUser) {
       user.value = updatedUser;

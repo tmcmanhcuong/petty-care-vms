@@ -1,7 +1,9 @@
 <template>
   <div class="min-h-screen max-w-5xl mx-auto md:px-6 sm:px-4">
-    <div class="bg-teal-50 border text-teal-300 rounded-xl p-8 flex gap-3 mb-6 sm:p-4">
-      <HeartIcon class="w-7 h-7 flex-shrink-0 mt-1" />
+    <div
+      class="bg-teal-50 border text-teal-300 rounded-xl p-8 flex gap-3 mb-6 sm:p-4"
+    >
+      <HeartIcon class="w-7 h-7 text-teal-500 flex-shrink-0 mt-1" />
       <div>
         <p class="font-semibold text-base text-teal-900 mb-2">
           Chào mừng bạn quay trở lại! Bạn có
@@ -13,27 +15,34 @@
         <div class="text-3xl font-bold text-orange-500 inline mx-1 sm:text-2xl">
           {{ pendingPayments }} thanh toán chờ xử lý
         </div>
-        <p class="inline font-semibold text-base text-teal-900">.</p>
       </div>
     </div>
 
     <div class="flex gap-16 mb-11">
-      <button @click="openBookingPopup"
-        class="flex-1 flex items-center justify-center gap-4 py-6 rounded-lg bg-teal-700 text-white font-bold text-xl hover:bg-teal-700/80 transition">
+      <button
+        @click="openBookingPopup"
+        class="flex-1 flex items-center justify-center gap-4 py-6 rounded-lg bg-teal-700 text-white font-bold text-xl hover:bg-teal-700/80 transition"
+      >
         <CalendarIcon class="w-6 h-6" />
         <span>Đặt lịch khám</span>
       </button>
-      <button @click="openAddPetPopup"
-        class="flex-1 flex items-center justify-center gap-4 py-6 rounded-lg bg-white border border-teal-200 text-teal-700 font-bold text-xl hover:!bg-teal-700 hover:!text-white hover:border-teal-700 transition duration-300">
+      <button
+        @click="openAddPetPopup"
+        class="flex-1 flex items-center justify-center gap-4 py-6 rounded-lg bg-white border border-teal-200 text-teal-700 font-bold text-xl hover:!bg-teal-700 hover:!text-white hover:border-teal-700 transition duration-300"
+      >
         <AddIcon class="w-4 h-4" />
         <span>Thêm thú cưng</span>
       </button>
     </div>
 
     <div class="grid grid-cols-3 gap-11 mb-6">
-      <div class="bg-white border text-sky-400 rounded-2xl p-6 flex flex-col justify-between">
+      <div
+        class="bg-white border text-sky-400 rounded-2xl p-6 flex flex-col justify-between"
+      >
         <div class="flex justify-between items-center mb-10">
-          <span class="text-gray-600 text-lg font-normal">Lịch hẹn sắp tới</span>
+          <span class="text-gray-600 text-lg font-normal"
+            >Lịch hẹn sắp tới</span
+          >
           <CalendarIcon class="w-7 h-7" />
         </div>
         <div>
@@ -46,7 +55,9 @@
         </div>
       </div>
 
-      <div class="bg-white border text-orange-400 rounded-2xl p-6 flex flex-col justify-between">
+      <div
+        class="bg-white border text-orange-400 rounded-2xl p-6 flex flex-col justify-between"
+      >
         <div class="flex justify-between items-center mb-10">
           <span class="text-gray-600 text-lg font-normal">Nhắc tiêm phòng</span>
           <VaccineIcon class="w-7 h-7" />
@@ -61,9 +72,13 @@
         </div>
       </div>
 
-      <div class="bg-white border text-purple-400 rounded-2xl p-6 flex flex-col justify-between">
+      <div
+        class="bg-white border text-purple-400 rounded-2xl p-6 flex flex-col justify-between"
+      >
         <div class="flex justify-between items-center mb-10">
-          <span class="text-gray-600 text-lg font-normal">Thanh toán chờ xử lý</span>
+          <span class="text-gray-600 text-lg font-normal"
+            >Thanh toán chờ xử lý</span
+          >
           <DollarIcon class="w-5 h-5" />
         </div>
         <div>
@@ -78,79 +93,125 @@
     </div>
 
     <!-- Lịch hẹn sắp tới -->
-    <div class="bg-white border !border-gray-200 shadow-sm rounded-2xl p-6 mb-6">
-      <div class="flex flex-row justify-between items-start mb-8 sm:flex-col sm:gap-4">
+    <div
+      class="bg-white border !border-gray-200 shadow-sm rounded-2xl p-6 mb-6"
+    >
+      <div
+        class="flex flex-row justify-between items-start mb-8 sm:flex-col sm:gap-4"
+      >
         <div>
           <h3 class="text-xl font-medium text-black mb-1">Lịch hẹn sắp tới</h3>
           <p class="text-sm text-gray-500 font-medium">
             Các buổi khám được xếp lịch
           </p>
         </div>
-        <button @click="$router.push('/lich-hen')"
-          class="flex items-center gap-1 text-teal-500 font-semibold text-base hover:text-teal-600 transition">
+        <button
+          @click="$router.push('/khach-hang/lich-hen')"
+          class="flex items-center gap-1 text-teal-500 font-semibold text-base hover:text-teal-600 transition"
+        >
           <span>Xem tất cả</span>
           <ArrowRightIcon class="w-4 h-4" />
         </button>
       </div>
 
       <div class="space-y-4">
-        <div v-for="appt in upcomingAppointments.slice(0, 3)" :key="appt.id"
-          class="border border-gray-200 rounded-lg p-4 flex justify-between items-center sm:flex-col sm:items-start sm:gap-4">
-          <div class="flex gap-6 items-center sm:flex-col sm:items-start sm:gap-3">
-            <div class="bg-teal-100 rounded-lg w-14 h-14 flex flex-col items-center justify-center flex-shrink-0">
-              <div class="text-teal-800 font-bold text-base">
-                {{ appt.date.split("/")[0] }}
-              </div>
-              <div class="text-teal-900 text-xs font-normal font-['Inter']">
-                Th {{ appt.date.split("/")[1] }}
-              </div>
+        <div
+          v-for="appt in upcomingAppointments.slice(0, 3)"
+          :key="appt.id"
+          class="border !border-gray-300 rounded-lg p-4"
+          style="
+            display: flex !important;
+            align-items: center !important;
+            gap: 1rem !important;
+            flex-direction: row !important;
+          "
+        >
+          <!-- Date Badge -->
+          <div
+            class="bg-teal-100 rounded-lg w-14 h-14 flex flex-col items-center justify-center"
+            style="
+              flex-shrink: 0 !important;
+              width: 3.5rem !important;
+              height: 3.5rem !important;
+            "
+          >
+            <div class="text-teal-800 font-bold text-base">
+              {{ appt.date.split("/")[0] }}
             </div>
-            <div>
-              <h4 class="font-semibold text-base text-black mb-1">
-                {{ appt.service }}
-              </h4>
-              <p class="text-gray-500 text-sm font-semibold mb-2">
-                Thú cưng:
-                <span :class="getPetColorClass(appt.pet)" class="font-bold">
-                  {{ appt.pet }}
-                </span>
-              </p>
-              <div class="flex gap-4 items-center text-sm font-semibold text-gray-500">
-                <div class="flex items-center gap-1">
-                  <img src="https://www.figma.com/api/mcp/asset/14f8de4e-b077-4bd3-a835-d2b8982e18b3" alt="Time"
-                    class="w-4 h-4" />
-                  <span>{{ appt.time }}</span>
-                </div>
-                <div class="flex items-center gap-1">
-                  <img src="https://www.figma.com/api/mcp/asset/7e6f603b-5f0e-47c5-a267-8d650a959528" alt="Doctor"
-                    class="w-4 h-4" />
-                  <span>{{ appt.doctor }}</span>
-                </div>
+            <div class="text-teal-900 text-xs font-normal font-['Inter']">
+              Th {{ appt.date.split("/")[1] }}
+            </div>
+          </div>
+
+          <!-- Service Info - Takes up available space -->
+          <div
+            class="flex-1 min-w-0"
+            style="flex: 1 !important; min-width: 0 !important"
+          >
+            <h4 class="font-semibold text-base text-black mb-1">
+              {{ appt.service }}
+            </h4>
+            <p class="text-gray-500 text-sm font-semibold mb-2">
+              Thú cưng:
+              <span :class="getPetColorClass(appt.pet)" class="font-bold">
+                {{ appt.pet }}
+              </span>
+            </p>
+            <div
+              class="flex gap-4 items-center text-sm font-semibold text-gray-500"
+            >
+              <div class="flex items-center gap-1">
+                <ClockIcon class="w-4 h-4 text-gray-500" />
+                <span>{{ appt.time }}</span>
+              </div>
+              <div class="flex items-center gap-1">
+                <HeartIcon class="w-4 h-4 text-gray-500" />
+                <span>{{ appt.doctor }}</span>
               </div>
             </div>
           </div>
-          <div class="flex flex-col gap-2 items-center sm:flex-row sm:w-full sm:justify-between">
-            <span class="bg-teal-100 text-teal-800 font-bold text-base px-2 py-1 rounded-lg">
+
+          <!-- Status Badge and Button - Aligned to right -->
+          <div
+            class="flex items-center gap-3"
+            style="
+              display: flex !important;
+              align-items: center !important;
+              gap: 0.75rem !important;
+              flex-shrink: 0 !important;
+            "
+          >
+            <span
+              :class="getStatusColorClass(appt.status)"
+              class="font-bold text-sm px-3 py-1.5 rounded-lg whitespace-nowrap"
+            >
               {{ statusLabel(appt.status) }}
             </span>
-            <button @click="openAppointmentDetail(appt)"
-              class="border border-gray-300 text-black font-bold text-base px-3 py-1 rounded-lg hover:bg-gray-50 transition">
+            <button
+              @click="openAppointmentDetail(appt)"
+              class="border !border-gray-300 text-black font-bold text-sm px-4 py-1.5 rounded-lg hover:bg-gray-50 transition whitespace-nowrap"
+            >
               Chi tiết
             </button>
           </div>
         </div>
 
         <!-- Nếu không có lịch hẹn -->
-        <div v-if="upcomingAppointments.length === 0" class="text-center py-8 text-gray-500">
+        <div
+          v-if="upcomingAppointments.length === 0"
+          class="text-center py-8 text-gray-500"
+        >
           Chưa có lịch hẹn sắp tới
         </div>
       </div>
     </div>
 
     <!-- Nhắc tiêm phòng -->
-    <div class="bg-yellow-50/30 border !border-yellow-300 shadow-sm rounded-2xl p-8">
+    <div
+      class="bg-yellow-50/30 border !border-yellow-300 shadow-sm rounded-2xl p-8"
+    >
       <div class="flex gap-2 items-start mb-6 text-orange-700">
-       <VaccineIcon class="w-7 h-7" />
+        <VaccineIcon class="w-7 h-7" />
         <div>
           <h3 class="text-xl font-bold text-orange-900">Nhắc nhở tiêm phòng</h3>
           <p class="text-base text-orange-700 mt-2">
@@ -160,8 +221,11 @@
       </div>
 
       <div class="space-y-3">
-        <div v-for="reminder in vaccinationReminders" :key="reminder.pet"
-          class="bg-white border !border-yellow-300 rounded-lg p-3.5 flex justify-between items-center">
+        <div
+          v-for="reminder in vaccinationReminders"
+          :key="reminder.pet"
+          class="bg-white border !border-yellow-300 rounded-lg p-3.5 flex justify-between items-center"
+        >
           <div>
             <h4 class="font-bold text-base text-black mb-1">
               {{ reminder.pet }}
@@ -174,13 +238,16 @@
             <p class="text-orange-700 font-bold text-base mb-1">
               Đến hạn: {{ reminder.dueDate }}
             </p>
-            <button @click="
-              openVaccinationBooking(
-                reminder.pet,
-                reminder.vaccine,
-                reminder.dueDate
-              )
-              " class="text-teal-500 font-semibold text-sm hover:text-teal-600 transition">
+            <button
+              @click="
+                openVaccinationBooking(
+                  reminder.pet,
+                  reminder.vaccine,
+                  reminder.dueDate
+                )
+              "
+              class="text-teal-500 font-semibold text-sm hover:text-teal-600 transition"
+            >
               Đặt lịch ngay
             </button>
           </div>
@@ -190,16 +257,31 @@
   </div>
 
   <!-- Các Popup -->
-  <ThemThuCung ref="themThuCungRef" :isOpen="isAddPetOpen" @close="closeAddPetPopup" @submit="handleAddPetSubmit" />
+  <ThemThuCung
+    ref="themThuCungRef"
+    :isOpen="isAddPetOpen"
+    @close="closeAddPetPopup"
+    @submit="handleAddPetSubmit"
+  />
 
   <!-- Local success popup (replaces missing ThemThuCungThanhCong component) -->
-  <div v-if="isSuccessPopupOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-    @click.self="closeSuccessPopup">
-    <div class="bg-white border border-black/15 rounded-[10px] w-full max-w-[512px] m-4 p-6">
+  <div
+    v-if="isSuccessPopupOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+    @click.self="closeSuccessPopup"
+  >
+    <div
+      class="bg-white border border-black/15 rounded-[10px] w-full max-w-[512px] m-4 p-6"
+    >
       <div class="flex flex-col gap-4 items-center justify-center">
-        <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center">
-          <img src="https://www.figma.com/api/mcp/asset/49ad787d-519e-4d49-84a2-20bd7851ef0c" alt="Success"
-            class="w-10 h-10" />
+        <div
+          class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center"
+        >
+          <img
+            src="https://www.figma.com/api/mcp/asset/49ad787d-519e-4d49-84a2-20bd7851ef0c"
+            alt="Success"
+            class="w-10 h-10"
+          />
         </div>
         <div class="flex flex-col gap-2 text-center">
           <h2 class="text-2xl font-semibold text-neutral-950">
@@ -207,9 +289,7 @@
           </h2>
           <p class="text-sm text-gray-600">
             Bạn có muốn đặt lịch khám cho bé
-            {{
-              newPetData.name || newPetData.ten || newPetData.ten_thu_cung
-            }}
+            {{ newPetData.name || newPetData.ten || newPetData.ten_thu_cung }}
             ngay không?
           </p>
         </div>
@@ -237,12 +317,18 @@
         </div>
 
         <div class="flex gap-6 items-center">
-          <button type="button" @click="handleBookAppointment(newPetData)"
-            class="bg-[#5a9690] px-8 py-2 rounded-lg text-sm font-semibold text-white">
+          <button
+            type="button"
+            @click="handleBookAppointment(newPetData)"
+            class="bg-[#5a9690] px-8 py-2 rounded-lg text-sm font-semibold text-white"
+          >
             Đặt lịch khám
           </button>
-          <button type="button" @click="closeSuccessPopup"
-            class="bg-white border border-black/15 px-8 py-2 rounded-lg text-sm font-semibold text-black">
+          <button
+            type="button"
+            @click="closeSuccessPopup"
+            class="bg-white border border-black/15 px-8 py-2 rounded-lg text-sm font-semibold text-black"
+          >
             Đóng
           </button>
         </div>
@@ -250,23 +336,33 @@
     </div>
   </div>
 
-  <DatLichKham :isOpen="isBookingPopupOpen" :initialData="rebookData" @close="closeBookingPopup"
-    @confirm="handleBookingConfirm" @openAddPet="openAddPetPopup" />
+  <DatLichKham
+    :isOpen="isBookingPopupOpen"
+    :initialData="rebookData"
+    @close="closeBookingPopup"
+    @confirm="handleBookingConfirm"
+    @openAddPet="openAddPetPopup"
+  />
 
-  <ChiTietLichHen :isOpen="isAppointmentDetailOpen" :selectedAppt="selectedAppointment"
-    @close="closeAppointmentDetail" />
+  <ChiTietLichHen
+    :isOpen="isAppointmentDetailOpen"
+    :selectedAppt="selectedAppointment"
+    @close="closeAppointmentDetail"
+  />
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import axios from "axios";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
+//Icon SVG
 import HeartIcon from "@/assets/svg/Heart.svg";
 import CalendarIcon from "@/assets/svg/calendar.svg";
 import AddIcon from "@/assets/svg/add.svg";
 import DollarIcon from "@/assets/svg/dollar.svg";
 import VaccineIcon from "@/assets/svg/vaccine.svg";
 import ArrowRightIcon from "@/assets/svg/arrow-right.svg";
+import ClockIcon from "@/assets/svg/clock.svg";
 
 import ThemThuCung from "../ThuCungCuaToi/ThemThuCung/index.vue";
 import DatLichKham from "../LichHen/DatLichKham/index.vue";
@@ -321,8 +417,8 @@ const mapAppointment = (item) => {
     weight: item.thuCung?.can_nang
       ? `${item.thuCung.can_nang} kg`
       : item.thuCung?.weight
-        ? `${item.thuCung.weight} kg`
-        : "-",
+      ? `${item.thuCung.weight} kg`
+      : "-",
     doctor: item.nhanVien
       ? item.nhanVien.full_name || item.nhanVien.name
       : "Chưa phân công",
@@ -410,6 +506,14 @@ const statusLabel = (s) => {
   if (st === "pending") return "Chờ xác nhận";
   if (st === "paid") return "Đã thanh toán";
   return "Đã xác nhận";
+};
+
+const getStatusColorClass = (s) => {
+  const st = String(s || "").toLowerCase();
+  if (st === "pending") return "bg-amber-100 text-amber-800";
+  if (st.includes("confirmed")) return "bg-teal-100 text-teal-800";
+  if (st === "paid") return "bg-green-100 text-green-800";
+  return "bg-teal-100 text-teal-800"; // default
 };
 
 // Nhắc tiêm phòng (có thể lấy từ API sau)

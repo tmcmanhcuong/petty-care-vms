@@ -3,44 +3,28 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
   >
     <div
-      class="bg-white border border-gray-200/60 rounded-[10px] shadow-lg w-[510px] max-h-[90vh] overflow-y-auto relative"
+      class="bg-white border !border-gray-300 rounded-[10px] shadow-lg w-[510px] max-h-[90vh] overflow-y-auto relative"
     >
-      <!-- Close Button -->
-      <button
-        @click="$emit('close')"
-        class="absolute right-4 top-4 w-4 h-4 opacity-70 hover:opacity-100 transition-opacity"
-      >
-        <img :src="iconClose" alt="Close" class="w-full h-full" />
-      </button>
-
       <!-- Header -->
       <div class="flex flex-col gap-2 px-6 pt-6 pb-4">
-        <h2
-          class="font-nunito font-semibold text-lg leading-[18px] text-neutral-950 tracking-tight"
-        >
-          Thêm đối tác cung cấp
-        </h2>
-        <p class="font-nunito text-sm leading-5 text-[#717182] tracking-tight">
+        <h2 class="font-semibold text-lg text-black">Thêm đối tác cung cấp</h2>
+        <p class="text-sm text-gray-500 tracking-tight">
           Thêm nhà cung cấp mới vào hệ thống
         </p>
       </div>
 
       <!-- Content -->
-      <div class="flex flex-col gap-4 px-6 py-4">
+      <div class="flex flex-col gap-4 px-6 py-1">
         <!-- Company Information Section -->
-        <div class="flex flex-col gap-3 pb-4 border-b border-gray-200/60">
-          <h3
-            class="font-nunito text-sm leading-5 text-[#364153] tracking-tight"
-          >
+        <div class="flex flex-col gap-3 pb-4 border-b !border-gray-300">
+          <h3 class="text-sm text-[#364153] tracking-tight">
             Thông tin Công ty
           </h3>
 
           <div class="grid grid-cols-2 gap-4">
             <!-- Supplier Code -->
             <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+              <label class="text-sm text-gray-500 tracking-tight mb-0">
                 Mã NCC (Optional)
               </label>
               <input
@@ -53,9 +37,7 @@
 
             <!-- Supplier Name -->
             <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+              <label class="text-sm text-gray-500 tracking-tight mb-0">
                 Tên nhà cung cấp (*)
               </label>
               <input
@@ -69,9 +51,7 @@
 
           <!-- Address -->
           <div class="flex flex-col gap-0">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-            >
+            <label class="text-sm text-gray-500 tracking-tight mb-0">
               Địa chỉ
             </label>
             <input
@@ -85,9 +65,7 @@
           <!-- Tax Code -->
           <div class="grid grid-cols-2 gap-4">
             <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+              <label class="text-sm text-gray-500 tracking-tight mb-0">
                 Mã số thuế (Optional)
               </label>
               <input
@@ -111,9 +89,7 @@
           <div class="grid grid-cols-2 gap-4">
             <!-- Contact Name -->
             <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+              <label class="text-sm text-gray-500 tracking-tight mb-0">
                 Tên người liên hệ
               </label>
               <input
@@ -126,9 +102,7 @@
 
             <!-- Phone -->
             <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+              <label class="text-sm text-gray-500 tracking-tight mb-0">
                 Số điện thoại (*)
               </label>
               <input
@@ -142,9 +116,7 @@
 
           <!-- Email -->
           <div class="flex flex-col gap-0">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-            >
+            <label class="text-sm text-gray-500 tracking-tight mb-0">
               Email
             </label>
             <input
@@ -157,9 +129,7 @@
 
           <!-- Notes -->
           <div class="flex flex-col gap-0">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-            >
+            <label class="text-sm text-gray-500 tracking-tight mb-0">
               Ghi chú
             </label>
             <textarea
@@ -178,25 +148,20 @@
       >
         <button
           @click="$emit('close')"
-          class="bg-white border border-gray-200/60 rounded-lg h-9 px-[17px] py-[9px] hover:bg-gray-50 transition-colors"
+          class="bg-white border !border-gray-300 rounded-lg h-9 px-3 py-2 hover:bg-gray-50 transition-colors"
           :disabled="isSubmitting"
         >
-          <span
-            class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
-            >Hủy</span
-          >
+          <span class="font-medium text-sm text-black">Hủy</span>
         </button>
         <button
           @click="handleSubmit"
-          class="bg-[#009689] rounded-lg h-9 px-4 py-2 hover:bg-[#007d72] transition-colors"
+          class="bg-[#5a9690] rounded-lg h-9 px-4 py-2 hover:bg-[#5a9690]/80 transition-colors"
           :disabled="!isFormValid || isSubmitting"
           :class="{
             'opacity-50 cursor-not-allowed': !isFormValid || isSubmitting,
           }"
         >
-          <span
-            class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
-          >
+          <span class="font-medium text-sm text-white">
             {{ isSubmitting ? "Đang thêm..." : "Thêm" }}
           </span>
         </button>

@@ -1,10 +1,11 @@
 <template>
-  <div class="fixed inset-0 z-0 flex items-center justify-center p-5 pt-20 bg-[#eeeeee]">
+<div class="fixed inset-0 z-0 bg-[#eeeeee] overflow-y-auto top-[64px]">
+  <div class="min-h-full flex items-center justify-center p-4 pb-20">
     <div
-      class="bg-white rounded-3xl shadow-2xl p-14 w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-16 overflow-hidden max-h-[calc(100vh-80px)] overflow-y-auto"
+      class="responsive-modal bg-white rounded-3xl shadow-2xl p-6 lg:p-14 w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 overflow-hidden"
     >
       <div
-        class="relative w-full max-w-lg h-96 lg:h-auto flex-shrink-0 rounded-2xl overflow-hidden group cursor-pointer"
+        class="relative w-full max-w-lg hidden md:block md:h-64 lg:h-auto flex-shrink-0 rounded-2xl overflow-hidden group cursor-pointer"
       >
         <img
           src="../../../assets/img_imports/sign_in_up_img/sign-img1.png"
@@ -44,14 +45,14 @@
           </div>
         </div>
       </div>
-      <div class="w-full max-w-md space-y-8">
-        <div class="text-center space-y-4">
+      <div class="w-full max-w-md space-y-6 lg:space-y-8">
+        <div class="text-center space-y-2 lg:space-y-4">
           <h1
-            class="text-5xl font-bold text-teal-800 font-['Montserrat_Alternates']"
+            class="text-3xl lg:text-5xl font-bold text-teal-800 font-['Montserrat_Alternates']"
           >
             PETTY Xin Chào
           </h1>
-          <p class="text-base text-gray-700 font-medium">
+          <p class="text-sm lg:text-base text-gray-700 font-medium">
             Bắt đầu trải nghiệm các dịch vụ tại PETTY ngay nào
           </p>
         </div>
@@ -209,6 +210,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script setup>
@@ -401,8 +403,37 @@ const handleFacebookLogin = () => {
 @font-face {
   font-family: "Montserrat Alternates";
   src: url("https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@700&display=swap")
-    format("woff2");
+  format("woff2");
   font-weight: 700;
   font-display: swap;
+}
+
+@media (max-height: 900px) {
+  .responsive-modal {
+    transform: scale(0.9);
+    transform-origin: center;
+  }
+}
+
+@media (max-height: 800px) {
+  .responsive-modal {
+    transform: scale(0.85);
+    transform-origin: center;
+  }
+}
+
+@media (max-height: 700px) {
+  .responsive-modal {
+    transform: scale(0.8);
+    transform-origin: center;
+  }
+}
+
+@media (max-height: 600px) {
+  .responsive-modal {
+    transform: none;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
 }
 </style>

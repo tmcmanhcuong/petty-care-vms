@@ -3,15 +3,15 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
   >
     <div
-      class="bg-white border border-gray-200/60 rounded-[10px] shadow-lg w-[510px] relative"
+      class="bg-white border !border-gray-300 rounded-[10px] shadow-lg w-[510px] relative"
     >
       <div class="p-6 flex flex-col gap-4">
         <!-- Close Button -->
         <button
           @click="$emit('close')"
-          class="absolute right-4 top-4 w-4 h-4 opacity-70 hover:opacity-100 transition-opacity"
+          class="absolute right-6 top-4 w-4 h-4 opacity-70 hover:opacity-100 transition-opacity"
         >
-          <img :src="iconClose" alt="Close" class="w-full h-full" />
+          <CloseIcon />
         </button>
 
         <!-- Header -->
@@ -58,13 +58,13 @@
                       : "Chọn nhân viên"
                   }}
                 </span>
-                <img :src="iconChevronDown" alt="Dropdown" class="w-4 h-4" />
+                <ChevronDownIcon />
               </button>
 
               <!-- Dropdown list -->
               <div
                 v-if="showStaffDropdown"
-                class="absolute left-0 mt-2 w-[260px] bg-white border rounded-lg shadow-lg z-50 max-h-56 overflow-auto"
+                class="absolute left-0 mt-2 w-[260px] bg-white border !border-gray-300 rounded-lg shadow-lg z-50 max-h-56 overflow-auto"
               >
                 <ul>
                   <li v-for="staff in staffList" :key="staff.id">
@@ -171,7 +171,7 @@
                   ></div>
                 </button>
                 <div class="flex items-center gap-2">
-                  <img :src="iconSun" alt="Morning" class="w-4 h-4" />
+                  <SunIcon />
                   <span
                     class="font-nunito text-base leading-6 text-neutral-950 tracking-tight"
                   >
@@ -202,7 +202,7 @@
                   ></div>
                 </button>
                 <div class="flex items-center gap-2">
-                  <img :src="iconSunset" alt="Afternoon" class="w-4 h-4" />
+                  <SunsetIcon />
                   <span
                     class="font-nunito text-base leading-6 text-neutral-950 tracking-tight"
                   >
@@ -233,7 +233,7 @@
                   ></div>
                 </button>
                 <div class="flex items-center gap-2">
-                  <img :src="iconMoon" alt="Night" class="w-4 h-4" />
+                  <HalfMoonIcon />
                   <span
                     class="font-nunito text-base leading-6 text-neutral-950 tracking-tight"
                   >
@@ -322,7 +322,7 @@
           <button
             @click="$emit('close')"
             :disabled="props.saving"
-            class="bg-white border border-gray-200/60 rounded-lg h-9 px-[17px] py-[9px] hover:bg-gray-50 transition-colors disabled:opacity-50"
+            class="bg-white border !border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
             <span
               class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
@@ -333,9 +333,9 @@
             @click="handleSave"
             :disabled="!isFormValid || props.saving"
             :class="[
-              'rounded-lg h-9 px-4 py-2 transition-colors',
+              'rounded-lg px-4 py-2 transition-colors',
               isFormValid && !props.saving
-                ? 'bg-[#009689] hover:bg-[#007d72]'
+                ? 'bg-[#5a9690] hover:bg-[#5a9690]/80'
                 : 'bg-gray-300 cursor-not-allowed',
             ]"
           >
@@ -380,6 +380,12 @@ const props = defineProps({
 
 // Emits
 const emit = defineEmits(["close", "save"]);
+//Icon SVG
+import CloseIcon from "@/assets/svg/close.svg";
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
+import SunIcon from "@/assets/svg/sun.svg";
+import SunsetIcon from "@/assets/svg/sunset.svg";
+import HalfMoonIcon from "@/assets/svg/half-moon.svg";
 
 // Icons (from Figma - expire in 7 days)
 const iconChevronDown =

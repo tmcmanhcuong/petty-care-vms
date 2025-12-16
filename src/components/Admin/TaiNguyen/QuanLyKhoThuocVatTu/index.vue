@@ -1,13 +1,9 @@
 <template>
-  <div class="relative w-full h-full">
+  <div class="relative w-full h-full px-8 py-6">
     <!-- Header -->
-    <div class="flex flex-col gap-0 h-[60px]">
-      <h1
-        class="font-nunito font-medium text-2xl leading-9 text-[#101828] tracking-wide"
-      >
-        Kho thuốc & Vật tư
-      </h1>
-      <p class="font-nunito text-base leading-6 text-[#4a5565] tracking-tight">
+    <div class="flex flex-col gap-1">
+      <h1 class="font-semibold text-2xl text-black">Kho thuốc & Vật tư</h1>
+      <p class="text-base font-medium text-gray-500">
         Quản lý hàng hóa, tồn kho và nhập xuất
       </p>
     </div>
@@ -41,13 +37,17 @@
           <div
             v-for="stat in inventoryStats"
             :key="stat.id"
-            class="bg-white border border-gray-200/60 rounded-[14px] p-[17px] flex items-center gap-3"
+            class="bg-white border !border-gray-300 rounded-[14px] p-[17px] flex items-center gap-3"
           >
             <div
               class="size-12 rounded-[10px] flex items-center justify-center"
               :class="stat.bgColor"
             >
-              <img :src="stat.icon" alt="" class="w-6 h-6" />
+              <component
+                :is="stat.icon"
+                class="w-6 h-6"
+                :class="stat.iconColor"
+              />
             </div>
             <div class="flex flex-col gap-0">
               <p
@@ -66,7 +66,9 @@
         </div>
 
         <!-- Main Content Card -->
-        <div class="bg-white border border-gray-200/60 rounded-[14px] p-6">
+        <div
+          class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6"
+        >
           <div class="flex flex-col gap-6">
             <!-- Header -->
             <div class="flex items-center justify-between h-9">
@@ -76,17 +78,20 @@
                 Danh sách hàng hóa
               </h3>
               <div class="flex items-center gap-3">
-                <button class="btn-secondary" @click="handleManageCategories">
-                  <img :src="iconFolder" alt="" class="btn-icon" />
-                  <span class="btn-text">Danh Mục Hàng Hoá</span>
+                <button
+                  class="bg-white border !border-[#5a9690] rounded-lg px-3 py-2 flex items-center gap-2 hover:bg-gray-50 transition-colors cursor-pointer"
+                  @click="handleManageCategories"
+                >
+                  <FolderIcon class="w-4 h-4 text-[#0d9488]" />
+                  <span class="text-[#0d9488]">Danh Mục Hàng Hoá</span>
                 </button>
                 <button
                   class="bg-[#5a9690] rounded-lg h-9 px-3 py-2 flex items-center gap-2 hover:bg-[#4a8580] transition-colors"
                   @click="isAddModalOpen = true"
                 >
-                  <img :src="iconAddItem" alt="" class="w-4 h-4" />
+                  <AddIcon class="w-4 h-4 text-white" />
                   <span
-                    class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
+                    class="font-nunito font-medium text-sm leading-5 text-white"
                   >
                     Thêm Hàng Hoá
                   </span>
@@ -98,11 +103,7 @@
             <div class="flex items-center gap-4 h-9">
               <!-- Search -->
               <div class="relative flex-1">
-                <img
-                  :src="iconSearchList"
-                  alt=""
-                  class="absolute left-3 top-[10px] w-4 h-4"
-                />
+                <SearchIcon class="absolute left-3 top-[10px] w-4 h-4" />
                 <input
                   v-model="searchInventory"
                   type="text"
@@ -115,36 +116,33 @@
               <button
                 class="bg-[#f3f3f5] border-none rounded-lg h-9 w-48 px-[13px] py-0.5 flex items-center justify-between hover:bg-gray-200 transition-colors"
               >
-                <img :src="iconFilterList" alt="" class="w-4 h-4" />
                 <span
                   class="font-nunito text-sm leading-5 text-neutral-950 tracking-tight"
                   >{{ filterCategory }}</span
                 >
-                <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+                <ChevronDownIcon />
               </button>
 
               <!-- Unit Filter -->
               <button
                 class="bg-[#f3f3f5] border-none rounded-lg h-9 w-48 px-[13px] py-0.5 flex items-center justify-between hover:bg-gray-200 transition-colors"
               >
-                <img :src="iconFilterList" alt="" class="w-4 h-4" />
                 <span
                   class="font-nunito text-sm leading-5 text-neutral-950 tracking-tight"
                   >{{ filterUnit }}</span
                 >
-                <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+                <ChevronDownIcon />
               </button>
 
               <!-- Status Filter -->
               <button
                 class="bg-[#f3f3f5] border-none rounded-lg h-9 w-48 px-[13px] py-0.5 flex items-center justify-between hover:bg-gray-200 transition-colors"
               >
-                <img :src="iconFilterList" alt="" class="w-4 h-4" />
                 <span
                   class="font-nunito text-sm leading-5 text-neutral-950 tracking-tight"
                   >{{ filterStatus }}</span
                 >
-                <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+                <ChevronDownIcon />
               </button>
             </div>
 
@@ -304,7 +302,7 @@
                         class="bg-white border border-gray-200/60 rounded-lg h-8 px-[10px] py-[7px] flex items-center gap-2 hover:bg-gray-50 transition-colors ml-auto"
                         @click="handleOpenTheKho(item)"
                       >
-                        <img :src="iconEyeList" alt="" class="w-4 h-4" />
+                        <EyeIcon class="w-4 h-4" />
                         <span
                           class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
                           >Thẻ kho</span
@@ -328,14 +326,10 @@
                   class="flex items-center gap-2 px-3 py-2 rounded-lg opacity-50"
                   disabled
                 >
-                  <img :src="iconChevronLeft" alt="" class="w-4 h-4" />
-                  <span
-                    class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
-                    >Previous</span
-                  >
+                  <ChevronLeftIcon />
                 </button>
                 <button
-                  class="bg-white border border-gray-200/60 rounded-lg w-9 h-9 flex items-center justify-center"
+                  class="bg-white border !border-gray-300 rounded-lg w-9 h-9 flex items-center justify-center"
                 >
                   <span
                     class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
@@ -346,11 +340,7 @@
                   class="flex items-center gap-2 px-3 py-2 rounded-lg opacity-50"
                   disabled
                 >
-                  <span
-                    class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
-                    >Next</span
-                  >
-                  <img :src="iconChevronRight" alt="" class="w-4 h-4" />
+                  <ChevronRightIcon />
                 </button>
               </div>
             </div>
@@ -361,7 +351,7 @@
       <!-- Nhập kho Tab -->
       <div
         v-if="activeTab === 'nhap-kho'"
-        class="bg-white border border-gray-200/60 rounded-[14px] p-6"
+        class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6"
       >
         <div class="flex flex-col gap-[30px]">
           <!-- Header -->
@@ -372,13 +362,11 @@
               Lịch sử Nhập kho
             </h3>
             <button
-              class="bg-[#009689] rounded-lg h-9 px-3 py-2 flex items-center gap-2 hover:bg-[#007d72] transition-colors"
+              class="bg-[#5a9690] rounded-lg h-9 px-3 py-2 flex items-center gap-2 hover:bg-[#5a9690]/80 transition-colors"
               @click="isTaoPhieuNhapModalOpen = true"
             >
-              <img :src="iconPlus" alt="" class="w-4 h-4" />
-              <span
-                class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
-              >
+              <AddIcon class="text-white" />
+              <span class="font-medium text-sm text-white tracking-tight">
                 Tạo phiếu nhập
               </span>
             </button>
@@ -468,7 +456,7 @@
                       class="bg-white border border-gray-200/60 rounded-lg h-8 px-[10px] py-[7px] flex items-center gap-2 hover:bg-gray-50 transition-colors ml-auto"
                       @click="handleOpenChiTietPhieuNhap(record)"
                     >
-                      <img :src="iconEye" alt="" class="w-4 h-4" />
+                      <EyeIcon />
                       <span
                         class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
                         >Chi tiết</span
@@ -485,7 +473,7 @@
       <!-- Kiểm kê Tab -->
       <div
         v-else-if="activeTab === 'kiem-ke'"
-        class="bg-white border border-gray-200/60 rounded-[14px] p-6"
+        class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6"
       >
         <div class="flex flex-col gap-[30px]">
           <!-- Header -->
@@ -504,11 +492,9 @@
             </div>
             <button
               @click="handleCanBangKho"
-              class="bg-[#009689] rounded-lg h-9 px-4 py-2 hover:bg-[#007d72] transition-colors"
+              class="bg-[#5a9690] rounded-lg h-9 px-4 py-2 hover:bg-[#5a9690]/80 transition-colors"
             >
-              <span
-                class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
-              >
+              <span class="font-medium text-sm text-white tracking-tight">
                 Cân bằng kho
               </span>
             </button>
@@ -635,18 +621,13 @@
                       >
                         {{ item.selectedReason || "Chọn lý do" }}
                       </span>
-                      <img
-                        :src="iconChevronDown"
-                        alt=""
-                        class="w-4 h-4 transition-transform"
-                        :class="{ 'rotate-180': item.showReasonDropdown }"
-                      />
+                      <ChevronDownIcon />
                     </button>
 
                     <!-- Dropdown lý do -->
                     <div
                       v-if="item.showReasonDropdown"
-                      class="absolute z-50 mt-1 w-40 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
+                      class="absolute z-50 mt-1 w-40 bg-white border !border-gray-200 rounded-lg shadow-lg overflow-hidden"
                     >
                       <button
                         v-for="reason in lyDoOptions"
@@ -686,7 +667,7 @@
       <!-- Nhà cung cấp Tab -->
       <div
         v-else-if="activeTab === 'nha-cung-cap'"
-        class="bg-white border border-gray-200/60 rounded-[14px] p-6"
+        class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6"
       >
         <div class="flex flex-col gap-6">
           <!-- Header -->
@@ -697,13 +678,11 @@
               Danh sách Nhà cung cấp
             </h3>
             <button
-              class="bg-[#009689] rounded-lg h-9 px-3 py-2 flex items-center gap-2 hover:bg-[#007d72] transition-colors"
+              class="bg-[#5a9690] rounded-lg h-9 px-3 py-2 flex items-center gap-2 hover:bg-[#5a9690]/80 transition-colors"
               @click="isThemDoiTacModalOpen = true"
             >
-              <img :src="iconPlus" alt="" class="w-4 h-4" />
-              <span
-                class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
-              >
+              <AddIcon class="text-white" />
+              <span class="font-medium text-sm text-white tracking-tight">
                 Thêm Nhà cung cấp
               </span>
             </button>
@@ -712,11 +691,7 @@
           <!-- Search and Filter -->
           <div class="flex items-center gap-4 h-9">
             <div class="relative flex-1">
-              <img
-                :src="iconSearch"
-                alt=""
-                class="absolute left-3 top-[10px] w-4 h-4"
-              />
+              <SearchIcon class="absolute left-3 top-[10px] w-4 h-4" />
               <input
                 v-model="searchQuery"
                 type="text"
@@ -727,12 +702,11 @@
             <button
               class="bg-[#f3f3f5] border-none rounded-lg h-9 w-48 px-[13px] py-0.5 flex items-center justify-between hover:bg-gray-200 transition-colors"
             >
-              <img :src="iconFilter" alt="" class="w-4 h-4" />
               <span
                 class="font-nunito text-sm leading-5 text-neutral-950 tracking-tight"
                 >Tất cả</span
               >
-              <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+              <ChevronDownIcon />
             </button>
           </div>
 
@@ -865,18 +839,18 @@
                         class="bg-white border border-gray-200/60 rounded-lg w-[38px] h-8 flex items-center justify-center hover:bg-gray-50 transition-colors"
                         @click="handleEditSupplier(supplier)"
                       >
-                        <img :src="iconView" alt="" class="w-4 h-4" />
+                        <UpdateIcon class="w-4 h-4" />
                       </button>
-                      <button
+                      <!-- <button
                         class="bg-white border border-gray-200/60 rounded-lg w-[38px] h-8 flex items-center justify-center hover:bg-gray-50 transition-colors"
                       >
                         <img :src="iconEdit" alt="" class="w-4 h-4" />
-                      </button>
+                      </button> -->
                       <button
                         class="bg-white border border-gray-200/60 rounded-lg w-[38px] h-8 flex items-center justify-center hover:bg-gray-50 transition-colors"
                         @click="handleDeleteSupplier(supplier)"
                       >
-                        <img :src="iconDelete" alt="" class="w-4 h-4" />
+                        <TrashIcon class="w-4 h-4" />
                       </button>
                     </div>
                   </td>
@@ -904,11 +878,7 @@
                     : 'opacity-50 cursor-not-allowed'
                 "
               >
-                <img :src="iconChevronLeft" alt="" class="w-4 h-4" />
-                <span
-                  class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
-                  >Previous</span
-                >
+                <ChevronLeftIcon />
               </button>
               <button
                 v-for="page in totalPages"
@@ -917,14 +887,14 @@
                 class="rounded-lg w-9 h-9 flex items-center justify-center transition-all"
                 :class="
                   page === currentPage
-                    ? 'bg-white border border-gray-200/60'
+                    ? 'bg-white border !border-gray-300'
                     : 'hover:bg-gray-100'
                 "
               >
                 <span
                   class="font-nunito font-medium text-sm leading-5 tracking-tight"
                   :class="
-                    page === currentPage ? 'text-neutral-950' : 'text-[#4a5565]'
+                    page === currentPage ? 'text-black' : 'text-[#4a5565]'
                   "
                   >{{ page }}</span
                 >
@@ -939,11 +909,7 @@
                     : 'opacity-50 cursor-not-allowed'
                 "
               >
-                <span
-                  class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
-                  >Next</span
-                >
-                <img :src="iconChevronRight" alt="" class="w-4 h-4" />
+                <ChevronRightIcon />
               </button>
             </div>
           </div>
@@ -1037,7 +1003,20 @@ import { getPhieuNhapKhos } from "@/utils/phieuNhapKho";
 import { getKiemKes, createKiemKe } from "@/utils/kiemKe";
 import { getPhieuChis } from "@/utils/phieuChi";
 import { showErrorToast, showSuccessToast } from "@/utils/toast";
-
+//Icon SVG
+import FolderIcon from "@/assets/svg/folder.svg";
+import AddIcon from "@/assets/svg/add.svg";
+import SearchIcon from "@/assets/svg/search.svg";
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
+import ChevronLeftIcon from "@/assets/svg/chevron-left.svg";
+import ChevronRightIcon from "@/assets/svg/chevron-right.svg";
+import ArrowDownIcon from "@/assets/svg/arrow-down.svg";
+import WarningIcon from "@/assets/svg/warning.svg";
+import ClockIcon from "@/assets/svg/clock.svg";
+import DollarIcon from "@/assets/svg/dollar.svg";
+import EyeIcon from "@/assets/svg/eye.svg";
+import UpdateIcon from "@/assets/svg/update.svg";
+import TrashIcon from "@/assets/svg/trash.svg";
 // State
 const activeTab = ref("danh-sach");
 const searchQuery = ref("");
@@ -1094,7 +1073,8 @@ const inventoryStats = computed(() => {
       count: `${outOfStock} mặt hàng`,
       bgColor: "bg-[#ffe2e2]",
       textColor: "text-[#e7000b]",
-      icon: iconStockOut,
+      icon: ArrowDownIcon,
+      iconColor: "text-[#e7000b]",
     },
     {
       id: 2,
@@ -1102,7 +1082,8 @@ const inventoryStats = computed(() => {
       count: `${lowStock} mặt hàng`,
       bgColor: "bg-[#ffedd4]",
       textColor: "text-[#f54900]",
-      icon: iconLowStock,
+      icon: WarningIcon,
+      iconColor: "text-[#f54900]",
     },
     {
       id: 3,
@@ -1110,7 +1091,8 @@ const inventoryStats = computed(() => {
       count: `${expiringSoon} mặt hàng`,
       bgColor: "bg-[#fef9c2]",
       textColor: "text-[#d08700]",
-      icon: iconExpiring,
+      icon: ClockIcon,
+      iconColor: "text-[#d08700]",
     },
     {
       id: 4,
@@ -1118,7 +1100,8 @@ const inventoryStats = computed(() => {
       count: formatCurrency(totalValue),
       bgColor: "bg-[#cbfbf1]",
       textColor: "text-[#009689]",
-      icon: iconTotalValue,
+      icon: DollarIcon,
+      iconColor: "text-[#009689]",
     },
   ];
 });
@@ -1922,33 +1905,4 @@ input[type="number"] {
 }
 
 /* Button Styles */
-.btn-secondary {
-  background: white;
-  border: 1px solid #5a9690;
-  border-radius: 8px;
-  padding: 8px 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-secondary:hover {
-  background: #f9fafb;
-}
-
-.btn-icon {
-  width: 16px;
-  height: 16px;
-}
-
-.btn-text {
-  font-family: "Nunito Sans", sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: -0.1504px;
-  color: #009689;
-}
 </style>

@@ -3,29 +3,23 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
   >
     <div
-      class="bg-white border border-gray-200/60 rounded-[10px] shadow-lg w-[860px] max-h-[90vh] overflow-y-auto relative"
+      class="bg-white border !border-gray-300 rounded-[10px] shadow-lg w-[860px] max-h-[90vh] overflow-y-auto relative"
     >
       <!-- Header -->
       <div class="flex flex-col gap-2 px-6 pt-6 pb-4">
-        <h2
-          class="font-nunito font-semibold text-lg leading-[18px] text-neutral-950 tracking-tight"
-        >
-          Tạo phiếu nhập hàng
-        </h2>
-        <p class="font-nunito text-sm leading-5 text-[#717182] tracking-tight">
+        <h2 class="font-semibold text-lg text-black">Tạo phiếu nhập hàng</h2>
+        <p class="font-medium text-sm text-gray-500">
           Nhập thông tin phiếu nhập kho mới
         </p>
       </div>
 
       <!-- Content -->
-      <div class="flex flex-col gap-4 px-6 py-4">
+      <div class="flex flex-col gap-4 px-6 py-1">
         <!-- Row 1: Supplier & Date -->
         <div class="grid grid-cols-2 gap-4">
           <!-- Supplier -->
           <div class="flex flex-col gap-0 relative">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-            >
+            <label class="font-medium text-sm text-black mb-0">
               Nhà cung cấp (*)
             </label>
             <button
@@ -34,14 +28,12 @@
               class="bg-[#f3f3f5] border-none rounded-lg h-9 px-[13px] py-0.5 flex items-center justify-between hover:bg-gray-200 transition-colors mt-0"
             >
               <span
-                class="font-nunito text-sm leading-5 tracking-tight"
-                :class="
-                  formData.supplierName ? 'text-neutral-950' : 'text-[#717182]'
-                "
+                class="font-medium text-sm text-black"
+                :class="formData.supplierName ? 'text-black' : 'text-gray-500'"
               >
                 {{ formData.supplierName || "Chọn nhà cung cấp" }}
               </span>
-              <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+              <ChevronDownIcon />
             </button>
 
             <!-- Supplier Dropdown -->
@@ -53,13 +45,13 @@
                 v-for="supplier in suppliers"
                 :key="supplier.id"
                 @click="selectSupplier(supplier)"
-                class="px-3 py-2 hover:bg-gray-50 cursor-pointer font-nunito text-sm"
+                class="px-3 py-2 hover:bg-gray-50 cursor-pointer font-medium text-sm"
               >
                 {{ supplier.name || supplier.ten_nha_cung_cap }}
               </div>
               <div
                 v-if="suppliers.length === 0"
-                class="px-3 py-2 text-gray-400 font-nunito text-sm"
+                class="px-3 py-2 text-gray-400 font-medium text-sm"
               >
                 Không có nhà cung cấp
               </div>
@@ -68,52 +60,43 @@
 
           <!-- Import Date -->
           <div class="flex flex-col gap-0">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-            >
+            <label class="font-medium text-sm text-black mb-0">
               Ngày nhập (*)
             </label>
             <input
               v-model="formData.importDate"
               type="date"
-              class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none mt-0"
+              class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-medium text-sm text-black tracking-tight outline-none mt-0"
             />
           </div>
         </div>
 
         <!-- Notes -->
         <div class="flex flex-col gap-0">
-          <label
-            class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-          >
-            Ghi chú
-          </label>
+          <label class="font-medium text-sm text-black mb-0"> Ghi chú </label>
           <textarea
             v-model="formData.notes"
             placeholder="Nhập ghi chú về phiếu nhập (nếu có)..."
             rows="3"
-            class="bg-[#f3f3f5] border-none rounded-lg px-3 py-2 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] resize-none mt-0"
+            class="bg-[#f3f3f5] border-none rounded-lg px-3 py-2 font-medium text-sm text-black tracking-tight outline-none placeholder:text-[#717182] resize-none mt-0"
           ></textarea>
         </div>
 
         <!-- Import Items Section -->
         <div
-          class="bg-gray-50 border border-gray-200/60 rounded-[10px] p-[17px] flex flex-col gap-3"
+          class="bg-gray-50 border !border-gray-300 rounded-[10px] p-[17px] flex flex-col gap-3"
         >
           <!-- Section Header -->
           <div class="flex items-center justify-between h-8">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight"
-            >
+            <label class="font-medium text-sm text-black mb-0">
               Danh sách hàng nhập
             </label>
             <button
               @click="addItem"
               class="bg-white border border-gray-200/60 rounded-lg h-8 px-[11px] py-0 flex items-center gap-2 hover:bg-gray-50 transition-colors"
             >
-              <img :src="iconPlus" alt="" class="w-4 h-4" />
-              <span
-                class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+              <AddIcon />
+              <span class="font-medium text-sm text-black tracking-tight"
                 >Thêm dòng</span
               >
             </button>
@@ -125,44 +108,37 @@
               <thead>
                 <tr class="border-b border-gray-200/60">
                   <th class="text-left py-[10px] px-2 min-w-[155px]">
-                    <span
-                      class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                    <span class="font-medium text-sm text-black tracking-tight"
                       >Tên hàng hóa (*)</span
                     >
                   </th>
                   <th class="text-left py-[10px] px-2 min-w-[50px]">
-                    <span
-                      class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                    <span class="font-medium text-sm text-black tracking-tight"
                       >Đơn vị</span
                     >
                   </th>
                   <th class="text-left py-[10px] px-2 min-w-[87px]">
-                    <span
-                      class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                    <span class="font-medium text-sm text-black tracking-tight"
                       >Số lượng (*)</span
                     >
                   </th>
                   <th class="text-left py-[10px] px-2 min-w-[80px]">
-                    <span
-                      class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                    <span class="font-medium text-sm text-black tracking-tight"
                       >Đơn giá (*)</span
                     >
                   </th>
                   <th class="text-left py-[10px] px-2 min-w-[62px]">
-                    <span
-                      class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                    <span class="font-medium text-sm text-black tracking-tight"
                       >Số lô (*)</span
                     >
                   </th>
                   <th class="text-left py-[10px] px-2 min-w-[157px]">
-                    <span
-                      class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                    <span class="font-medium text-sm text-black tracking-tight"
                       >Hạn sử dụng (*)</span
                     >
                   </th>
                   <th class="text-left py-[10px] px-2 min-w-[78px]">
-                    <span
-                      class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                    <span class="font-medium text-sm text-black tracking-tight"
                       >Thành tiền</span
                     >
                   </th>
@@ -190,7 +166,7 @@
                       >
                         {{ item.productName || "Chọn hàng hóa" }}
                       </span>
-                      <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+                      <ChevronDownIcon />
                     </button>
 
                     <!-- Product Dropdown -->
@@ -269,10 +245,9 @@
                   <!-- Total Price -->
                   <td class="py-2 px-2">
                     <span
-                      class="font-nunito text-sm leading-5 text-[#009689] tracking-tight"
+                      class="font-medium text-sm text-black tracking-tight"
+                      >{{ formatCurrency(item.total) }}</span
                     >
-                      {{ formatCurrency(item.total) }}
-                    </span>
                   </td>
 
                   <!-- Delete Button -->
@@ -281,7 +256,7 @@
                       @click="removeItem(index)"
                       class="rounded-lg h-8 w-9 flex items-center justify-center hover:bg-gray-100 transition-colors"
                     >
-                      <img :src="iconTrash" alt="Delete" class="w-4 h-4" />
+                      <TrashIcon class="w-4 h-4 text-red-500" />
                     </button>
                   </td>
                 </tr>
@@ -295,12 +270,12 @@
           class="bg-teal-50 rounded-[10px] px-4 h-14 flex items-center justify-between"
         >
           <span
-            class="font-nunito text-base leading-6 text-[#364153] tracking-tight"
+            class="font-medium text-base leading-6 text-[#364153] tracking-tight"
           >
             Tổng tiền thanh toán:
           </span>
           <span
-            class="font-nunito text-base leading-6 text-[#009689] tracking-tight"
+            class="font-medium text-base leading-6 text-[#009689] tracking-tight"
           >
             {{ formatCurrency(totalAmount) }}
           </span>
@@ -313,26 +288,21 @@
       >
         <button
           @click="$emit('close')"
-          class="bg-white border border-gray-200/60 rounded-lg h-9 px-[17px] py-[9px] hover:bg-gray-50 transition-colors"
+          class="bg-white border !border-gray-300 rounded-lg h-9 px-4 py-2 hover:bg-gray-50 transition-colors"
         >
-          <span
-            class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
-            >Hủy</span
-          >
+          <span class="font-medium text-sm text-black tracking-tight">Hủy</span>
         </button>
         <button
           @click="handleSubmit"
-          class="bg-[#009689] rounded-lg h-9 px-4 py-2 hover:bg-[#007d72] transition-colors"
+          class="bg-[#5a9690] rounded-lg h-9 px-4 py-2 hover:bg-[#5a9690]/80 transition-colors"
           :disabled="!isFormValid || isSubmitting"
           :class="{
             'opacity-50 cursor-not-allowed': !isFormValid || isSubmitting,
           }"
         >
-          <span
-            class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
-          >
-            {{ isSubmitting ? "Đang lưu..." : "Lưu phiếu nhập" }}
-          </span>
+          <span class="font-medium text-sm text-white tracking-tight">{{
+            isSubmitting ? "Đang lưu..." : "Lưu phiếu nhập"
+          }}</span>
         </button>
       </div>
     </div>
@@ -345,7 +315,10 @@ import { createPhieuNhapKho } from "@/utils/phieuNhapKho";
 import { getNhaCungCaps } from "@/utils/nhaCungCap";
 import { listHangHoa } from "@/utils/hangHoa";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
-
+//Icon SVG
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
+import AddIcon from "@/assets/svg/add.svg";
+import TrashIcon from "@/assets/svg/trash.svg";
 // Props
 defineProps({
   // No props needed for now
@@ -353,14 +326,6 @@ defineProps({
 
 // Emits
 const emit = defineEmits(["close", "save"]);
-
-// Icons from Figma (expire in 7 days)
-const iconChevronDown =
-  "https://www.figma.com/api/mcp/asset/a1ded1f1-d0c6-4c3b-b997-f20959d61b35";
-const iconPlus =
-  "https://www.figma.com/api/mcp/asset/64d11dfb-2f3b-498d-8e70-f9abb7dc2277";
-const iconTrash =
-  "https://www.figma.com/api/mcp/asset/a52fd607-bafd-4638-a83e-c099f421cb2d";
 
 // Data
 const suppliers = ref([]);

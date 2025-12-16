@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+import VueApexCharts from "vue3-apexcharts";
 import router from "./router";
 import Default from "./layout/wrapper/index.vue";
 import trangchu from "./layout/wrapper/layout_rong.vue";
@@ -25,6 +26,7 @@ const app = createApp(App);
 
 // install router and toast plugin
 app.use(router);
+app.use(VueApexCharts); // Đăng ký global component
 app.use(Toast, {
   // optional default options
   position: "top-right",

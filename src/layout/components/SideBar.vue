@@ -4,27 +4,26 @@
     data-name="Sidebar"
   >
     <!-- Header Section with Logo -->
-    <div
-      class="border-b border-[#0f766e] h-[80px] w-64"
-      data-name="Container"
-    >
+    <div class="border-b border-[#0f766e] h-[80px] w-64" data-name="Container">
       <div class="flex flex-col h-[80px] justify-center items-start px-6">
         <div class="flex gap-4 h-11 items-center w-full">
           <!-- Logo -->
-          <div class="bg-white rounded-[10px] w-10 h-10 flex items-center justify-center">
-            <img
-              :src="sharedIcons.logo"
-              alt="Petty Logo"
-              class="w-8 h-8"
-            />
+          <div
+            class="bg-white rounded-[10px] w-10 h-10 flex items-center justify-center"
+          >
+            <PettyIcon />
           </div>
-          
+
           <!-- Title Container -->
           <div class="h-11 flex flex-col items-start">
-            <h1 class="font-nunitoSans font-medium text-white text-xl leading-6">
+            <h1
+              class="font-nunitoSans font-medium text-white text-xl leading-6"
+            >
               {{ menuData.title }}
             </h1>
-            <p class="font-nunitoSans font-medium text-[#5eead4] text-xs leading-6">
+            <p
+              class="font-nunitoSans font-medium text-[#5eead4] text-xs leading-6"
+            >
               {{ menuData.subtitle }}
             </p>
           </div>
@@ -39,12 +38,16 @@
         <router-link
           v-if="item.type === 'single'"
           :to="item.path"
-          class="flex h-12 items-center justify-between pl-6 pr-6 cursor-pointer transition-colors"
-          :class="activeItem === item.key ? 'bg-[#5a9690] border-r-4 border-white' : 'hover:bg-[#3a6664]'"
+          class="flex h-12 items-center justify-between pl-2 pr-6 cursor-pointer transition-colors"
+          :class="
+            activeItem === item.key
+              ? 'bg-[#5a9690] border-r-4 border-white'
+              : 'hover:bg-[#3a6664]'
+          "
           @click="navigateTo(item.key)"
         >
           <div class="flex gap-3 items-center">
-            <div 
+            <div
               class="w-5 h-5 bg-white"
               :style="{
                 maskImage: `url(${item.icon})`,
@@ -54,7 +57,7 @@
                 maskPosition: 'center',
                 webkitMaskPosition: 'center',
                 maskSize: 'contain',
-                webkitMaskSize: 'contain'
+                webkitMaskSize: 'contain',
               }"
             ></div>
             <span class="font-nunitoSans font-semibold text-white text-base">
@@ -62,7 +65,7 @@
             </span>
           </div>
           <!-- Badge -->
-          <div 
+          <div
             v-if="item.badge"
             class="bg-[#fb2c36] rounded-lg px-2 py-0.5 min-w-[22px] h-[22px] flex items-center justify-center"
           >
@@ -75,12 +78,12 @@
         <!-- Group Menu Item (with children) -->
         <template v-else-if="item.type === 'group'">
           <div
-            class="flex h-12 items-center justify-between px-6 cursor-pointer hover:bg-[#3a6664] transition-colors"
+            class="flex h-12 items-center justify-between pl-2 pr-6 cursor-pointer hover:bg-[#3a6664] transition-colors"
             :class="{ 'bg-[#3a6664]': openSubmenus[item.key] }"
             @click="toggleSubmenu(item.key)"
           >
             <div class="flex gap-3 items-center">
-              <div 
+              <div
                 class="w-5 h-5 bg-white"
                 :style="{
                   maskImage: `url(${item.icon})`,
@@ -90,32 +93,41 @@
                   maskPosition: 'center',
                   webkitMaskPosition: 'center',
                   maskSize: 'contain',
-                  webkitMaskSize: 'contain'
+                  webkitMaskSize: 'contain',
                 }"
               ></div>
               <span class="font-nunitoSans font-medium text-white text-base">
                 {{ item.label }}
               </span>
             </div>
-            <button 
+            <button
               class="w-4 h-4 transition-transform duration-200"
               :class="{ 'rotate-180': openSubmenus[item.key] }"
             >
-              <img :src="sharedIcons.chevron" alt="" class="w-full h-full" />
+              <ChevronDownIcon class="w-full h-full text-white" />
             </button>
           </div>
 
           <!-- Submenu Items -->
-          <div v-show="openSubmenus[item.key]" class="flex flex-col bg-[#264a48] w-full transition-all duration-300 ease-in-out">
-            <router-link 
+          <div
+            v-show="openSubmenus[item.key]"
+            class="flex flex-col bg-[#264a48] w-full transition-all duration-300 ease-in-out"
+          >
+            <router-link
               v-for="child in item.children"
               :key="child.key"
               :to="child.path"
               class="h-10 flex items-center pl-14 pr-6 cursor-pointer transition-colors"
-              :class="activeItem === child.key ? 'bg-[#5a9690] border-r-4 border-white' : 'hover:text-[#5eead4] text-white'"
+              :class="
+                activeItem === child.key
+                  ? 'bg-[#5a9690] border-r-4 border-white'
+                  : 'hover:text-[#5eead4] text-white'
+              "
               @click="navigateTo(child.key)"
             >
-              <span class="font-nunitoSans font-medium text-sm">{{ child.label }}</span>
+              <span class="font-nunitoSans font-medium text-sm">{{
+                child.label
+              }}</span>
             </router-link>
           </div>
         </template>
@@ -123,36 +135,19 @@
     </div>
 
     <!-- Footer Section -->
-    <div class="border-t border-[#0f766e] h-[93px] w-64">
-      <div class="flex flex-col gap-2 h-[93px] items-start px-4 pt-[17px]">
+    <div class="border-t border-[#0f766e] h-[100px] w-64">
+      <div class="flex flex-col gap-2 h-[93px] items-start px-2 pt-[17px]">
         <!-- Logout Button -->
         <button
-          class="h-9 rounded-lg w-full flex items-center gap-3 px-3 hover:bg-[#3a6664]"
+          class="h-9 rounded-lg w-full flex items-center gap-3 px-8 py-2 hover:bg-[#3a6664]"
           @click="handleLogout"
         >
-          <div 
-            class="w-4 h-4 bg-white"
-            :style="{
-              maskImage: `url(${sharedIcons.logout})`,
-              webkitMaskImage: `url(${sharedIcons.logout})`,
-              maskRepeat: 'no-repeat',
-              webkitMaskRepeat: 'no-repeat',
-              maskPosition: 'center',
-              webkitMaskPosition: 'center',
-              maskSize: 'contain',
-              webkitMaskSize: 'contain'
-            }"
-          ></div>
-          <span class="font-nunitoSans font-medium text-white text-base">
-            Đăng xuất
-          </span>
+          <span class="font-medium text-white text-base"> Đăng xuất </span>
         </button>
-        
+
         <!-- Version -->
-        <div class="h-4 w-full">
-          <p class="font-nunitoSans font-medium text-[#5eead4] text-base text-center">
-            Phiên bản v1.0
-          </p>
+        <div class="w-full px-8">
+          <p class="font-medium text-[#5eead4] text-base">Phiên bản v1.0</p>
         </div>
       </div>
     </div>
@@ -160,10 +155,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import { getMenuByRole, sharedIcons } from '@/config/menuConfig';
-
+import { ref, computed, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { getMenuByRole, sharedIcons } from "@/config/menuConfig";
+// Icon SVG
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
+import PettyIcon from "@/assets/img_imports/healthicons_guide-dog.svg";
 const router = useRouter();
 const route = useRoute();
 
@@ -171,28 +168,28 @@ const route = useRoute();
 const props = defineProps({
   role: {
     type: String,
-    default: 'admin',
-    validator: (value) => ['admin', 'doctor'].includes(value)
-  }
+    default: "admin",
+    validator: (value) => ["admin", "doctor"].includes(value),
+  },
 });
 
 // Get menu configuration based on role
 const menuData = computed(() => getMenuByRole(props.role));
 
 // State for active item
-const activeItem = ref('dashboard');
+const activeItem = ref("dashboard");
 
 // State for submenu toggles - dynamically initialize based on menu items
 const openSubmenus = ref({});
 
 // Initialize submenus state
 onMounted(() => {
-  menuData.value.menuItems.forEach(item => {
-    if (item.type === 'group') {
+  menuData.value.menuItems.forEach((item) => {
+    if (item.type === "group") {
       openSubmenus.value[item.key] = false;
     }
   });
-  
+
   // Set active item based on current route
   updateActiveItemFromRoute();
 });
@@ -200,16 +197,16 @@ onMounted(() => {
 // Update active item based on current route
 const updateActiveItemFromRoute = () => {
   const currentPath = route.path;
-  
+
   // Check single items
   for (const item of menuData.value.menuItems) {
-    if (item.type === 'single' && item.path === currentPath) {
+    if (item.type === "single" && item.path === currentPath) {
       activeItem.value = item.key;
       return;
     }
-    
+
     // Check submenu items
-    if (item.type === 'group' && item.children) {
+    if (item.type === "group" && item.children) {
       for (const child of item.children) {
         if (child.path === currentPath) {
           activeItem.value = child.key;
@@ -225,7 +222,7 @@ const updateActiveItemFromRoute = () => {
 const toggleSubmenu = (menuKey) => {
   // If opening a closed menu, close all others first
   if (!openSubmenus.value[menuKey]) {
-    Object.keys(openSubmenus.value).forEach(key => {
+    Object.keys(openSubmenus.value).forEach((key) => {
       openSubmenus.value[key] = false;
     });
     openSubmenus.value[menuKey] = true;
@@ -242,10 +239,10 @@ const navigateTo = (itemKey) => {
 
 // Logout handler
 const handleLogout = () => {
-  console.log('Logging out...');
-  localStorage.removeItem('authToken');
-  localStorage.removeItem('authUser');
-  router.push('/login');
+  console.log("Logging out...");
+  localStorage.removeItem("authToken");
+  localStorage.removeItem("authUser");
+  router.push("/login");
 };
 </script>
 

@@ -1,12 +1,20 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-    @click.self="showSuccess ? null : closePopup">
+  <div
+    v-if="isOpen"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    @click.self="showSuccess ? null : closePopup"
+  >
     <!-- Modal thành công -->
-    <div v-if="showSuccess" class="bg-white rounded-lg border !border-black/15 w-full max-w-[512px] shadow-xl">
+    <div
+      v-if="showSuccess"
+      class="bg-white rounded-lg border !border-black/15 w-full max-w-[512px] shadow-xl"
+    >
       <div class="flex flex-col p-6 gap-4 items-center">
         <!-- Biểu tượng thành công -->
-        <div class="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center">
-          <img :src="iconSuccess" alt="Success" class="w-10 h-10" />
+        <div
+          class="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center"
+        >
+          <TickIcon class="w-10 h-10 text-teal-500" />
         </div>
 
         <!-- Thông điệp thành công -->
@@ -23,49 +31,56 @@
         </div>
 
         <!-- Tóm tắt đặt lịch -->
-        <div class="w-full bg-teal-50 rounded-lg p-4 flex flex-col gap-1 items-center">
+        <div
+          class="w-full bg-teal-50 rounded-lg p-4 flex flex-col gap-1 items-center"
+        >
           <div class="flex items-center gap-2">
-            <span class="text-sm font-semibold text-gray-500">Thú
-              cưng:</span>
+            <span class="text-sm font-semibold text-gray-500">Thú cưng:</span>
             <span class="text-sm font-medium text-black">{{
-              selectedPet?.name }}</span>
+              selectedPet?.name
+            }}</span>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-sm font-semibold text-gray-500">Dịch
-              vụ:</span>
+            <span class="text-sm font-semibold text-gray-500">Dịch vụ:</span>
             <span class="text-sm font-medium text-black">{{
-              selectedService?.name }}</span>
+              selectedService?.name
+            }}</span>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-sm font-semibold text-gray-500">Thời
-              gian:</span>
+            <span class="text-sm font-semibold text-gray-500">Thời gian:</span>
             <span class="text-sm font-medium text-black">{{
-              formattedDateTime }}</span>
+              formattedDateTime
+            }}</span>
           </div>
         </div>
 
         <!-- Nút đóng -->
-        <button @click="closeSuccessPopup"
-          class="w-full h-9 bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors">
-          <span class="text-sm font-semibold text-white">
-            Hoàn tất
-          </span>
+        <button
+          @click="closeSuccessPopup"
+          class="w-full h-9 bg-[#5A9690] hover:bg-[#5A9690]/80 rounded-lg transition-colors"
+        >
+          <span class="text-sm font-semibold text-white"> Hoàn tất </span>
         </button>
       </div>
     </div>
 
     <!-- Modal đặt lịch chính -->
-    <div v-else
-      class="bg-white rounded-lg border !border-black/15 w-full max-w-[512px] max-h-[90vh] overflow-hidden shadow-xl">
-      <div class="flex flex-col p-6 gap-4 overflow-y-auto max-h-[90vh]">
+    <div
+      v-else
+      class="bg-white rounded-lg border !border-black/15 w-full max-w-[512px] max-h-[90vh] shadow-xl flex flex-col"
+    >
+      <!-- Fixed Header: Tiêu đề + Thanh tiến độ -->
+      <div
+        class="flex flex-col p-6 pb-4 gap-4 flex-shrink-0 border-b border-gray-200"
+      >
         <!-- Tiêu đề -->
         <div class="flex flex-col gap-2">
           <div class="h-7 relative">
-            <h2 class="text-lg font-bold text-black">
-              Đặt lịch khám
-            </h2>
-            <button @click="closePopup"
-              class="absolute right-0 top-0 w-7 h-7 flex items-center justify-center hover:opacity-70 transition-opacity">
+            <h2 class="text-lg font-bold text-black">Đặt lịch khám</h2>
+            <button
+              @click="closePopup"
+              class="absolute right-0 top-0 w-7 h-7 flex items-center justify-center hover:opacity-70 transition-opacity"
+            >
               <IconClose />
             </button>
           </div>
@@ -77,28 +92,44 @@
         <!-- Thanh tiến độ -->
         <div class="flex flex-col gap-2 h-9">
           <div class="flex items-center justify-between h-5">
-            <span v-for="(step, index) in steps" :key="index" class="text-sm font-medium"
-              :class="index <= currentStep ? 'text-teal-600' : 'text-gray-500'">
+            <span
+              v-for="(step, index) in steps"
+              :key="index"
+              class="text-sm font-medium"
+              :class="index <= currentStep ? 'text-[#5A9690]' : 'text-gray-500'"
+            >
               {{ step }}
             </span>
           </div>
           <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div class="h-full bg-teal-600 rounded-full transition-all duration-300" :style="{ width: progressWidth }">
-            </div>
+            <div
+              class="h-full bg-[#5A9690] rounded-full transition-all duration-300"
+              :style="{ width: progressWidth }"
+            ></div>
           </div>
         </div>
+      </div>
 
+      <!-- Scrollable Content Area -->
+      <div class="flex-1 overflow-y-auto px-6 py-4">
         <!-- Bước 1: Chọn thú cưng -->
         <div v-if="currentStep === 0" class="flex flex-col gap-4">
           <div class="grid grid-cols-2 gap-4">
-            <div v-for="pet in pets" :key="pet.id" @click="selectPet(pet)" :class="[
-              'border-2 rounded-lg p-[18px] cursor-pointer transition-all',
-              selectedPet?.id === pet.id
-                ? 'border-teal-500 bg-teal-50'
-                : 'border-gray-200 hover:border-gray-300',
-            ]">
+            <div
+              v-for="pet in pets"
+              :key="pet.id"
+              @click="selectPet(pet)"
+              :class="[
+                'border-2 rounded-lg p-[18px] cursor-pointer transition-all',
+                selectedPet?.id === pet.id
+                  ? 'border-teal-500 bg-teal-50'
+                  : 'border-gray-200 hover:border-gray-300',
+              ]"
+            >
               <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0">
+                <div
+                  class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0"
+                >
                   <Heart1Icon />
                 </div>
                 <div class="flex-1 min-w-0">
@@ -112,37 +143,38 @@
               </div>
             </div>
           </div>
-
-          <!-- <button @click="$emit('openAddPet')"
-            class="w-full h-9 border !border-gray-400 rounded-lg bg-white hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
-           <AddIcon />
-            <span class="text-sm font-semibold text-black">
-              Thêm thú cưng mới
-            </span>
-          </button> -->
         </div>
 
         <!-- Bước 2: Chọn dịch vụ -->
         <div v-if="currentStep === 1" class="flex flex-col gap-3">
-          <div v-for="service in services" :key="service.id" @click="selectService(service)" :class="[
-            'border-2 rounded-lg p-[18px] cursor-pointer transition-all',
-            selectedService?.id === service.id
-              ? 'border-teal-500 bg-teal-50'
-              : 'border-gray-300 hover:border-gray-400',
-          ]">
+          <div
+            v-for="service in services"
+            :key="service.id"
+            @click="selectService(service)"
+            :class="[
+              'border-2 rounded-lg p-[18px] cursor-pointer transition-all',
+              selectedService?.id === service.id
+                ? 'border-teal-500 bg-teal-50'
+                : 'border-gray-300 hover:border-gray-400',
+            ]"
+          >
             <div class="flex flex-col gap-1">
               <div class="flex items-center gap-2">
                 <p class="text-sm font-medium text-black">
                   {{ service.name }}
                 </p>
-                <SuccessIcon v-if="selectedService?.id === service.id" alt="Selected" class="w-5 h-5" />
+                <SuccessIcon
+                  v-if="selectedService?.id === service.id"
+                  alt="Selected"
+                  class="w-5 h-5"
+                />
               </div>
               <p class="text-sm font-medium text-gray-600">
                 {{ service.description }}
               </p>
               <div class="flex items-center gap-4 mt-1">
-                <div class="flex items-center gap-1">
-                  <ClockIcon />
+                <div class="flex items-center gap-2">
+                  <ClockIcon class="w-4 h-4 text-gray-500" />
                   <span class="text-sm font-medium text-gray-500">
                     {{ service.duration }} phút
                   </span>
@@ -166,17 +198,23 @@
               <div class="flex flex-col items-center">
                 <!-- Calendar Header -->
                 <div class="flex items-center justify-between w-full mb-4">
-                  <button @click="previousMonth"
+                  <button
+                    @click="previousMonth"
                     class="w-7 h-7 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
-                    :disabled="!canGoPrevious" :class="{ 'opacity-50 cursor-not-allowed': !canGoPrevious }">
+                    :disabled="!canGoPrevious"
+                    :class="{ 'opacity-50 cursor-not-allowed': !canGoPrevious }"
+                  >
                     <ChevronLeftIcon />
                   </button>
                   <span class="text-sm font-semibold text-black">
                     {{ currentMonthYear }}
                   </span>
-                  <button @click="nextMonth"
+                  <button
+                    @click="nextMonth"
                     class="w-7 h-7 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
-                    :disabled="!canGoNext" :class="{ 'opacity-50 cursor-not-allowed': !canGoNext }">
+                    :disabled="!canGoNext"
+                    :class="{ 'opacity-50 cursor-not-allowed': !canGoNext }"
+                  >
                     <ChevronRightIcon />
                   </button>
                 </div>
@@ -184,22 +222,31 @@
                 <!-- Calendar Grid -->
                 <div class="w-full">
                   <div class="grid grid-cols-7 gap-0 mb-2">
-                    <div v-for="day in weekDays" :key="day" class="h-5 flex items-center justify-center">
+                    <div
+                      v-for="day in weekDays"
+                      :key="day"
+                      class="h-5 flex items-center justify-center"
+                    >
                       <span class="text-sm font-medium text-gray-500">
                         {{ day }}
                       </span>
                     </div>
                   </div>
                   <div class="grid grid-cols-7 gap-0">
-                    <button v-for="(date, index) in calendarDates" :key="index" @click="selectDate(date)"
-                      :disabled="!date.isCurrentMonth || date.isPast" :class="[
+                    <button
+                      v-for="(date, index) in calendarDates"
+                      :key="index"
+                      @click="selectDate(date)"
+                      :disabled="!date.isCurrentMonth || date.isPast"
+                      :class="[
                         'w-8 h-8 flex items-center justify-center rounded-lg text-sm font-medium transition-colors',
                         date.isSelected
                           ? 'bg-black text-white'
                           : !date.isCurrentMonth || date.isPast
-                            ? 'opacity-50 cursor-not-allowed text-gray-500'
-                            : 'text-black hover:bg-gray-100 cursor-pointer',
-                      ]">
+                          ? 'opacity-50 cursor-not-allowed text-gray-500'
+                          : 'text-black hover:bg-gray-100 cursor-pointer',
+                      ]"
+                    >
                       {{ date.day }}
                     </button>
                   </div>
@@ -214,11 +261,15 @@
               Chọn giờ khám
             </label>
             <div class="grid grid-cols-4 gap-2">
-              <button v-for="time in timeSlots" :key="time.value" @click="selectTime(time)" :disabled="time.isBooked"
+              <button
+                v-for="time in timeSlots"
+                :key="time.value"
+                @click="selectTime(time)"
+                :disabled="time.isBooked"
                 :class="[
                   'h-9 border rounded-lg text-sm font-semibold transition-colors',
                   selectedTime === time.value
-                    ? 'bg-teal-600 text-white border-teal-600'
+                    ? 'bg-[#487874] text-white border-[#5A9690]/80'
                     : '',
                   time.isBooked
                     ? 'opacity-50 cursor-not-allowed border-gray-300 bg-white text-black'
@@ -226,7 +277,8 @@
                   !time.isBooked && selectedTime !== time.value
                     ? '!border-gray-300 bg-white text-black hover:border-gray-400'
                     : '',
-                ]">
+                ]"
+              >
                 {{ time.label }}
               </button>
             </div>
@@ -246,35 +298,39 @@
             <div class="w-full h-px bg-gray-300"></div>
             <div class="flex flex-col gap-2">
               <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-gray-600">Khách
-                  hàng:</span>
+                <span class="text-sm font-medium text-gray-600"
+                  >Khách hàng:</span
+                >
                 <span class="text-sm font-medium text-black">{{
-                  customerNameLocal }}</span>
+                  customerNameLocal
+                }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-gray-600">Thú
-                  cưng:</span>
+                <span class="text-sm font-medium text-gray-600">Thú cưng:</span>
                 <span class="text-sm font-medium text-black">{{
-                  selectedPet?.name }}</span>
+                  selectedPet?.name
+                }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-gray-600">Dịch
-                  vụ:</span>
+                <span class="text-sm font-medium text-gray-600">Dịch vụ:</span>
                 <span class="text-sm font-medium text-black">{{
-                  selectedService?.name }}</span>
+                  selectedService?.name
+                }}</span>
               </div>
               <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-gray-600">Thời
-                  gian:</span>
+                <span class="text-sm font-medium text-gray-600"
+                  >Thời gian:</span
+                >
                 <span class="text-sm font-medium text-black">{{
-                  formattedDateTime }}</span>
+                  formattedDateTime
+                }}</span>
               </div>
               <div class="w-full h-px bg-gray-300"></div>
               <div class="flex items-center justify-between">
-                <span class="text-sm font-medium text-black">Tạm
-                  tính:</span>
+                <span class="text-sm font-medium text-black">Tạm tính:</span>
                 <span class="text-sm font-medium text-teal-600">{{
-                  formatPrice(selectedService?.price) }}</span>
+                  formatPrice(selectedService?.price)
+                }}</span>
               </div>
             </div>
           </div>
@@ -286,17 +342,27 @@
             </label>
             <div class="flex flex-col gap-2">
               <!-- Thanh toán trước -->
-              <div @click="selectPaymentMethod('online')" :class="[
-                'border rounded-lg p-3 flex items-start gap-2 cursor-pointer transition-all',
-                paymentMethod === 'online'
-                  ? '!border-teal-500 bg-teal-50'
-                  : '!border-gray-300 hover:border-gray-400',
-              ]">
-                <div class="w-4 h-4 rounded-full border-2 mt-0.5 flex items-center justify-center flex-shrink-0" :class="paymentMethod === 'online'
-                    ? 'border-black'
-                    : 'border-gray-400'
-                  ">
-                  <div v-if="paymentMethod === 'online'" class="w-2 h-2 bg-black rounded-full"></div>
+              <div
+                @click="selectPaymentMethod('online')"
+                :class="[
+                  'border rounded-lg p-3 flex items-start gap-2 cursor-pointer transition-all',
+                  paymentMethod === 'online'
+                    ? '!border-teal-500 bg-teal-50'
+                    : '!border-gray-300 hover:border-gray-400',
+                ]"
+              >
+                <div
+                  class="w-4 h-4 rounded-full border-2 mt-0.5 flex items-center justify-center flex-shrink-0"
+                  :class="
+                    paymentMethod === 'online'
+                      ? 'border-black'
+                      : 'border-gray-400'
+                  "
+                >
+                  <div
+                    v-if="paymentMethod === 'online'"
+                    class="w-2 h-2 bg-black rounded-full"
+                  ></div>
                 </div>
                 <div class="flex-1 flex items-center justify-between gap-2">
                   <span class="text-sm font-semibold text-black">
@@ -306,17 +372,27 @@
               </div>
 
               <!-- Thanh toán tại phòng khám -->
-              <div @click="selectPaymentMethod('offline')" :class="[
-                'border rounded-lg p-3 flex items-start gap-2 cursor-pointer transition-all',
-                paymentMethod === 'offline'
-                  ? '!border-teal-500 bg-teal-50'
-                  : '!border-gray-300 hover:border-gray-400',
-              ]">
-                <div class="w-4 h-4 rounded-full border-2 mt-0.5 flex items-center justify-center flex-shrink-0" :class="paymentMethod === 'offline'
-                    ? 'border-black'
-                    : 'border-gray-400'
-                  ">
-                  <div v-if="paymentMethod === 'offline'" class="w-2 h-2 bg-black rounded-full"></div>
+              <div
+                @click="selectPaymentMethod('offline')"
+                :class="[
+                  'border rounded-lg p-3 flex items-start gap-2 cursor-pointer transition-all',
+                  paymentMethod === 'offline'
+                    ? '!border-teal-500 bg-teal-50'
+                    : '!border-gray-300 hover:border-gray-400',
+                ]"
+              >
+                <div
+                  class="w-4 h-4 rounded-full border-2 mt-0.5 flex items-center justify-center flex-shrink-0"
+                  :class="
+                    paymentMethod === 'offline'
+                      ? 'border-black'
+                      : 'border-gray-400'
+                  "
+                >
+                  <div
+                    v-if="paymentMethod === 'offline'"
+                    class="w-2 h-2 bg-black rounded-full"
+                  ></div>
                 </div>
                 <div class="flex-1 flex items-center justify-between gap-2">
                   <span class="text-sm font-semibold text-black">
@@ -327,36 +403,45 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Nút ở chân modal -->
-        <div class="flex items-center justify-end gap-6">
-          <button v-if="currentStep > 0" @click="previousStep"
-            class="h-9 px-4 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition-colors">
-            <span class="text-sm font-semibold text-black">
-              Quay lại
-            </span>
-          </button>
-          <button v-if="currentStep < 3" @click="nextStep" :disabled="!canProceed" :class="[
+      <!-- Fixed Footer: Nút điều hướng -->
+      <div
+        class="flex items-center justify-end gap-6 p-6 pt-4 flex-shrink-0 border-t border-gray-200"
+      >
+        <button
+          v-if="currentStep > 0"
+          @click="previousStep"
+          class="h-9 px-4 border !border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition-colors"
+        >
+          <span class="text-sm font-semibold text-black"> Quay lại </span>
+        </button>
+        <button
+          v-if="currentStep < 3"
+          @click="nextStep"
+          :disabled="!canProceed"
+          :class="[
             'h-9 px-4 rounded-lg transition-colors',
             canProceed
               ? 'bg-[#5A9690] hover:bg-[#5A9690] text-white'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed',
-          ]">
-            <span class="text-sm font-semibold ">
-              Tiếp tục
-            </span>
-          </button>
-          <button v-if="currentStep === 3" @click="confirmBooking" :disabled="!canConfirm || isSubmitting" :class="[
+          ]"
+        >
+          <span class="text-sm font-semibold"> Tiếp tục </span>
+        </button>
+        <button
+          v-if="currentStep === 3"
+          @click="confirmBooking"
+          :disabled="!canConfirm || isSubmitting"
+          :class="[
             'h-9 px-3 rounded-lg flex items-center gap-2 transition-colors',
             canConfirm && !isSubmitting
               ? 'bg-[#5A9690] hover:bg-[#5A9690] text-white'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed',
-          ]">
-            <span class="text-sm font-semibold">
-              Xác nhận đặt lịch
-            </span>
-          </button>
-        </div>
+          ]"
+        >
+          <span class="text-sm font-semibold"> Xác nhận đặt lịch </span>
+        </button>
       </div>
     </div>
   </div>
@@ -367,6 +452,7 @@ import { ref, computed, watch, onMounted } from "vue";
 import axios from "axios";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
 import { getUser } from "@/utils/auth";
+//Icon SVG
 import IconClose from "@/assets/svg/close.svg";
 import Heart1Icon from "@/assets/svg/heart1.svg";
 import AddIcon from "@/assets/svg/add.svg";
@@ -374,7 +460,7 @@ import ClockIcon from "@/assets/svg/clock.svg";
 import SuccessIcon from "@/assets/svg/success.svg";
 import ChevronLeftIcon from "@/assets/svg/chevron-left.svg";
 import ChevronRightIcon from "@/assets/svg/chevron-right.svg";
-
+import TickIcon from "@/assets/svg/tick.svg";
 // Thuộc tính (props)
 const props = defineProps({
   isOpen: {

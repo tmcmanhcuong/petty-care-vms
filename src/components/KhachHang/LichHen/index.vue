@@ -2,15 +2,19 @@
   <div class="min-h-screen font-nunitoSans">
     <div class="container mx-auto px-6 max-w-6xl">
       <!-- Header -->
-      <div class="flex justify-between items-center mb-6 flex-col md:flex-row gap-4">
+      <div
+        class="flex justify-between items-center mb-6 flex-col md:flex-row gap-4"
+      >
         <div>
           <h1 class="text-xl font-bold text-black">Lịch hẹn khám</h1>
           <p class="text-lg font-medium text-gray-600">
             Quản lý các buổi khám đã đặt
           </p>
         </div>
-        <button @click="handleNewAppointment"
-          class="flex items-center gap-3 px-6 py-3 bg-[#5A9690] text-white rounded-lg font-medium text-lg hover:bg-teal-700 transition">
+        <button
+          @click="handleNewAppointment"
+          class="flex items-center gap-3 px-6 py-3 bg-[#5A9690] text-white rounded-lg font-medium text-lg hover:bg-teal-700 transition"
+        >
           <AddIcon />
           Đặt lịch mới
         </button>
@@ -18,10 +22,17 @@
 
       <!-- Tabs -->
       <div class="flex bg-zinc-100 rounded-2xl p-1 gap-1 mb-8 w-fit">
-        <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" :class="activeTab === tab.id
-            ? 'bg-white text-black shadow-sm'
-            : 'text-black hover:opacity-70'
-          " class="px-6 py-2.5 rounded-2xl font-semibold text-base transition">
+        <button
+          v-for="tab in tabs"
+          :key="tab.id"
+          @click="activeTab = tab.id"
+          :class="
+            activeTab === tab.id
+              ? 'bg-white text-black shadow-sm'
+              : 'text-black hover:opacity-70'
+          "
+          class="px-6 py-2.5 rounded-2xl font-semibold text-base transition"
+        >
           {{ tab.label }} ({{ tab.count }})
         </button>
       </div>
@@ -31,40 +42,69 @@
         <div class="flex flex-wrap items-center gap-4">
           <div class="flex items-center gap-2">
             <svg class="w-5 h-5" viewBox="0 0 20 20" fill="none">
-              <path d="M3 5h14M7 10h6M5 15h10" stroke="#374151" stroke-width="2" stroke-linecap="round" />
+              <path
+                d="M3 5h14M7 10h6M5 15h10"
+                stroke="#374151"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
             <span class="font-medium text-gray-700">Lọc theo:</span>
           </div>
           <div class="flex flex-1 flex-wrap gap-4">
-            <button @click="openFilter('pet')"
-              class="flex-1 min-w-48 flex justify-between items-center px-4 py-2 bg-white rounded-lg hover:opacity-80 transition">
+            <button
+              @click="openFilter('pet')"
+              class="flex-1 min-w-48 flex justify-between items-center px-4 py-2 bg-white rounded-lg hover:opacity-80 transition"
+            >
               <span class="text-gray-500 font-medium">{{
                 selectedPetLabel
               }}</span>
               <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none">
-                <path d="M2 5l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path
+                  d="M2 5l6 6 6-6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
               </svg>
             </button>
-            <button @click="openFilter('service')"
-              class="flex-1 min-w-48 flex justify-between items-center px-4 py-2 bg-white rounded-lg hover:opacity-80 transition">
+            <button
+              @click="openFilter('service')"
+              class="flex-1 min-w-48 flex justify-between items-center px-4 py-2 bg-white rounded-lg hover:opacity-80 transition"
+            >
               <span class="text-gray-500 font-medium">{{
                 selectedServiceLabel
               }}</span>
               <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none">
-                <path d="M2 5l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path
+                  d="M2 5l6 6 6-6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
               </svg>
             </button>
-            <button @click="openFilter('date')"
-              class="flex-1 min-w-48 flex justify-between items-center px-4 py-2 bg-white rounded-lg hover:opacity-80 transition">
+            <button
+              @click="openFilter('date')"
+              class="flex-1 min-w-48 flex justify-between items-center px-4 py-2 bg-white rounded-lg hover:opacity-80 transition"
+            >
               <span class="text-gray-500 font-medium">{{
                 dateRangeLabel
               }}</span>
               <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none">
-                <path d="M2 5l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path
+                  d="M2 5l6 6 6-6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
               </svg>
             </button>
           </div>
-          <button @click="clearFilters" class="px-3 py-1 text-teal-700 font-medium hover:opacity-70 transition">
+          <button
+            @click="clearFilters"
+            class="px-3 py-1 text-teal-700 font-medium hover:opacity-70 transition"
+          >
             Xóa bộ lọc
           </button>
         </div>
@@ -74,7 +114,9 @@
       <div v-if="showFilterPanel" class="mb-8">
         <div class="bg-white border rounded-lg p-4 max-w-3xl">
           <div v-if="activeFilterType === 'pet'">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Chọn thú cưng</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Chọn thú cưng</label
+            >
             <select v-model="selectedPet" class="w-full border rounded-lg p-2">
               <option value="all">Tất cả thú cưng</option>
               <option v-for="p in pets" :key="p.id" :value="p.id">
@@ -83,8 +125,13 @@
             </select>
           </div>
           <div v-if="activeFilterType === 'service'">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Chọn dịch vụ</label>
-            <select v-model="selectedService" class="w-full border rounded-lg p-2">
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Chọn dịch vụ</label
+            >
+            <select
+              v-model="selectedService"
+              class="w-full border rounded-lg p-2"
+            >
               <option value="all">Tất cả dịch vụ</option>
               <option v-for="s in services" :key="s.id" :value="s.id">
                 {{ s.name || s.ten || s.ten_dich_vu }}
@@ -92,14 +139,27 @@
             </select>
           </div>
           <div v-if="activeFilterType === 'date'">
-            <label class="block text-sm font-medium text-gray-700 mb-2">Chọn khoảng thời gian</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Chọn khoảng thời gian</label
+            >
             <div class="flex gap-2">
-              <input type="date" v-model="dateFrom" class="border rounded-lg p-2" />
-              <input type="date" v-model="dateTo" class="border rounded-lg p-2" />
+              <input
+                type="date"
+                v-model="dateFrom"
+                class="border rounded-lg p-2"
+              />
+              <input
+                type="date"
+                v-model="dateTo"
+                class="border rounded-lg p-2"
+              />
             </div>
           </div>
           <div class="mt-4 flex justify-end gap-2">
-            <button @click="applyFilters" class="px-4 py-2 bg-teal-600 text-white rounded-lg">
+            <button
+              @click="applyFilters"
+              class="px-4 py-2 bg-teal-600 text-white rounded-lg"
+            >
               Áp dụng
             </button>
             <button @click="closeFilter" class="px-4 py-2 border rounded-lg">
@@ -111,17 +171,22 @@
 
       <!-- TAB SẮP TỚI -->
       <div v-if="activeTab === 'upcoming'" class="space-y-6">
-        <div v-for="appt in upcomingAppointments" :key="appt.id"
-          class="bg-white rounded-2xl overflow-hidden border border-black/5 shadow-sm">
+        <div
+          v-for="appt in upcomingAppointments"
+          :key="appt.id"
+          class="bg-white rounded-2xl overflow-hidden border !border-black/5 shadow-sm"
+        >
           <div class="bg-teal-50 border-b border-teal-100 p-6">
             <div class="flex justify-between flex-col md:flex-row gap-4">
               <div>
                 <div class="flex items-center gap-3 mb-2">
                   <h3 class="text-lg font-semibold">{{ appt.service }}</h3>
-                  <span :class="[
-                    'px-3 py-1 rounded-lg font-medium text-base',
-                    statusClass(appt.status),
-                  ]">
+                  <span
+                    :class="[
+                      'px-3 py-1 rounded-lg font-medium text-base',
+                      statusClass(appt.status),
+                    ]"
+                  >
                     {{ statusLabel(appt.status) }}
                   </span>
                 </div>
@@ -142,26 +207,43 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
               <div class="space-y-6">
                 <div class="flex gap-4">
-                  <svg class="w-6 h-6 mt-1 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
+                  <svg
+                    class="w-6 h-6 mt-1 flex-shrink-0 text-gray-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
                     <circle cx="12" cy="8" r="3.5" stroke-width="2" />
                     <path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke-width="2" />
                   </svg>
                   <div>
                     <p class="text-gray-600 font-medium mb-1">Thú cưng</p>
-                    <p :class="appt.pet === 'Milo' ? 'text-amber-700' : 'text-sky-500'
-                      " class="text-lg font-semibold">
+                    <p
+                      :class="
+                        appt.pet === 'Milo' ? 'text-amber-700' : 'text-sky-500'
+                      "
+                      class="text-lg font-semibold"
+                    >
                       {{ appt.pet }}
                     </p>
-                    <div class="flex flex-wrap gap-4 mt-2 text-gray-600 font-medium">
+                    <div
+                      class="flex flex-wrap gap-4 mt-2 text-gray-600 font-medium"
+                    >
                       <span>{{ appt.breed }}</span>
                     </div>
                   </div>
                 </div>
                 <div class="flex gap-4">
-                  <svg class="w-6 h-6 mt-1 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path d="M12 12a5 5 0 100-10 5 5 0 000 10zM4 20c0-5 4-8 8-8s8 3 8 8" stroke-width="2" />
+                  <svg
+                    class="w-6 h-6 mt-1 flex-shrink-0 text-gray-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 12a5 5 0 100-10 5 5 0 000 10zM4 20c0-5 4-8 8-8s8 3 8 8"
+                      stroke-width="2"
+                    />
                   </svg>
                   <div>
                     <p class="text-gray-600 font-medium mb-1">Bác sĩ</p>
@@ -171,9 +253,16 @@
               </div>
               <div class="space-y-6">
                 <div class="flex gap-4">
-                  <svg class="w-6 h-6 mt-1 flex-shrink-0 text-gray-500" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path d="M12 2a8 8 0 00-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 00-8-8z" stroke-width="2" />
+                  <svg
+                    class="w-6 h-6 mt-1 flex-shrink-0 text-gray-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 2a8 8 0 00-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 00-8-8z"
+                      stroke-width="2"
+                    />
                     <circle cx="12" cy="10" r="3" fill="currentColor" />
                   </svg>
                   <div>
@@ -182,30 +271,51 @@
                     <p class="text-gray-600 font-medium">{{ appt.address }}</p>
                   </div>
                 </div>
-                <div v-if="appt.note" class="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+                <div
+                  v-if="appt.note"
+                  class="bg-yellow-50 border !border-yellow-200 rounded-xl p-4"
+                >
                   <p class="font-bold text-amber-800 text-sm mb-1">Lưu ý:</p>
                   <p class="font-medium text-amber-800">{{ appt.note }}</p>
                 </div>
               </div>
             </div>
 
-            <div class="pt-6 border-t border-zinc-200 flex flex-col md:flex-row gap-4">
-              <button @click="handleReschedule(appt.id)"
-                class="flex-1 flex items-center justify-center gap-2 py-3 border border-black/10 rounded-lg hover:bg-gray-50 transition">
+            <div
+              class="pt-6 border-t border-zinc-200 flex flex-col md:flex-row gap-4"
+            >
+              <button
+                @click="handleReschedule(appt.id)"
+                class="flex-1 flex items-center justify-center gap-2 py-3 border border-black/10 rounded-lg hover:bg-gray-50 transition"
+              >
                 <svg class="w-5 h-5" viewBox="0 0 16 16" fill="none">
-                  <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path
+                    d="M8 2v12M2 8h12"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
                 </svg>
                 Đổi lịch
               </button>
-              <button @click="handleCancel(appt.id)"
-                class="flex-1 flex items-center justify-center gap-2 py-3 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition">
+              <button
+                @click="handleCancel(appt.id)"
+                class="flex-1 flex items-center justify-center gap-2 py-3 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition"
+              >
                 <svg class="w-5 h-5" viewBox="0 0 16 16" fill="none">
-                  <path d="M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path
+                    d="M2 8h12"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
                 </svg>
                 Hủy hẹn
               </button>
-              <button @click="openDetail(appt)"
-                class="flex-1 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition font-medium">
+              <button
+                @click="openDetail(appt)"
+                class="flex-1 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition font-medium"
+              >
                 Xem chi tiết
               </button>
             </div>
@@ -215,21 +325,30 @@
 
       <!-- TAB ĐÃ QUA -->
       <div v-if="activeTab === 'past'" class="space-y-6">
-        <div v-for="appt in pastAppointments" :key="appt.id"
-          class="bg-white rounded-2xl border border-black/5 overflow-hidden shadow-sm">
+        <div
+          v-for="appt in pastAppointments"
+          :key="appt.id"
+          class="bg-white rounded-2xl border border-black/5 overflow-hidden shadow-sm"
+        >
           <div class="p-6">
             <div class="flex justify-between flex-col md:flex-row gap-4 mb-4">
               <div>
                 <div class="flex items-center gap-3 flex-wrap">
                   <h3 class="text-lg font-semibold">{{ appt.service }}</h3>
-                  <span class="px-3 py-1 rounded-lg text-sm font-medium" :class="appt.status === 'completed'
-                      ? 'bg-emerald-100 text-green-700'
-                      : 'bg-gray-200 text-gray-700'
-                    ">
+                  <span
+                    class="px-3 py-1 rounded-lg text-sm font-medium"
+                    :class="
+                      appt.status === 'completed'
+                        ? 'bg-emerald-100 text-green-700'
+                        : 'bg-gray-200 text-gray-700'
+                    "
+                  >
                     {{ appt.badge1 }}
                   </span>
-                  <span v-if="appt.badge2"
-                    class="px-3 py-1 bg-emerald-50 border border-emerald-200 text-green-700 rounded-lg text-sm font-medium">
+                  <span
+                    v-if="appt.badge2"
+                    class="px-3 py-1 bg-emerald-50 border border-emerald-200 text-green-700 rounded-lg text-sm font-medium"
+                  >
                     {{ appt.badge2 }}
                   </span>
                 </div>
@@ -245,14 +364,20 @@
 
             <div class="grid grid-cols-2 gap-4 max-w-md ml-auto pt-4">
               <div>
-                <button v-if="appt.status === 'completed'" @click="viewResult(appt.id)"
-                  class="w-full px-6 py-3.5 bg-white border border-black/10 rounded-xl hover:bg-gray-50 transition font-semibold text-center">
+                <button
+                  v-if="appt.status === 'completed'"
+                  @click="viewResult(appt.id)"
+                  class="w-full px-6 py-3.5 bg-white border border-black/10 rounded-xl hover:bg-gray-50 transition font-semibold text-center"
+                >
                   Xem kết quả
                 </button>
               </div>
               <div>
-                <button v-if="appt.status !== 'cancelled'" @click="rebook(appt.id)"
-                  class="w-full px-6 py-3.5 bg-white border border-black/10 rounded-xl hover:bg-gray-50 transition font-semibold text-center">
+                <button
+                  v-if="appt.status !== 'cancelled'"
+                  @click="rebook(appt.id)"
+                  class="w-full px-6 py-3.5 bg-white border border-black/10 rounded-xl hover:bg-gray-50 transition font-semibold text-center"
+                >
                   Đặt lại
                 </button>
               </div>
@@ -264,32 +389,58 @@
 
     <!-- POPUP CHI TIẾT LỊCH HẸN -->
     <teleport to="body">
-      <ChiTietLichHen v-if="selectedAppt" :is-open="showDetail" :selected-appt="selectedAppt"
-        @close="showDetail = false" />
+      <ChiTietLichHen
+        v-if="selectedAppt"
+        :is-open="showDetail"
+        :selected-appt="selectedAppt"
+        @close="showDetail = false"
+      />
     </teleport>
 
     <!-- POPUP ĐẶT LỊCH KHÁM -->
     <teleport to="body">
-      <DatLichKham :is-open="showBookingPopup" :initial-data="rebookData" @close="showBookingPopup = false"
-        @confirm="handleBookingConfirm" @openAddPet="() => { }" />
+      <DatLichKham
+        :is-open="showBookingPopup"
+        :initial-data="rebookData"
+        @close="showBookingPopup = false"
+        @confirm="handleBookingConfirm"
+        @openAddPet="() => {}"
+      />
     </teleport>
 
     <!-- POPUP ĐỔI LỊCH HẸN -->
     <teleport to="body">
-      <DoiLich v-if="rescheduleAppt" :is-open="showReschedulePopup" :old-appointment="rescheduleAppt"
-        @close="showReschedulePopup = false" @save="handleRescheduleConfirm" />
+      <DoiLich
+        v-if="rescheduleAppt"
+        :is-open="showReschedulePopup"
+        :old-appointment="rescheduleAppt"
+        @close="showReschedulePopup = false"
+        @save="handleRescheduleConfirm"
+      />
     </teleport>
 
     <!-- POPUP HỦY LỊCH HẸN -->
     <teleport to="body">
-      <HuyHen v-if="cancelAppt" :is-open="showCancelPopup" :appointment="cancelAppt" :cancel-status="cancelStatus"
-        @close="showCancelPopup = false" @keep="showCancelPopup = false" @cancel="handleCancelConfirm" />
+      <HuyHen
+        v-if="cancelAppt"
+        :is-open="showCancelPopup"
+        :appointment="cancelAppt"
+        :cancel-status="cancelStatus"
+        @close="showCancelPopup = false"
+        @keep="showCancelPopup = false"
+        @cancel="handleCancelConfirm"
+      />
     </teleport>
 
     <!-- POPUP KẾT QUẢ KHÁM BỆNH -->
     <teleport to="body">
-      <KetQuaKhambenh v-if="resultData" :is-open="showResultPopup" :result="resultData" @close="showResultPopup = false"
-        @download="(file) => console.log('Downloading', file)" />
+      <KetQuaKhambenh
+        v-if="resultData"
+        :is-open="showResultPopup"
+        :result="resultData"
+        @close="showResultPopup = false"
+        @download="(file) => console.log('Downloading', file)"
+      />
     </teleport>
   </div>
 </template>
@@ -326,33 +477,37 @@ const mapAppointment = (item) => {
 
   // Xử lý tên bác sĩ - ưu tiên nhiều trường hợp
   let doctorName = "Chưa phân công";
-  
+
   if (item.nhanVien) {
     // Backend trả về relation nhanVien (camelCase)
-    doctorName = item.nhanVien.full_name || 
-                 item.nhanVien.ho_ten || 
-                 item.nhanVien.name || 
-                 item.nhanVien.ten ||
-                 `BS #${item.nhanVien.id}`;
+    doctorName =
+      item.nhanVien.full_name ||
+      item.nhanVien.ho_ten ||
+      item.nhanVien.name ||
+      item.nhanVien.ten ||
+      `BS #${item.nhanVien.id}`;
   } else if (item.nhan_vien) {
     // Fallback: snake_case format
-    doctorName = item.nhan_vien.full_name || 
-                 item.nhan_vien.ho_ten || 
-                 item.nhan_vien.name || 
-                 item.nhan_vien.ten ||
-                 `BS #${item.nhan_vien.id}`;
+    doctorName =
+      item.nhan_vien.full_name ||
+      item.nhan_vien.ho_ten ||
+      item.nhan_vien.name ||
+      item.nhan_vien.ten ||
+      `BS #${item.nhan_vien.id}`;
   } else if (item.bacSi) {
     // Fallback: có thể có trường bacSi
-    doctorName = item.bacSi.full_name || 
-                 item.bacSi.ho_ten || 
-                 item.bacSi.name ||
-                 `BS #${item.bacSi.id}`;
+    doctorName =
+      item.bacSi.full_name ||
+      item.bacSi.ho_ten ||
+      item.bacSi.name ||
+      `BS #${item.bacSi.id}`;
   } else if (item.bac_si) {
     // Fallback: snake_case bacSi
-    doctorName = item.bac_si.full_name || 
-                 item.bac_si.ho_ten || 
-                 item.bac_si.name ||
-                 `BS #${item.bac_si.id}`;
+    doctorName =
+      item.bac_si.full_name ||
+      item.bac_si.ho_ten ||
+      item.bac_si.name ||
+      `BS #${item.bac_si.id}`;
   } else if (item.doctor_name || item.doctorName) {
     // Fallback: có sẵn tên bác sĩ
     doctorName = item.doctor_name || item.doctorName;
@@ -395,8 +550,8 @@ const mapAppointment = (item) => {
     weight: item.thuCung?.can_nang
       ? `${item.thuCung.can_nang} kg`
       : item.thuCung?.weight
-        ? `${item.thuCung.weight} kg`
-        : "-",
+      ? `${item.thuCung.weight} kg`
+      : "-",
     doctor: doctorName,
     clinic:
       item.dia_diem || item.clinic || "Phòng khám Petty - Chi nhánh Quận 1",

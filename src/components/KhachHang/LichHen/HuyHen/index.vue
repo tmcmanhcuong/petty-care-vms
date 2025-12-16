@@ -1,16 +1,22 @@
 <template>
-  <div v-if="isOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-[10px] border border-gray-300 p-6 w-full max-w-[512px] flex flex-col gap-4">
+  <div
+    v-if="isOpen"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  >
+    <div
+      class="bg-white rounded-[10px] border !border-gray-300 p-6 w-full max-w-[512px] flex flex-col gap-4"
+    >
       <!-- Header -->
       <div class="flex flex-col gap-2">
-        <div class="flex items-center justify-center h-7 relative">
+        <div class="flex items-center justify-between h-7 relative">
           <h2 class="font-bold text-lg text-black">Xác nhận hủy lịch hẹn</h2>
           <button @click="closePopup" class="absolute right-0 w-7 h-7">
-            <img :src="iconClose" alt="Close" class="w-full h-full" />
+            <CloseIcon />
           </button>
         </div>
-        <p class="text-sm font-medium text-gray-500 text-center">
-          Bạn có chắc chắn muốn hủy lịch hẹn {{ appointment.serviceName }} cho {{ appointment.petName }} không?
+        <p class="text-sm font-medium text-gray-500">
+          Bạn có chắc chắn muốn hủy lịch hẹn {{ appointment.serviceName }} cho
+          {{ appointment.petName }} không?
         </p>
       </div>
 
@@ -19,11 +25,11 @@
         <!-- Alert Box - Hiển thị theo trạng thái -->
         <div
           :class="[
-            'flex items-center gap-4 px-4 py-2 rounded-[10px] border',
-            alertClass
+            'flex items-center gap-4 px-6 py-2 rounded-[10px] border',
+            alertClass,
           ]"
         >
-          <img :src="alertIcon" alt="Alert" class="w-4 h-4 shrink-0" />
+          <InforIcon class="w-6 h-6" :class="alertTextClass" />
           <p class="text-sm font-semibold" :class="alertTextClass">
             {{ alertMessage }}
           </p>
@@ -34,13 +40,13 @@
 
       <!-- Footer -->
       <div class="flex gap-2">
-        <button 
+        <button
           @click="keepAppointment"
-          class="flex-1 px-4 py-2 bg-teal-600 text-white text-sm font-semibold rounded-lg hover:bg-teal-700"
+          class="flex-1 px-4 py-2 bg-[#5a9690] text-white text-sm font-semibold rounded-lg hover:bg-[#5a9690]/80"
         >
           Giữ lại lịch hẹn
         </button>
-        <button 
+        <button
           @click="confirmCancel"
           class="flex-1 px-4 py-2 bg-white border border-red-200 text-red-600 text-sm font-semibold rounded-lg hover:bg-red-50"
         >
@@ -52,13 +58,16 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed } from "vue";
+//Icon SVG
+import CloseIcon from "@/assets/svg/close.svg";
+import InforIcon from "@/assets/svg/infor.svg";
 
 // Props
 const props = defineProps({
   isOpen: {
     type: Boolean,
-    default: false
+    default: false,
   },
   appointment: {
     type: Object,
@@ -67,64 +76,58 @@ const props = defineProps({
   },
   cancelStatus: {
     type: String,
-    default: 'late', // 'late' | 'refundable' | 'unpaid'
-    validator: (value) => ['late', 'refundable', 'unpaid'].includes(value)
-  }
+    default: "late", // 'late' | 'refundable' | 'unpaid'
+    validator: (value) => ["late", "refundable", "unpaid"].includes(value),
+  },
 });
 
 // Emits
-const emit = defineEmits(['close', 'keep', 'cancel']);
-
-// Icons
-const iconClose = 'https://www.figma.com/api/mcp/asset/ed60e45c-c248-42af-8d6b-54c888119579';
-const iconAlertRed = 'https://www.figma.com/api/mcp/asset/e9e0c74f-d2c7-4654-bb8e-34d582e0841c';
-const iconAlertBlue = 'https://www.figma.com/api/mcp/asset/94e9ed49-fdff-4443-bba9-8868e6861626';
-const iconAlertGray = 'https://www.figma.com/api/mcp/asset/47eccd5f-275e-45e6-acf3-e04c5dc5bf96';
+const emit = defineEmits(["close", "keep", "cancel"]);
 
 // State
 const selectedReason = ref(null);
 
 // Cancel reasons
 const cancelReasons = [
-  { value: 'busy', label: 'Bận đột xuất' },
-  { value: 'found_other', label: 'Tìm được chỗ khác' },
-  { value: 'other', label: 'Khác' }
+  { value: "busy", label: "Bận đột xuất" },
+  { value: "found_other", label: "Tìm được chỗ khác" },
+  { value: "other", label: "Khác" },
 ];
 
 // Computed properties for alert styling
 const alertClass = computed(() => {
   switch (props.cancelStatus) {
-    case 'late':
-      return 'bg-red-50 border-red-200';
-    case 'refundable':
-      return 'bg-blue-50 border-blue-300';
-    case 'unpaid':
-      return 'bg-gray-50 border-gray-200';
+    case "late":
+      return "bg-red-50 !border-red-200";
+    case "refundable":
+      return "bg-blue-50 !border-blue-300";
+    case "unpaid":
+      return "bg-gray-50 !border-gray-200";
     default:
-      return 'bg-gray-50 border-gray-200';
+      return "bg-gray-50 !border-gray-200";
   }
 });
 
 const alertTextClass = computed(() => {
   switch (props.cancelStatus) {
-    case 'late':
-      return 'text-red-900';
-    case 'refundable':
-      return 'text-blue-800';
-    case 'unpaid':
-      return 'text-gray-700';
+    case "late":
+      return "text-red-900";
+    case "refundable":
+      return "text-blue-800";
+    case "unpaid":
+      return "text-gray-700";
     default:
-      return 'text-gray-700';
+      return "text-gray-700";
   }
 });
 
 const alertIcon = computed(() => {
   switch (props.cancelStatus) {
-    case 'late':
+    case "late":
       return iconAlertRed;
-    case 'refundable':
+    case "refundable":
       return iconAlertBlue;
-    case 'unpaid':
+    case "unpaid":
       return iconAlertGray;
     default:
       return iconAlertGray;
@@ -133,14 +136,16 @@ const alertIcon = computed(() => {
 
 const alertMessage = computed(() => {
   switch (props.cancelStatus) {
-    case 'late':
-      return 'Do bạn hủy sát giờ hẹn (quy định < 24h), số tiền trả trước sẽ không được hoàn lại.';
-    case 'refundable':
-      return `Số tiền ${props.appointment.paidAmount || '180.000'}đ đã thanh toán sẽ được hoàn về ví của bạn trong 24h.`;
-    case 'unpaid':
-      return 'Bạn chưa thanh toán cho lịch hẹn này.';
+    case "late":
+      return "Do bạn hủy sát giờ hẹn (quy định < 24h), số tiền trả trước sẽ không được hoàn lại.";
+    case "refundable":
+      return `Số tiền ${
+        props.appointment.paidAmount || "180.000"
+      }đ đã thanh toán sẽ được hoàn về ví của bạn trong 24h.`;
+    case "unpaid":
+      return "Bạn chưa thanh toán cho lịch hẹn này.";
     default:
-      return 'Bạn chưa thanh toán cho lịch hẹn này.';
+      return "Bạn chưa thanh toán cho lịch hẹn này.";
   }
 });
 
@@ -150,12 +155,12 @@ function selectReason(reason) {
 }
 
 function closePopup() {
-  emit('close');
+  emit("close");
   resetForm();
 }
 
 function keepAppointment() {
-  emit('keep');
+  emit("keep");
   resetForm();
 }
 
@@ -163,10 +168,10 @@ function confirmCancel() {
   const cancelData = {
     appointmentId: props.appointment.id,
     reason: selectedReason.value,
-    cancelStatus: props.cancelStatus
+    cancelStatus: props.cancelStatus,
   };
-  
-  emit('cancel', cancelData);
+
+  emit("cancel", cancelData);
   resetForm();
 }
 

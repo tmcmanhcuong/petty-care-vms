@@ -290,34 +290,34 @@ const router = createRouter({
 });
 
 // Global navigation guard: redirect to login when a route requires auth
-router.beforeEach((to, from, next) => {
-  const token = getToken();
-  const requiresAuth = to.matched.some(
-    (record) => record.meta && record.meta.requiresAuth
-  );
+// router.beforeEach((to, from, next) => {
+//   const token = getToken();
+//   const requiresAuth = to.matched.some(
+//     (record) => record.meta && record.meta.requiresAuth
+//   );
 
-  if (requiresAuth && !token) {
-    // If any matched record is admin-only, redirect to admin login first
-    const isAdminRoute = to.matched.some(
-      (record) => record.meta && record.meta.adminOnly
-    );
+//   if (requiresAuth && !token) {
+//     // If any matched record is admin-only, redirect to admin login first
+//     const isAdminRoute = to.matched.some(
+//       (record) => record.meta && record.meta.adminOnly
+//     );
 
-    if (isAdminRoute) {
-      next({ path: "/admin/dang-nhap", query: { redirect: to.fullPath } });
-      return;
-    }
+//     if (isAdminRoute) {
+//       next({ path: "/admin/dang-nhap", query: { redirect: to.fullPath } });
+//       return;
+//     }
 
-    // If route is for employees (doctor, nurse), redirect to employee login
-    if (to.path.startsWith("/doctor") || to.path.startsWith("/nurse")) {
-      next({ path: "/nhan-vien/dang-nhap", query: { redirect: to.fullPath } });
-      return;
-    }
+//     // If route is for employees (doctor, nurse), redirect to employee login
+//     if (to.path.startsWith("/doctor") || to.path.startsWith("/nurse")) {
+//       next({ path: "/nhan-vien/dang-nhap", query: { redirect: to.fullPath } });
+//       return;
+//     }
 
-    // Default: redirect to customer login
-    next({ path: "/khach-hang/dang-nhap", query: { redirect: to.fullPath } });
-    return;
-  }
-  next();
-});
+//     // Default: redirect to customer login
+//     next({ path: "/khach-hang/dang-nhap", query: { redirect: to.fullPath } });
+//     return;
+//   }
+//   next();
+// });
 
 export default router;

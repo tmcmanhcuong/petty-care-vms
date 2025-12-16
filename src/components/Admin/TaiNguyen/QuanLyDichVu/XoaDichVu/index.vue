@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white border border-gray-200/60 rounded-[10px] shadow-lg p-6 w-full max-w-[510px]"
+    class="bg-white border !border-gray-200/60 rounded-[10px] shadow-lg p-6 w-full max-w-[510px]"
   >
     <!-- Confirm Modal: Delete Service -->
     <div
@@ -12,7 +12,7 @@
         <div
           class="bg-[#ffedd4] rounded-full w-12 h-12 flex items-center justify-center"
         >
-          <img :src="iconWarning" alt="" class="w-6 h-6" />
+          <WarningIcon class="w-6 h-6 text-amber-700" />
         </div>
         <h2
           class="font-nunito font-semibold text-lg leading-7 text-neutral-950 tracking-tight"
@@ -39,13 +39,13 @@
       <!-- Footer Buttons -->
       <div class="flex gap-2 justify-end items-start">
         <button
-          class="bg-white border border-gray-200/60 rounded-lg px-[17px] py-[9px] hover:bg-gray-50 transition-colors"
+          class="bg-white border !border-gray-300 rounded-lg px-[17px] py-[9px] hover:bg-gray-50 transition-colors"
           @click="handleClose"
         >
           <span
             class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
           >
-            Hủy bỏ
+            Hủy
           </span>
         </button>
         <button
@@ -69,6 +69,8 @@
 import { computed, ref } from "vue";
 import api, { attachToken } from "@/utils/api";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
+// Icon SVG
+import WarningIcon from "@/assets/svg/warning.svg";
 
 const props = defineProps({
   modalType: {
@@ -112,10 +114,6 @@ const props = defineProps({
 const emit = defineEmits(["close", "deleted", "confirmDelete"]);
 
 const deleting = ref(false);
-
-// Icon URL from Figma (expires in 7 days)
-const iconWarning =
-  "https://www.figma.com/api/mcp/asset/f7f4eb19-4aa5-4396-96e7-400e540e5c26";
 
 // Methods
 const handleClose = () => {

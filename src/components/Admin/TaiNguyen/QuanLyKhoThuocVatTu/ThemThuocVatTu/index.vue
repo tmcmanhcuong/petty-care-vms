@@ -3,38 +3,24 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
   >
     <div
-      class="bg-white border border-gray-200/60 rounded-[10px] shadow-lg w-[510px] relative"
+      class="bg-white border !border-gray-300 rounded-[10px] shadow-lg w-[510px] relative"
     >
-      <!-- Close Button -->
-      <button
-        @click="$emit('close')"
-        class="absolute right-4 top-4 w-4 h-4 opacity-70 hover:opacity-100 transition-opacity"
-      >
-        <img :src="iconClose" alt="Close" class="w-full h-full" />
-      </button>
-
       <!-- Header -->
       <div class="flex flex-col gap-2 px-6 pt-6 pb-4">
-        <h2
-          class="font-nunito font-semibold text-lg leading-[18px] text-neutral-950 tracking-tight"
-        >
-          Thêm Hàng Hoá mới
-        </h2>
-        <p class="font-nunito text-sm leading-5 text-[#717182] tracking-tight">
+        <h2 class="font-semibold text-lg text-black">Thêm Hàng Hoá mới</h2>
+        <p class="text-sm text-[#717182] tracking-tight">
           Tạo mã hàng mới trong hệ thống
         </p>
       </div>
 
       <!-- Form Content -->
-      <div class="px-6 py-4">
+      <div class="px-6 py-1">
         <div class="flex flex-col gap-[66px]">
           <!-- Row 1: Code & Name -->
           <div class="grid grid-cols-2 gap-2">
             <!-- Code -->
             <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+              <label class="font-medium text-sm text-black mb-0">
                 Mã hàng hoá
               </label>
               <input
@@ -47,9 +33,7 @@
 
             <!-- Name -->
             <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+              <label class="font-medium text-sm text-black mb-0">
                 Tên mặt hàng
               </label>
               <input
@@ -65,25 +49,17 @@
           <div class="grid grid-cols-2 gap-4 -mt-[50px]">
             <!-- Category -->
             <div class="flex flex-col gap-0 relative">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+              <label class="font-medium text-sm text-black mb-0">
                 Phân loại
               </label>
               <button
                 @click="toggleCategoryDropdown"
                 class="bg-[#f3f3f5] border-none rounded-lg h-9 px-[13px] py-0.5 flex items-center justify-between hover:bg-gray-200 transition-colors mt-0 text-left"
               >
-                <span
-                  class="font-nunito text-sm leading-5 text-neutral-950 tracking-tight"
-                  >{{ formData.categoryName }}</span
-                >
-                <img
-                  :src="iconChevronDown"
-                  alt=""
-                  class="w-4 h-4"
-                  :class="{ 'rotate-180': showCategoryDropdown }"
-                />
+                <span class="font-medium text-sm text-black tracking-tight">{{
+                  formData.categoryName
+                }}</span>
+                <ChevronDownIcon />
               </button>
 
               <!-- Category Dropdown -->
@@ -95,7 +71,7 @@
                   v-for="category in categories"
                   :key="category.id"
                   @click="selectCategory(category)"
-                  class="px-3 py-2 hover:bg-gray-100 cursor-pointer font-nunito text-sm text-neutral-950"
+                  class="px-3 py-2 hover:bg-gray-100 cursor-pointer font-medium text-sm text-black"
                 >
                   {{ category.ten_danh_muc_hang_hoa || category.name }}
                 </div>
@@ -110,9 +86,7 @@
 
             <!-- Unit -->
             <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+              <label class="font-medium text-sm text-black mb-0">
                 Đơn vị tính
               </label>
               <input
@@ -128,9 +102,7 @@
           <div class="grid grid-cols-2 gap-4 -mt-[50px]">
             <!-- Cost Price -->
             <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+              <label class="font-medium text-sm text-black mb-0">
                 Giá vốn (VNĐ)
               </label>
               <input
@@ -146,9 +118,7 @@
 
             <!-- Sale Price -->
             <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+              <label class="font-medium text-sm text-black mb-0">
                 Giá bán (VNĐ)
               </label>
               <input
@@ -165,9 +135,7 @@
 
           <!-- Minimum Stock -->
           <div class="flex flex-col gap-0 -mt-[50px]">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-            >
+            <label class="font-medium text-sm text-black mb-0">
               Định mức tối thiểu
             </label>
             <input
@@ -183,9 +151,7 @@
 
           <!-- Image Upload -->
           <div class="flex flex-col gap-0 -mt-[34px]">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-            >
+            <label class="font-medium text-sm text-black mb-0">
               Ảnh sản phẩm
             </label>
             <div
@@ -205,13 +171,12 @@
                 v-if="!formData.imagePreviewUrl"
                 class="flex flex-col items-center justify-center gap-2 relative z-10"
               >
-                <img :src="iconUpload" alt="" class="w-12 h-12" />
                 <p
-                  class="font-nunito text-base leading-6 text-[#4a5565] tracking-tight"
+                  class="font-medium text-base leading-6 text-[#4a5565] tracking-tight"
                 >
                   Click để chọn ảnh
                 </p>
-                <p class="font-nunito text-xs leading-4 text-[#99a1af]">
+                <p class="font-medium text-xs leading-4 text-[#99a1af]">
                   PNG, JPG, GIF (Max 5MB)
                 </p>
               </div>
@@ -244,26 +209,26 @@
         <button
           @click="$emit('close')"
           :disabled="isLoading"
-          class="bg-white border border-gray-200/60 rounded-lg h-9 px-[17px] py-[9px] hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          class="bg-white border !border-gray-300 rounded-lg h-9 px-[17px] py-[9px] hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span
-            class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+            class="font-medium text-sm leading-4 text-neutral-950 tracking-tight"
             >Hủy</span
           >
         </button>
         <button
           @click="handleSubmit"
-          class="bg-[#009689] rounded-lg h-9 px-4 py-2 hover:bg-[#007d72] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          class="bg-[#5a9690] rounded-lg h-9 px-4 py-2 hover:bg-[#5a9690]/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           :disabled="!isFormValid || isLoading"
         >
           <span
             v-if="!isLoading"
-            class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
+            class="font-medium text-sm leading-4 text-white tracking-tight"
             >Thêm hàng hóa</span
           >
           <span
             v-else
-            class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
+            class="font-medium text-sm leading-4 text-white tracking-tight"
             >Đang thêm...</span
           >
         </button>
@@ -277,7 +242,8 @@ import { ref, computed } from "vue";
 import { createHangHoa, uploadHangHoaImage } from "@/utils/hangHoa";
 import { listDanhMucHangHoa } from "@/utils/danhMucHangHoa";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
-
+// Icon SVG
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
 // Props
 defineProps({
   // No props needed for now
@@ -306,14 +272,6 @@ const formData = ref({
   imageUrl: null,
   imagePreviewUrl: null,
 });
-
-// Icons from Figma (expire in 7 days)
-const iconChevronDown =
-  "https://www.figma.com/api/mcp/asset/dbefd2f7-66cb-45b5-b3bd-03f52f8f35ea";
-const iconUpload =
-  "https://www.figma.com/api/mcp/asset/a9f0c092-b6b7-4d37-8be2-b4e38e1b7a18";
-const iconClose =
-  "https://www.figma.com/api/mcp/asset/4bc93462-6979-4e31-a7e9-deba0f6b8173";
 
 // Computed
 const isFormValid = computed(() => {

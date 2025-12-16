@@ -10,8 +10,10 @@
             Quản lý thông tin và sức khỏe các bé
           </p>
         </div>
-        <button @click="isAddPetOpen = true"
-          class="flex items-center gap-2 bg-[#5a9690] text-white rounded-xl px-5 py-3.5 font-semibold text-lg hover:bg-[#4a807a] transition">
+        <button
+          @click="isAddPetOpen = true"
+          class="flex items-center gap-2 bg-[#5a9690] text-white rounded-xl px-5 py-3.5 font-semibold text-lg hover:bg-[#4a807a] transition"
+        >
           <svg class="w-5 h-5" fill="none" stroke="white" viewBox="0 0 16 16">
             <path d="M8 3v10M3 8h10" stroke-width="2" stroke-linecap="round" />
           </svg>
@@ -21,15 +23,27 @@
 
       <!-- Pet Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div v-for="pet in pets" :key="pet.id"
+        <div
+          v-for="pet in pets"
+          :key="pet.id"
           class="bg-white border !border-black/15 rounded-2xl overflow-hidden flex flex-col hover:shadow-xl transition cursor-pointer"
-          @click="openDetail(pet)">
+          @click="openDetail(pet)"
+        >
           <!-- Ảnh + Tag loại -->
-          <div class="relative h-48 bg-cover bg-center flex justify-end items-start p-7 overflow-hidden">
-            <img :src="pet.imageCard" alt="pet image" class="absolute inset-0 w-full h-full object-cover"
-              @error="handleImgError($event, pet)" />
-            <span class="px-4 py-2 rounded-lg font-bold text-lg relative z-10" :class="pet.tagClass">{{ pet.type
-              }}</span>
+          <div
+            class="relative h-48 bg-cover bg-center flex justify-end items-start p-7 overflow-hidden"
+          >
+            <img
+              :src="pet.imageCard"
+              alt="pet image"
+              class="absolute inset-0 w-full h-full object-cover"
+              @error="handleImgError($event, pet)"
+            />
+            <span
+              class="px-4 py-2 rounded-lg font-bold text-lg relative z-10"
+              :class="pet.tagClass"
+              >{{ pet.type }}</span
+            >
           </div>
 
           <!-- Nội dung card -->
@@ -37,7 +51,9 @@
             <div class="flex justify-between mb-4">
               <div>
                 <h3 class="text-lg font-bold">{{ pet.name }}</h3>
-                <p class="text-gray-600 font-medium whitespace-nowrap">{{ pet.breed }}</p>
+                <p class="text-gray-600 font-medium whitespace-nowrap">
+                  {{ pet.breed }}
+                </p>
               </div>
               <div class="space-y-1 text-sm">
                 <div>
@@ -52,8 +68,11 @@
             </div>
 
             <!-- Reminder -->
-            <div class="flex gap-3 px-6 py-4 rounded-xl border !border-black/15 mb-2" :class="pet.reminderBg">
-             <Calendar />
+            <div
+              class="flex gap-3 px-6 py-4 rounded-xl border !border-black/15 mb-2"
+              :class="pet.reminderBg"
+            >
+              <Calendar class="w-5 h-5" />
               <div>
                 <p class="font-bold" :class="pet.reminderTitleClass">
                   {{ pet.reminderTitle }}
@@ -66,11 +85,22 @@
 
             <!-- Buttons -->
             <div class="mt-auto space-y-3">
-              <button @click.stop="openDeletePopup(pet)"
-                class="w-full py-2 border !border-[#eb8e90] rounded-lg hover:bg-red-50 transition">
-                <svg class="w-7 h-7 mx-auto" fill="none" stroke="#eb8e90" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14zM10 11v6M14 11v6" />
+              <button
+                @click.stop="openDeletePopup(pet)"
+                class="w-full py-2 border !border-[#eb8e90] rounded-lg hover:bg-red-50 transition"
+              >
+                <svg
+                  class="w-7 h-7 mx-auto"
+                  fill="none"
+                  stroke="#eb8e90"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14zM10 11v6M14 11v6"
+                  />
                 </svg>
               </button>
             </div>
@@ -81,19 +111,33 @@
 
     <!-- Modal Chi Tiết Thú Cưng -->
     <teleport to="body">
-      <ChiTietThuCung v-if="selectedPet" :isOpen="showDetail" :pet="selectedPet" @close="showDetail = false"
-        @updated="onPetUpdated" />
+      <ChiTietThuCung
+        v-if="selectedPet"
+        :isOpen="showDetail"
+        :pet="selectedPet"
+        @close="showDetail = false"
+        @updated="onPetUpdated"
+      />
     </teleport>
 
     <!-- Modal Xóa Thú Cưng -->
     <teleport to="body">
-      <XoaThuCung v-if="petToDelete" :isOpen="isDeletePetOpen" :petData="petToDelete" @close="isDeletePetOpen = false"
-        @delete="handleDeletePet" />
+      <XoaThuCung
+        v-if="petToDelete"
+        :isOpen="isDeletePetOpen"
+        :petData="petToDelete"
+        @close="isDeletePetOpen = false"
+        @delete="handleDeletePet"
+      />
     </teleport>
 
     <!-- Modal Thêm Thú Cưng -->
     <teleport to="body">
-      <ThemThuCung :isOpen="isAddPetOpen" @close="isAddPetOpen = false" @submit="handleAddPet" />
+      <ThemThuCung
+        :isOpen="isAddPetOpen"
+        @close="isAddPetOpen = false"
+        @submit="handleAddPet"
+      />
     </teleport>
   </div>
 </template>
@@ -193,8 +237,8 @@ const mapBackendPetToCard = (item) => {
     type.toLowerCase().includes("cho") || type === "dog"
       ? "bg-amber-50 text-amber-700"
       : type.toLowerCase().includes("meo") || type === "cat"
-        ? "bg-blue-50 text-sky-500"
-        : "bg-zinc-100 text-zinc-500";
+      ? "bg-blue-50 text-sky-500"
+      : "bg-zinc-100 text-zinc-500";
 
   const age = computeAgeDisplay(item.tuoi_thu_cung);
 
@@ -249,7 +293,7 @@ const handleImgError = (ev, pet) => {
     console.error("handleImgError", e);
     try {
       ev.target.src = PLACEHOLDER_IMAGE;
-    } catch (e) { }
+    } catch (e) {}
   }
 };
 
@@ -272,7 +316,7 @@ const fetchPets = async () => {
     try {
       const t = (await import("@/utils/auth")).getToken();
       if (t) axios.defaults.headers.common["Authorization"] = `Bearer ${t}`;
-    } catch (e) { }
+    } catch (e) {}
     // Request all records from the backend so frontend can display full data
     const res = await axios.get(`${API_BASE}/thu-cung?all=1`);
     // handle both paginated and non-paginated responses
@@ -308,7 +352,7 @@ const handleDeletePet = async (pet) => {
     try {
       const t = (await import("@/utils/auth")).getToken();
       if (t) axios.defaults.headers.common["Authorization"] = `Bearer ${t}`;
-    } catch (e) { }
+    } catch (e) {}
     await axios.delete(`${API_BASE}/thu-cung/${target.id}`);
 
     // remove from local list
@@ -352,7 +396,7 @@ const handleAddPet = async (data) => {
     try {
       const t = (await import("@/utils/auth")).getToken();
       if (t) axios.defaults.headers.common["Authorization"] = `Bearer ${t}`;
-    } catch (e) { }
+    } catch (e) {}
     const res = await axios.post(`${API_BASE}/thu-cung`, fd, {
       headers: { "Content-Type": "multipart/form-data" },
     });

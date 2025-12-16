@@ -1,15 +1,34 @@
 <template>
   <!-- Main Detail Popup -->
-  <div v-if="isOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" @click="close">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" @click.stop>
+  <div
+    v-if="isOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+    @click="close"
+  >
+    <div
+      class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+      @click.stop
+    >
       <div class="p-6">
         <!-- Header Modal -->
         <div class="relative mb-4">
           <h2 class="text-lg font-bold">Hồ sơ chi tiết</h2>
-          <button @click="close"
-            class="absolute right-0 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full transition">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 28 28">
-              <path d="M21 7L7 21M7 7l14 14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <button
+            @click="close"
+            class="absolute right-0 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full transition"
+          >
+            <svg
+              class="w-7 h-7"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 28 28"
+            >
+              <path
+                d="M21 7L7 21M7 7l14 14"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
           <p class="text-gray-600 mt-1">
@@ -19,31 +38,36 @@
 
         <!-- Pet Info -->
         <div class="flex gap-4 mb-6">
-          <img :src="pet.anh_dai_dien_url ||
-            pet.image ||
-            pet.imageCard ||
-            imgPetPlaceholder
-            " alt="Pet" class="w-24 h-24 rounded-xl object-cover" />
+          <img
+            :src="
+              pet.anh_dai_dien_url ||
+              pet.image ||
+              pet.imageCard ||
+              imgPetPlaceholder
+            "
+            alt="Pet"
+            class="w-24 h-24 rounded-xl object-cover"
+          />
           <div>
             <h3 class="text-amber-600 font-semibold text-lg">{{ pet.name }}</h3>
             <div class="grid grid-cols-2 gap-y-2 gap-x-20 mt-2 text-sm">
-              <div>
+              <div class="whitespace-nowrap">
                 <span class="text-gray-500 font-medium">Giống: </span>
                 <span class="font-semibold text-slate-900">{{
                   pet.breed
                 }}</span>
               </div>
-              <div>
+              <div class="whitespace-nowrap">
                 <span class="text-gray-500 font-medium">Tuổi: </span>
                 <span class="font-semibold text-slate-900">{{ pet.age }}</span>
               </div>
-              <div>
+              <div class="whitespace-nowrap">
                 <span class="text-gray-500 font-medium">Cân nặng: </span>
                 <span class="font-semibold text-slate-900">{{
                   pet.weight
                 }}</span>
               </div>
-              <div>
+              <div class="whitespace-nowrap">
                 <span class="text-gray-500 font-medium">Giới tính: </span>
                 <span class="font-semibold text-slate-900">{{
                   pet.gender
@@ -55,19 +79,29 @@
 
         <!-- Tabs -->
         <div class="bg-gray-200 rounded-2xl p-1 mb-6 flex">
-          <button @click="tab = 'vaccination'" :class="{ 'bg-white shadow-sm': tab === 'vaccination' }"
-            class="flex-1 py-2 rounded-2xl font-semibold text-sm transition">
+          <button
+            @click="tab = 'vaccination'"
+            :class="{ 'bg-white shadow-sm': tab === 'vaccination' }"
+            class="flex-1 py-2 rounded-2xl font-semibold text-sm transition"
+          >
             Lịch tiêm phòng
           </button>
-          <button @click="tab = 'medical'" :class="{ 'bg-white shadow-sm': tab === 'medical' }"
-            class="flex-1 py-2 rounded-2xl font-semibold text-sm transition">
+          <button
+            @click="tab = 'medical'"
+            :class="{ 'bg-white shadow-sm': tab === 'medical' }"
+            class="flex-1 py-2 rounded-2xl font-semibold text-sm transition"
+          >
             Bệnh án
           </button>
         </div>
 
         <!-- Tab Vaccination -->
         <div v-show="tab === 'vaccination'" class="space-y-4">
-          <div v-for="v in pet.vaccinations" :key="v.date" class="border border-gray-300 rounded-xl p-4">
+          <div
+            v-for="v in pet.vaccinations"
+            :key="v.date"
+            class="border border-gray-300 rounded-xl p-4"
+          >
             <div class="flex justify-between items-center">
               <span class="font-semibold text-slate-900">{{ v.name }}</span>
               <span class="text-sm font-medium">{{ v.date }}</span>
@@ -75,9 +109,17 @@
             <p class="text-gray-600 text-sm mt-1">Bác sĩ: {{ v.doctor }}</p>
           </div>
 
-          <div v-if="pet.upcomingVaccination" class="bg-amber-50 border border-yellow-300 rounded-xl p-4">
+          <div
+            v-if="pet.upcomingVaccination"
+            class="bg-amber-50 border border-yellow-300 rounded-xl p-4"
+          >
             <div class="flex items-center gap-2 mb-1">
-              <svg class="w-5 h-5" fill="none" stroke="#bb4d00" viewBox="0 0 16 16">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="#bb4d00"
+                viewBox="0 0 16 16"
+              >
                 <circle cx="8" cy="8" r="6" stroke-width="2" />
                 <path d="M8 5v3l2 2" stroke-width="2" stroke-linecap="round" />
               </svg>
@@ -91,7 +133,11 @@
 
         <!-- Tab Medical -->
         <div v-show="tab === 'medical'" class="space-y-4">
-          <div v-for="m in pet.medicalRecords" :key="m.date" class="border border-gray-300 rounded-xl p-4">
+          <div
+            v-for="m in pet.medicalRecords"
+            :key="m.date"
+            class="border border-gray-300 rounded-xl p-4"
+          >
             <div class="flex justify-between items-center mb-1">
               <span class="font-semibold text-slate-900">{{ m.title }}</span>
               <span class="text-sm font-medium">{{ m.date }}</span>
@@ -106,11 +152,14 @@
         <!-- Action Buttons -->
         <div class="flex gap-3 mt-8">
           <button
-            class="flex-1 bg-[#5a9690] text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90 transition">
+            class="flex-1 bg-[#5a9690] text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90 transition"
+          >
             Đặt lịch khám lại
           </button>
-          <button @click="openUpdatePopup"
-            class="flex-1 border !border-gray-400 py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition">
+          <button
+            @click="openUpdatePopup"
+            class="flex-1 border !border-gray-400 py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition"
+          >
             Cập nhật thông tin
           </button>
         </div>
@@ -119,11 +168,15 @@
   </div>
 
   <!-- Update Pet Info Popup -->
-  <div v-if="showUpdatePopup" class="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4"
-    @click="closeUpdatePopup">
+  <div
+    v-if="showUpdatePopup"
+    class="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4"
+    @click="closeUpdatePopup"
+  >
     <div
       class="bg-white border border-black/15 rounded-[10px] shadow-2xl w-full max-w-[512px] max-h-[90vh] overflow-y-auto"
-      @click.stop>
+      @click.stop
+    >
       <div class="p-6 flex flex-col gap-6">
         <!-- Header -->
         <div class="flex flex-col gap-2">
@@ -145,16 +198,22 @@
         <!-- Form Container -->
         <div class="flex flex-col">
           <!-- Form Fields with Pet Image -->
-          <div class="bg-amber-50 border-2 !border-amber-300 rounded-[10px] p-[18px] flex flex-col gap-4">
+          <div
+            class="bg-amber-50 border-2 !border-amber-300 rounded-[10px] p-[18px] flex flex-col gap-4"
+          >
             <!-- Pet Image and Name/Breed -->
             <div class="flex gap-4">
               <!-- Pet Image -->
               <div class="relative w-24 h-24">
-                <img :src="petData.image || imgPetPlaceholder" alt="Pet"
-                  class="w-24 h-24 rounded-[10px] object-cover" />
+                <img
+                  :src="petData.image || imgPetPlaceholder"
+                  alt="Pet"
+                  class="w-24 h-24 rounded-[10px] object-cover"
+                />
                 <div
                   class="absolute inset-0 bg-black/50 rounded-[10px] flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer"
-                  @click="handleImageUpload">
+                  @click="handleImageUpload"
+                >
                   <div class="w-8 h-8">
                     <img :src="iconCamera" alt="Upload" class="w-full h-full" />
                   </div>
@@ -169,8 +228,14 @@
                     Tên thú cưng
                     <span class="text-red-600">*</span>
                   </label>
-                  <input v-model="petData.name" type="text" placeholder="Milo" tabindex="0" :readonly="false"
-                    class="bg-gray-50 border !border-black/15 rounded-lg h-9 px-3 py-1 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                  <input
+                    v-model="petData.name"
+                    type="text"
+                    placeholder="Milo"
+                    tabindex="0"
+                    :readonly="false"
+                    class="bg-gray-50 border !border-black/15 rounded-lg h-9 px-3 py-1 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  />
                 </div>
 
                 <!-- Loại Field -->
@@ -178,9 +243,14 @@
                   <label class="font-semibold text-sm leading-5 text-black">
                     Loài
                   </label>
-                  <input v-model="petData.loai_thu_cung" type="text" placeholder="Chó / Mèo" tabindex="0"
+                  <input
+                    v-model="petData.loai_thu_cung"
+                    type="text"
+                    placeholder="Chó / Mèo"
+                    tabindex="0"
                     :readonly="false"
-                    class="bg-gray-50 border !border-black/15 rounded-lg h-9 px-3 py-1 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                    class="bg-gray-50 border !border-black/15 rounded-lg h-9 px-3 py-1 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  />
                 </div>
 
                 <!-- Breed Field -->
@@ -188,9 +258,14 @@
                   <label class="font-semibold text-sm leading-5 text-black">
                     Giống
                   </label>
-                  <input v-model="petData.breed" type="text" placeholder="Golden Retriever" tabindex="0"
+                  <input
+                    v-model="petData.breed"
+                    type="text"
+                    placeholder="Golden Retriever"
+                    tabindex="0"
                     :readonly="false"
-                    class="bg-gray-50 border !border-black/15 rounded-lg h-9 px-3 py-1 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                    class="bg-gray-50 border !border-black/15 rounded-lg h-9 px-3 py-1 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  />
                 </div>
               </div>
             </div>
@@ -200,8 +275,13 @@
               <label class="font-semibold text-sm leading-5 text-black">
                 Ngày sinh
               </label>
-              <input v-model="petData.birthDate" type="date" tabindex="0" :readonly="false"
-                class="bg-white border !border-black/15 rounded-lg h-9 px-3 py-2 text-sm text-gray-700" />
+              <input
+                v-model="petData.birthDate"
+                type="date"
+                tabindex="0"
+                :readonly="false"
+                class="bg-white border !border-black/15 rounded-lg h-9 px-3 py-2 text-sm text-gray-700"
+              />
             </div>
 
             <!-- Weight and Gender Grid -->
@@ -212,8 +292,14 @@
                   Cân nặng (kg)
                   <span class="text-red-600">*</span>
                 </label>
-                <input v-model.number="petData.weight" type="number" placeholder="28" tabindex="0" :readonly="false"
-                  class="bg-gray-50 border !border-black/15 rounded-lg h-9 px-3 py-1 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500" />
+                <input
+                  v-model.number="petData.weight"
+                  type="number"
+                  placeholder="28"
+                  tabindex="0"
+                  :readonly="false"
+                  class="bg-gray-50 border !border-black/15 rounded-lg h-9 px-3 py-1 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                />
               </div>
 
               <!-- Gender Field -->
@@ -223,20 +309,40 @@
                 </label>
                 <div class="flex items-center gap-4">
                   <label class="flex items-center gap-2 cursor-pointer">
-                    <input v-model="petData.gender" type="radio" value="male" class="w-4 h-4 accent-teal-600" />
-                    <span class="font-semibold text-sm leading-5 text-black">Đực</span>
+                    <input
+                      v-model="petData.gender"
+                      type="radio"
+                      value="male"
+                      class="w-4 h-4 accent-teal-600"
+                    />
+                    <span class="font-semibold text-sm leading-5 text-black"
+                      >Đực</span
+                    >
                   </label>
                   <label class="flex items-center gap-2 cursor-pointer">
-                    <input v-model="petData.gender" type="radio" value="female" class="w-4 h-4 accent-teal-600" />
-                    <span class="font-semibold text-sm leading-5 text-black">Cái</span>
+                    <input
+                      v-model="petData.gender"
+                      type="radio"
+                      value="female"
+                      class="w-4 h-4 accent-teal-600"
+                    />
+                    <span class="font-semibold text-sm leading-5 text-black"
+                      >Cái</span
+                    >
                   </label>
                 </div>
               </div>
             </div>
 
             <!-- Warning Note -->
-            <div class="bg-amber-50 border !border-amber-500 rounded px-6 py-3 flex items-center gap-5">
-              <p class="font-bold text-xs leading-4 text-amber-800 whitespace-nowrap">Lưu ý:</p>
+            <div
+              class="bg-amber-50 border !border-amber-500 rounded px-6 py-3 flex items-center gap-5"
+            >
+              <p
+                class="font-bold text-xs leading-4 text-amber-800 whitespace-nowrap"
+              >
+                Lưu ý:
+              </p>
               <p class="font-normal text-xs leading-4 text-amber-800">
                 Cân nặng này là thông tin tham khảo. Cân nặng chính xác sẽ được
                 đo bởi Bác sĩ trong mỗi lần khám.
@@ -247,22 +353,39 @@
           <!-- Action Buttons: Save / Hủy for the update popup -->
           <div>
             <div class="flex gap-3 mt-4">
-              <button type="button" @click.prevent="handleSave" :disabled="saving" aria-label="Lưu thay đổi"
-                class="flex-1 bg-emerald-600 text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed">
+              <button
+                type="button"
+                @click.prevent="handleSave"
+                :disabled="saving"
+                aria-label="Lưu thay đổi"
+                class="flex-1 bg-[#5a9690] text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed"
+              >
                 <template v-if="saving">
                   <svg class="animate-spin w-5 h-5" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="white" stroke-width="4" fill="none">
-                    </circle>
-                    <path class="opacity-75" fill="white" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="white"
+                      stroke-width="4"
+                      fill="none"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="white"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    ></path>
                   </svg>
                   Đang lưu...
                 </template>
-                <template v-else>
-                  Lưu
-                </template>
+                <template v-else> Lưu </template>
               </button>
-              <button type="button" @click="closeUpdatePopup"
-                class="flex-1 border !border-gray-400 py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition">
+              <button
+                type="button"
+                @click="closeUpdatePopup"
+                class="flex-1 border !border-gray-400 py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-gray-50 transition"
+              >
                 Hủy
               </button>
             </div>
@@ -449,7 +572,7 @@ const handleSave = async () => {
         // eslint-disable-next-line no-console
         console.log("FormData:", pair[0], pair[1]);
       }
-    } catch (e) { }
+    } catch (e) {}
 
     // attach Authorization header if token present (we avoid withCredentials to reduce CORS issues)
     const token = getToken();

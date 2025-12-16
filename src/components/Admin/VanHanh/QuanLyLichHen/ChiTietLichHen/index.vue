@@ -5,14 +5,14 @@
   >
     <!-- Modal Card -->
     <div
-      class="bg-white border border-black/10 rounded-[10px] shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1),0px_4px_6px_-4px_rgba(0,0,0,0.1)] w-[510px] relative"
+      class="bg-white border !border-gray-300 rounded-[10px] shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1),0px_4px_6px_-4px_rgba(0,0,0,0.1)] w-[510px] relative"
     >
       <!-- Close Button -->
       <button
         @click="$emit('close')"
-        class="absolute right-4 top-4 w-4 h-4 opacity-70 hover:opacity-100 transition-opacity"
+        class="absolute right-6 top-4 w-4 h-4 opacity-70 hover:opacity-100 transition-opacity"
       >
-        <img :src="iconClose" alt="Close" class="w-full h-full" />
+        <CloseIcon />
       </button>
 
       <!-- Dialog Header -->
@@ -49,7 +49,7 @@
           <!-- Time -->
           <div class="relative h-11">
             <div class="absolute left-0 top-[2px] w-5 h-5">
-              <img :src="iconCalendar" alt="Calendar" class="w-full h-full" />
+              <CalendarIcon />
             </div>
             <div class="absolute left-8 top-0 flex flex-col">
               <p
@@ -68,7 +68,7 @@
           <!-- Customer -->
           <div class="relative h-11">
             <div class="absolute left-0 top-[2px] w-5 h-5">
-              <img :src="iconUser" alt="User" class="w-full h-full" />
+              <UserIcon class="text-black" />
             </div>
             <div class="absolute left-8 top-0 flex flex-col">
               <p
@@ -87,7 +87,7 @@
           <!-- Pet -->
           <div class="relative h-11">
             <div class="absolute left-0 top-[2px] w-5 h-5">
-              <img :src="iconUser" alt="Pet" class="w-full h-full" />
+              <DogIcon />
             </div>
             <div class="absolute left-8 top-0 flex flex-col">
               <p
@@ -106,7 +106,7 @@
           <!-- Service -->
           <div class="relative h-11">
             <div class="absolute left-0 top-[2px] w-5 h-5">
-              <img :src="iconService" alt="Service" class="w-full h-full" />
+              <ServiceIcon />
             </div>
             <div class="absolute left-8 top-0 flex flex-col">
               <p
@@ -125,7 +125,7 @@
           <!-- Assigned Staff -->
           <div class="relative h-[60px]">
             <div class="absolute left-0 top-[2px] w-5 h-5">
-              <img :src="iconUser" alt="Staff" class="w-full h-full" />
+              <UserIcon />
             </div>
             <div class="absolute left-8 top-0 flex flex-col">
               <p
@@ -201,16 +201,12 @@
 <script setup>
 import { computed, ref, onMounted } from "vue";
 import client from "../../../../../utils/api.js";
-
-// Icons (from Figma - expire in 7 days)
-const iconCalendar =
-  "https://www.figma.com/api/mcp/asset/b58c411f-53b3-4866-802c-3c8f1c5ed79d";
-const iconUser =
-  "https://www.figma.com/api/mcp/asset/45ff3f14-22aa-42da-8b81-22568dc780c8";
-const iconService =
-  "https://www.figma.com/api/mcp/asset/0e1add33-8582-4146-b603-a88f0d19aafe";
-const iconClose =
-  "https://www.figma.com/api/mcp/asset/100c358c-d660-459f-8e29-4e3ff5189c59";
+//Icon SVG
+import CloseIcon from "@/assets/svg/close.svg";
+import CalendarIcon from "@/assets/svg/calendar.svg";
+import UserIcon from "@/assets/svg/user.svg";
+import DogIcon from "@/assets/svg/dog.svg";
+import ServiceIcon from "@/assets/svg/document.svg";
 
 // Props
 const props = defineProps({

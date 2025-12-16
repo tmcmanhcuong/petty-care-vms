@@ -1,19 +1,15 @@
 <template>
-  <div class="w-full min-h-screen p-6">
+  <div class="w-full min-h-screen px-8 py-6">
     <!-- Header -->
-    <div class="mb-8">
-      <h1
-        class="font-nunito font-medium text-2xl leading-9 text-[#101828] tracking-tight mb-0"
-      >
-        Quản lý Người dùng
-      </h1>
-      <p class="font-nunito text-base leading-6 text-[#4a5565] tracking-tight">
+    <div class="flex flex-col gap-2">
+      <h1 class="font-semibold text-2xl text-black">Quản lý Người dùng</h1>
+      <p class="font-medium text-base text-gray-500">
         Quản lý tài khoản nhân viên và khách hàng
       </p>
     </div>
 
     <!-- Content -->
-    <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-8 mt-6">
       <!-- Tabs -->
       <div
         class="bg-[#f3f4f6] flex items-center p-1 rounded-[10px] shadow-sm w-fit"
@@ -25,7 +21,7 @@
               ? 'bg-white shadow-md text-[#0d9488]'
               : 'text-[#4b5563]'
           "
-          class="font-nunito font-medium text-sm leading-5 px-6 py-2.5 rounded-lg transition-all"
+          class="font-medium text-sm leading-5 px-6 py-2.5 rounded-lg transition-all"
         >
           Danh sách Nhân viên
         </button>
@@ -36,7 +32,7 @@
               ? 'bg-white shadow-md text-[#0d9488]'
               : 'text-[#4b5563]'
           "
-          class="font-nunito font-medium text-sm leading-5 px-6 py-2.5 rounded-lg transition-all"
+          class="font-medium text-sm leading-5 px-6 py-2.5 rounded-lg transition-all"
         >
           Danh sách Khách hàng
         </button>
@@ -45,22 +41,20 @@
       <!-- Staff List -->
       <div
         v-if="activeTab === 'staff'"
-        class="bg-white border border-gray-200/60 rounded-[14px] p-6"
+        class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6"
       >
         <!-- Card Header -->
         <div class="flex items-center justify-between mb-6">
-          <h2
-            class="font-nunito text-base leading-4 text-neutral-950 tracking-tight"
-          >
+          <h2 class="font-medium text-base leading-4 text-black">
             Danh sách Nhân viên
           </h2>
           <button
-            class="bg-[#009689] rounded-lg h-9 px-3 py-2 flex items-center gap-2 hover:bg-[#007d72] transition-colors"
+            class="bg-[#5a9690] rounded-lg h-9 px-3 py-2 flex items-center gap-2 hover:bg-[#007d72] transition-colors"
             @click="isAddStaffModalOpen = true"
           >
-            <img :src="iconPlus" alt="Add" class="w-4 h-4" />
+            <AddIcon class="text-white" />
             <span
-              class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
+              class="font-medium text-sm leading-5 text-white tracking-tight"
               >Tạo tài khoản mới</span
             >
           </button>
@@ -69,9 +63,7 @@
         <!-- Search and Filter -->
         <div class="flex items-center gap-4 mb-6">
           <div class="flex-1 relative">
-            <img
-              :src="iconSearch"
-              alt="Search"
+            <SearchIcon
               class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4"
             />
             <input
@@ -85,10 +77,10 @@
             class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-[1px] flex items-center justify-between gap-2 min-w-[192px]"
           >
             <span
-              class="font-nunito text-sm leading-5 text-neutral-950 tracking-tight"
+              class="font-medium text-sm leading-5 text-neutral-950 tracking-tight"
               >Tất cả</span
             >
-            <img :src="iconChevronDown" alt="Dropdown" class="w-4 h-4" />
+            <ChevronDownIcon />
           </button>
         </div>
 
@@ -98,37 +90,37 @@
             <thead>
               <tr class="border-b border-gray-200/60">
                 <th
-                  class="text-left py-2.5 px-2 font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                  class="text-left py-2.5 px-2 font-medium text-sm leading-5 text-neutral-950 tracking-tight"
                 >
                   Nhân viên
                 </th>
                 <th
-                  class="text-left py-2.5 px-2 font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                  class="text-left py-2.5 px-2 font-medium text-sm leading-5 text-neutral-950 tracking-tight"
                 >
                   Thông tin liên hệ
                 </th>
                 <th
-                  class="text-left py-2.5 px-2 font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                  class="text-left py-2.5 px-2 font-medium text-sm leading-5 text-neutral-950 tracking-tight"
                 >
                   Vai trò
                 </th>
                 <th
-                  class="text-left py-2.5 px-2 font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                  class="text-left py-2.5 px-2 font-medium text-sm leading-5 text-neutral-950 tracking-tight"
                 >
                   Ngày vào làm
                 </th>
                 <th
-                  class="text-left py-2.5 px-2 font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                  class="text-left py-2.5 px-2 font-medium text-sm leading-5 text-neutral-950 tracking-tight"
                 >
                   Trạng thái
                 </th>
                 <th
-                  class="text-left py-2.5 px-2 font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                  class="text-left py-2.5 px-2 font-medium text-sm leading-5 text-neutral-950 tracking-tight"
                 >
                   Lần đăng nhập cuối
                 </th>
                 <th
-                  class="text-right py-2.5 px-2 font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                  class="text-right py-2.5 px-2 font-medium text-sm leading-5 text-neutral-950 tracking-tight"
                 >
                   Thao tác
                 </th>
@@ -156,11 +148,11 @@
                 <td class="py-3 px-2">
                   <div class="flex flex-col">
                     <span
-                      class="font-nunito text-sm leading-6 text-[#101828] tracking-tight"
+                      class="font-medium text-sm leading-6 text-[#101828] tracking-tight"
                       >{{ staff.email }}</span
                     >
                     <span
-                      class="font-nunito text-sm leading-6 text-[#6a7282] tracking-tight"
+                      class="font-medium text-sm leading-6 text-[#6a7282] tracking-tight"
                       >{{ staff.phone }}</span
                     >
                   </div>
@@ -187,7 +179,7 @@
                 </td>
                 <td class="py-3 px-2">
                   <span
-                    class="font-nunito text-sm leading-5 text-[#4a5565] tracking-tight"
+                    class="font-medium text-sm leading-5 text-[#4a5565] tracking-tight"
                     >{{ staff.joinDate }}</span
                   >
                 </td>
@@ -200,17 +192,12 @@
                         : 'bg-gray-100 text-[#364153]',
                     ]"
                   >
-                    <img
-                      :src="staff.status === 'active' ? iconCheck : iconX"
-                      alt=""
-                      class="w-3 h-3"
-                    />
                     {{ staff.status === "active" ? "Hoạt động" : "Đã khóa" }}
                   </span>
                 </td>
                 <td class="py-3 px-2">
                   <span
-                    class="font-nunito text-sm leading-5 text-[#4a5565] tracking-tight"
+                    class="font-medium text-sm leading-5 text-[#4a5565] tracking-tight"
                     >{{ staff.lastLogin }}</span
                   >
                 </td>
@@ -220,24 +207,20 @@
                       class="bg-white border border-gray-200/60 rounded-lg w-[38px] h-8 flex items-center justify-center hover:bg-gray-50 transition-colors"
                       @click="handleViewStaff(staff)"
                     >
-                      <img :src="iconEye" alt="View" class="w-4 h-4" />
+                      <UpdateIcon class="w-4 h-4" />
                     </button>
                     <button
                       class="bg-white border border-gray-200/60 rounded-lg w-[38px] h-8 flex items-center justify-center hover:bg-gray-50 transition-colors"
                       @click="handleOpenResetPassword(staff)"
                     >
-                      <img
-                        :src="iconTrash"
-                        alt="Reset Password"
-                        class="w-4 h-4"
-                      />
+                      <PasswordIcon class="w-4 h-4" />
                     </button>
                     <button
                       v-if="staff.status === 'active'"
                       @click="toggleStaffStatus(staff)"
                       :disabled="staff._loading"
                       :class="[
-                        'bg-white border border-gray-200/60 rounded-lg px-3 h-8 transition-colors',
+                        'bg-white border !border-gray-300 rounded-lg px-3 h-8 transition-colors',
                         staff._loading
                           ? 'opacity-50 cursor-not-allowed'
                           : 'hover:bg-gray-50',
@@ -255,8 +238,8 @@
                       :class="[
                         'rounded-lg px-3 h-8 transition-colors',
                         staff._loading
-                          ? 'opacity-50 cursor-not-allowed bg-[#00a63e]'
-                          : 'bg-[#00a63e] hover:bg-[#008c35]',
+                          ? 'opacity-50 cursor-not-allowed bg-[#009689]'
+                          : 'bg-[#009689] hover:bg-[#009689]',
                       ]"
                     >
                       <span
@@ -288,10 +271,7 @@
                 pagesShownCount === 1 ? 'opacity-50' : 'hover:bg-gray-50',
               ]"
             >
-              <img :src="iconChevronLeft" alt="Previous" class="w-4 h-4" />
-              <span class="font-nunito font-medium text-sm leading-5"
-                >Previous</span
-              >
+              <ChevronLeftIcon />
             </button>
 
             <div class="flex items-center gap-2">
@@ -306,9 +286,7 @@
                     : 'border-gray-200 text-[#101828] bg-white',
                 ]"
               >
-                <span class="font-nunito font-medium text-sm leading-5">{{
-                  p
-                }}</span>
+                <span class="font-medium text-sm leading-5">{{ p }}</span>
               </button>
             </div>
 
@@ -322,10 +300,7 @@
                   : 'hover:bg-gray-50',
               ]"
             >
-              <span class="font-nunito font-medium text-sm leading-5"
-                >Next</span
-              >
-              <img :src="iconChevronRight" alt="Next" class="w-4 h-4" />
+              <ChevronRightIcon />
             </button>
           </div>
         </div>
@@ -334,7 +309,7 @@
       <!-- Customer List -->
       <div
         v-if="activeTab === 'customer'"
-        class="bg-white border border-gray-200/60 rounded-[14px] p-6"
+        class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6"
       >
         <!-- Card Header -->
         <div class="flex items-center justify-between mb-6">
@@ -352,9 +327,7 @@
 
         <!-- Search -->
         <div class="mb-6 relative">
-          <img
-            :src="iconSearch"
-            alt="Search"
+          <SearchIcon
             class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4"
           />
           <input
@@ -459,11 +432,6 @@
                         : 'bg-[#ffe2e2] text-[#c10007]',
                     ]"
                   >
-                    <img
-                      :src="customer.status === 'active' ? iconCheck : iconBan"
-                      alt=""
-                      class="w-3 h-3"
-                    />
                     {{ customer.status === "active" ? "Hoạt động" : "Bị chặn" }}
                   </span>
                 </td>
@@ -473,7 +441,7 @@
                       class="bg-white border border-gray-200/60 rounded-lg px-3 h-8 flex items-center gap-2 hover:bg-gray-50 transition-colors"
                       @click="handleViewCustomer(customer)"
                     >
-                      <img :src="iconEye" alt="View" class="w-4 h-4" />
+                      <EyeIcon class="w-4 h-4" />
                       <span
                         class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
                         >Xem chi tiết</span
@@ -482,21 +450,13 @@
                     <button
                       @click="handleToggleCustomerStatus(customer)"
                       :class="[
-                        'rounded-full w-8 h-8 flex items-center justify-center transition-colors',
+                        'rounded-lg w-8 h-8 flex border !border-gray-800 items-center justify-center transition-colors',
                         customer.status === 'active'
                           ? 'hover:bg-gray-100'
                           : 'hover:bg-green-50',
                       ]"
                     >
-                      <img
-                        :src="
-                          customer.status === 'active'
-                            ? iconCircleX
-                            : iconCircleCheck
-                        "
-                        alt=""
-                        class="w-4 h-4"
-                      />
+                      <PasswordIcon class="w-4 h-4 text-black" />
                     </button>
                   </div>
                 </td>
@@ -518,17 +478,13 @@
               class="opacity-50 rounded-lg h-9 px-3 py-2 flex items-center gap-2"
               disabled
             >
-              <img :src="iconChevronLeft" alt="Previous" class="w-4 h-4" />
-              <span
-                class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
-                >Previous</span
-              >
+              <ChevronLeftIcon class="w-4 h-4" />
             </button>
             <button
-              class="bg-white border border-gray-200/60 rounded-lg w-9 h-9 flex items-center justify-center"
+              class="bg-white border !border-[#009689] rounded-lg w-9 h-9 flex items-center justify-center"
             >
               <span
-                class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                class="font-nunito font-medium text-sm leading-5 text-[#009689] tracking-tight"
                 >1</span
               >
             </button>
@@ -536,11 +492,7 @@
               class="opacity-50 rounded-lg h-9 px-3 py-2 flex items-center gap-2"
               disabled
             >
-              <span
-                class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
-                >Next</span
-              >
-              <img :src="iconChevronRight" alt="Next" class="w-4 h-4" />
+              <ChevronRightIcon class="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -589,6 +541,15 @@ import ChiTietKhachHang from "./ChiTietKhachHang/index.vue";
 import { listNhanVien } from "@/utils/nhanVien";
 import api from "@/utils/api";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
+// Icon SVG
+import AddIcon from "@/assets/svg/add.svg";
+import SearchIcon from "@/assets/svg/search.svg";
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
+import ChevronLeftIcon from "@/assets/svg/chevron-left.svg";
+import ChevronRightIcon from "@/assets/svg/chevron-right.svg";
+import UpdateIcon from "@/assets/svg/update.svg";
+import EyeIcon from "@/assets/svg/eye.svg";
+import PasswordIcon from "@/assets/svg/password.svg";
 
 // Active Tab
 const activeTab = ref("staff"); // 'staff' or 'customer'
@@ -603,32 +564,6 @@ const selectedCustomerForView = ref(null);
 // Search Queries
 const staffSearchQuery = ref("");
 const customerSearchQuery = ref("");
-
-// Icons (from Figma - expire in 7 days)
-const iconPlus =
-  "https://www.figma.com/api/mcp/asset/1861026e-bdeb-4bf2-a3d3-9ff21ab066b6";
-const iconSearch =
-  "https://www.figma.com/api/mcp/asset/6d0ae0ec-4e40-4fac-8e80-4f8fa582e4ae";
-const iconChevronDown =
-  "https://www.figma.com/api/mcp/asset/fee71b28-5724-4268-8040-7ba3bd25621c";
-const iconCheck =
-  "https://www.figma.com/api/mcp/asset/8ccdc7c5-0612-4096-932a-778665186719";
-const iconX =
-  "https://www.figma.com/api/mcp/asset/1d86c67f-830e-4ef0-a6fe-45849993acf4";
-const iconEye =
-  "https://www.figma.com/api/mcp/asset/5fd50ace-e27e-4604-a3cb-e9c8a84ce5dc";
-const iconTrash =
-  "https://www.figma.com/api/mcp/asset/10cae540-2b86-46b4-b088-6ba421a8adb2";
-const iconChevronLeft =
-  "https://www.figma.com/api/mcp/asset/34db4cab-de0b-4cf6-87d9-4fc3883b7cb3";
-const iconChevronRight =
-  "https://www.figma.com/api/mcp/asset/7425ae58-4a4a-478b-91c3-f77cea0d92aa";
-const iconBan =
-  "https://www.figma.com/api/mcp/asset/f4ce6ed5-a283-4323-9c1f-7f71b7840bd2";
-const iconCircleX =
-  "https://www.figma.com/api/mcp/asset/74180182-1e94-4e9e-8db7-439b21f1bc32";
-const iconCircleCheck =
-  "https://www.figma.com/api/mcp/asset/0ba993be-862d-4728-843e-bae67fc9d0f0";
 
 // Staff List Data (populated from API)
 const staffList = ref([]);

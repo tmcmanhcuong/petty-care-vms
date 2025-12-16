@@ -19,14 +19,14 @@
         </div>
 
         <!-- Right Section: Search, Notification, User Profile -->
-        <div class="flex gap-4 items-center">
+        <div class="flex gap-4 items-center w-auto">
           <!-- Search Input -->
-          <div class="relative h-9 w-64">
+          <div class="relative h-9 w-96">
             <div
-              class="absolute bg-[#f3f4f6] border border-[rgba(0,0,0,0.15)] h-9 left-0 rounded-lg top-0 w-64"
+              class="absolute bg-[#f3f4f6] border !border-gray-300 h-9 left-0 rounded-lg top-0 w-96"
             >
               <div
-                class="flex h-9 items-center overflow-hidden pl-10 pr-3 py-1 rounded-lg w-64"
+                class="flex h-9 items-center overflow-hidden pl-10 pr-3 py-1 rounded-lg w-96"
               >
                 <input
                   v-model="searchQuery"
@@ -38,7 +38,7 @@
               </div>
             </div>
             <div class="absolute left-3 top-2.5 w-4 h-4">
-              <img :src="searchIcon" alt="Search" class="w-full h-full" />
+              <searchIcon />
             </div>
           </div>
 
@@ -48,13 +48,7 @@
             @click="handleNotificationClick"
             aria-label="Thông báo"
           >
-            <div class="w-4 h-4">
-              <img
-                :src="notificationIcon"
-                alt="Notification"
-                class="w-full h-full"
-              />
-            </div>
+            <notificationIcon class="w-4 h-4" />
             <!-- Notification Badge -->
             <div
               v-if="hasUnreadNotifications"
@@ -114,6 +108,9 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import { showSuccessToast, showInfoToast } from "@/utils/toast";
+// Icon SVG
+import searchIcon from "@/assets/svg/search.svg";
+import notificationIcon from "@/assets/svg/notification.svg";
 
 const router = useRouter();
 const route = useRoute();
@@ -163,13 +160,6 @@ const userData = computed(() => {
     anh_dai_dien: props.user?.avatar || null,
   };
 });
-
-// Icons from Figma
-const searchIcon =
-  "https://www.figma.com/api/mcp/asset/1c5e1070-66d5-4289-be1e-c05be4b2cbf1";
-const notificationIcon =
-  "https://www.figma.com/api/mcp/asset/ef0a35ec-1c9b-40d8-908a-051f762ff10d";
-
 // State
 const searchQuery = ref("");
 const showUserMenu = ref(false);

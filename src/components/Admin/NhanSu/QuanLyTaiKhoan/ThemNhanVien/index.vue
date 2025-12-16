@@ -1,131 +1,145 @@
 <template>
   <div
     class="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-[1000] pt-24"
+    @click.self="$emit('close')"
   >
     <div
-      class="bg-white border border-gray-200/60 rounded-[10px] shadow-xl w-[495px] max-h-[85vh] overflow-y-auto"
+      class="relative bg-white border !border-gray-200 rounded-[10px] w-full max-w-4xl max-h-[85vh] overflow-hidden flex flex-col shadow-xl"
     >
-      <div class="p-6 flex flex-col gap-4">
+      <div class="flex flex-col p-6 flex-1 overflow-hidden">
         <!-- Header -->
-        <div class="flex flex-col gap-2">
-          <h2
-            class="font-nunito font-semibold text-lg leading-[18px] text-neutral-950 tracking-tight"
-          >
-            Thêm nhân viên mới
-          </h2>
-          <p
-            class="font-nunito text-sm leading-5 text-[#717182] tracking-tight"
-          >
+        <div class="flex flex-col gap-2 mb-4">
+          <h2 class="font-semibold text-lg text-black">Thêm nhân viên mới</h2>
+          <p class="text-sm text-gray-500">
             Tạo tài khoản và cấp quyền truy cập cho nhân viên
           </p>
         </div>
 
-        <!-- Form Fields -->
-        <div class="flex flex-col gap-4">
-          <!-- Full Name -->
-          <div class="flex flex-col gap-0">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-            >
-              Họ và tên *
-            </label>
-            <input
-              v-model="formData.fullName"
-              type="text"
-              placeholder="VD: BS. Nguyễn Văn A"
-              class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] mt-0"
-            />
-          </div>
+        <!-- Form Content - 2 Column Layout -->
+        <div class="grid grid-cols-2 gap-6 flex-1 overflow-y-auto pr-2">
+          <!-- Left Column -->
+          <div class="flex flex-col gap-4">
+            <!-- Full Name -->
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black">
+                Họ và tên *
+              </label>
+              <input
+                v-model="formData.fullName"
+                type="text"
+                placeholder="VD: BS. Nguyễn Văn A"
+                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 outline-none placeholder:text-[#717182]"
+              />
+            </div>
 
-          <!-- Email & Phone -->
-          <div class="grid grid-cols-2 gap-4">
-            <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+            <!-- Email -->
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black">
                 Email (Tên đăng nhập) *
               </label>
               <input
                 v-model="formData.email"
                 type="email"
                 placeholder="email@vcms.vn"
-                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] mt-0"
+                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 outline-none placeholder:text-[#717182]"
               />
             </div>
-            <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
+
+            <!-- Phone -->
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black">
                 Số điện thoại *
               </label>
               <input
                 v-model="formData.phone"
                 type="tel"
                 placeholder="0901234567"
-                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] mt-0"
+                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 outline-none placeholder:text-[#717182]"
               />
             </div>
-          </div>
 
-          <!-- Address -->
-          <div class="flex flex-col gap-0">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-            >
-              Địa chỉ
-            </label>
-            <input
-              v-model="formData.address"
-              type="text"
-              placeholder="VD: 123 Nguyễn Huệ, Quận 1, TP.HCM"
-              class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] mt-0"
-            />
-          </div>
+            <!-- Address -->
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black"> Địa chỉ </label>
+              <input
+                v-model="formData.address"
+                type="text"
+                placeholder="VD: 123 Nguyễn Huệ, Quận 1, TP.HCM"
+                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 outline-none placeholder:text-[#717182]"
+              />
+            </div>
 
-          <!-- Avatar Upload -->
-          <div class="flex flex-col gap-0">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-[8px]"
-            >
-              Ảnh đại diện
-            </label>
-            <div class="flex items-center gap-3">
-              <button
-                type="button"
-                @click="triggerAvatarInput"
-                class="bg-white border border-gray-200/60 rounded-lg h-9 px-3 flex items-center gap-2 w-fit hover:bg-gray-50 transition-colors"
-              >
-                <img :src="iconUpload" alt="Upload" class="w-4 h-4" />
-                <span
-                  class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
-                  >Chọn ảnh</span
-                >
-              </button>
-              <div v-if="avatarPreview" class="text-sm text-[#4a5565]">
-                {{ avatarName }}
+            <!-- Position -->
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black"> Chức danh </label>
+              <input
+                v-model="formData.position"
+                type="text"
+                placeholder="VD: Trưởng khoa"
+                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 outline-none placeholder:text-[#717182]"
+              />
+            </div>
+
+            <!-- Years of Experience -->
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black">
+                Năm kinh nghiệm
+              </label>
+              <div class="flex items-center gap-2">
+                <input
+                  v-model.number="formData.yearsOfExperience"
+                  type="number"
+                  placeholder="VD: 5"
+                  class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 outline-none placeholder:text-[#717182] w-32"
+                />
+                <span class="text-sm text-[#4a5565]">năm</span>
               </div>
             </div>
-            <input
-              ref="avatarInput"
-              type="file"
-              accept="image/*"
-              class="hidden"
-              @change="handleAvatarChange"
-            />
-            <p class="font-nunito text-xs leading-4 text-[#6a7282] mt-[4px]">
-              JPG, PNG (Tối đa 2MB)
-            </p>
+
+            <!-- Password -->
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black">
+                Mật khẩu khởi tạo *
+              </label>
+              <input
+                v-model="formData.password"
+                type="password"
+                placeholder="Nhập mật khẩu khởi tạo"
+                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 outline-none placeholder:text-[#717182]"
+              />
+              <p class="text-xs text-[#6a7282]">Mật khẩu tối thiểu 8 ký tự</p>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black">
+                Xác nhận mật khẩu *
+              </label>
+              <input
+                v-model="formData.passwordConfirmation"
+                type="password"
+                placeholder="Xác nhận mật khẩu"
+                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 outline-none placeholder:text-[#717182]"
+              />
+              <p
+                v-if="
+                  formData.passwordConfirmation &&
+                  formData.password !== formData.passwordConfirmation
+                "
+                class="text-xs text-[#e53e3e]"
+              >
+                Xác nhận mật khẩu không khớp.
+              </p>
+            </div>
           </div>
 
-          <!-- System Roles -->
-          <div class="flex flex-col gap-0">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-            >
-              Vai trò hệ thống (System Roles) *
-            </label>
-            <div class="flex flex-col gap-3 mt-0">
-              <!-- Role options as pills -->
+          <!-- Right Column -->
+          <div class="flex flex-col gap-4">
+            <!-- System Roles -->
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black">
+                Vai trò hệ thống *
+              </label>
               <div class="flex flex-wrap gap-2">
                 <button
                   v-for="role in roleOptions"
@@ -133,11 +147,11 @@
                   @click.prevent="toggleRole(role)"
                   :class="
                     formData.selectedRoles.includes(role)
-                      ? 'bg-[#009689] text-white px-3 py-1 rounded-lg'
+                      ? 'bg-[#5a9690] text-white px-3 py-1 rounded-lg'
                       : 'bg-[#f3f3f5] text-[#364153] px-3 py-1 rounded-lg'
                   "
                 >
-                  <span class="font-nunito text-sm">{{ role }}</span>
+                  <span class="text-sm">{{ role }}</span>
                 </button>
               </div>
 
@@ -149,89 +163,70 @@
                 <span
                   v-for="(role, index) in formData.selectedRoles"
                   :key="index"
-                  class="bg-green-100 border border-[#b9f8cf] rounded-lg px-3 py-[1px] h-[34px] flex items-center gap-1.5"
+                  class="bg-green-100 border border-[#b9f8cf] rounded-lg px-3 py-1 flex items-center gap-1.5"
                 >
-                  <span
-                    class="font-nunito text-sm leading-5 text-[#008236] tracking-tight"
-                    >{{ role }}</span
-                  >
+                  <span class="text-sm text-[#008236]">{{ role }}</span>
                   <button
                     @click="removeRole(index)"
                     class="w-3.5 h-3.5 flex items-center justify-center"
                   >
-                    <img :src="iconX" alt="Remove" class="w-full h-full" />
+                    <svg class="w-full h-full" viewBox="0 0 14 14" fill="none">
+                      <path
+                        d="M10.5 3.5L3.5 10.5M3.5 3.5L10.5 10.5"
+                        stroke="#008236"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                    </svg>
                   </button>
                 </span>
               </div>
-
-              <p class="font-nunito text-xs leading-4 text-[#6a7282]">
+              <p class="text-xs text-[#6a7282]">
                 Chọn vai trò: Bác sĩ hoặc Y tá.
               </p>
             </div>
-          </div>
 
-          <!-- Position -->
-          <div class="flex flex-col gap-0">
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-            >
-              Chức danh
-            </label>
-            <input
-              v-model="formData.position"
-              type="text"
-              placeholder="VD: Trưởng khoa"
-              class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] mt-0"
-            />
-          </div>
-
-          <!-- Education & Experience Section -->
-          <div
-            class="border-t border-gray-200/60 pt-[17px] flex flex-col gap-4"
-          >
-            <h3
-              class="font-nunito text-sm leading-5 text-[#364153] tracking-tight"
-            >
-              Trình độ & Kinh nghiệm
-            </h3>
-
-            <!-- Years of Experience -->
-            <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-0"
-              >
-                Năm kinh nghiệm
+            <!-- Avatar Upload -->
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black">
+                Ảnh đại diện
               </label>
-              <div class="flex items-center gap-2">
-                <input
-                  v-model.number="formData.yearsOfExperience"
-                  type="number"
-                  placeholder="VD: 5"
-                  class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] w-32"
-                />
-                <span
-                  class="font-nunito text-sm leading-5 text-[#4a5565] tracking-tight"
-                  >năm</span
+              <div class="flex items-center gap-3">
+                <button
+                  type="button"
+                  @click="triggerAvatarInput"
+                  class="bg-white border !border-gray-300 rounded-lg h-9 px-3 flex items-center gap-2 hover:bg-gray-50 transition-colors"
                 >
+                  <span class="font-medium text-sm text-neutral-950"
+                    >Chọn ảnh</span
+                  >
+                </button>
+                <div v-if="avatarPreview" class="text-sm text-[#4a5565]">
+                  {{ avatarName }}
+                </div>
               </div>
+              <input
+                ref="avatarInput"
+                type="file"
+                accept="image/*"
+                class="hidden"
+                @change="handleAvatarChange"
+              />
+              <p class="text-xs text-[#6a7282]">JPG, PNG (Tối đa 2MB)</p>
             </div>
 
             <!-- Practice Certificate -->
-            <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-[8px]"
-              >
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black">
                 Chứng chỉ hành nghề
               </label>
               <div class="flex items-center gap-3">
                 <button
                   type="button"
                   @click="triggerPracticeInput"
-                  class="bg-white border border-gray-200/60 rounded-lg h-9 px-3 flex items-center gap-2 w-fit hover:bg-gray-50 transition-colors"
+                  class="bg-white border !border-gray-300 rounded-lg h-9 px-3 flex items-center gap-2 hover:bg-gray-50 transition-colors"
                 >
-                  <img :src="iconUpload" alt="Upload" class="w-4 h-4" />
-                  <span
-                    class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                  <span class="font-medium text-sm text-neutral-950"
                     >Tải lên file</span
                   >
                 </button>
@@ -246,27 +241,21 @@
                 class="hidden"
                 @change="handlePracticeChange"
               />
-              <p class="font-nunito text-xs leading-4 text-[#6a7282] mt-[4px]">
-                PDF, JPG, PNG (Tối đa 5MB)
-              </p>
+              <p class="text-xs text-[#6a7282]">PDF, JPG, PNG (Tối đa 5MB)</p>
             </div>
 
             <!-- Professional Degree -->
-            <div class="flex flex-col gap-0">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-[8px]"
-              >
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black">
                 Bằng cấp chuyên môn
               </label>
               <div class="flex items-center gap-3">
                 <button
                   type="button"
                   @click="triggerDegreeInput"
-                  class="bg-white border border-gray-200/60 rounded-lg h-9 px-3 flex items-center gap-2 w-fit hover:bg-gray-50 transition-colors"
+                  class="bg-white border !border-gray-300 rounded-lg h-9 px-3 flex items-center gap-2 hover:bg-gray-50 transition-colors"
                 >
-                  <img :src="iconUpload" alt="Upload" class="w-4 h-4" />
-                  <span
-                    class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+                  <span class="font-medium text-sm text-neutral-950"
                     >Tải lên file</span
                   >
                 </button>
@@ -281,125 +270,70 @@
                 class="hidden"
                 @change="handleDegreeChange"
               />
-              <p class="font-nunito text-xs leading-4 text-[#6a7282] mt-[4px]">
-                PDF, JPG, PNG (Tối đa 5MB)
+              <p class="text-xs text-[#6a7282]">PDF, JPG, PNG (Tối đa 5MB)</p>
+            </div>
+
+            <!-- Account Status -->
+            <div class="flex flex-col gap-2">
+              <label class="font-medium text-sm text-black">
+                Trạng thái tài khoản
+              </label>
+              <div class="flex items-center gap-3">
+                <label class="inline-flex items-center cursor-pointer">
+                  <input
+                    type="radio"
+                    v-model="formData.status"
+                    value="active"
+                    class="hidden"
+                  />
+                  <span
+                    :class="
+                      formData.status === 'active'
+                        ? 'bg-[#5a9690] text-white px-3 py-1 rounded-lg'
+                        : 'bg-[#f3f3f5] text-[#364153] px-3 py-1 rounded-lg'
+                    "
+                    >Hoạt động</span
+                  >
+                </label>
+
+                <label class="inline-flex items-center cursor-pointer">
+                  <input
+                    type="radio"
+                    v-model="formData.status"
+                    value="locked"
+                    class="hidden"
+                  />
+                  <span
+                    :class="
+                      formData.status === 'locked'
+                        ? 'bg-[#e53e3e] text-white px-3 py-1 rounded-lg'
+                        : 'bg-[#f3f3f5] text-[#364153] px-3 py-1 rounded-lg'
+                    "
+                    >Đã khóa</span
+                  >
+                </label>
+              </div>
+              <p class="text-xs text-[#6a7282]">
+                Chọn trạng thái cho tài khoản khi tạo.
               </p>
             </div>
-          </div>
-
-          <!-- Initial Password -->
-          <div
-            class="border-t border-gray-200/60 pt-[17px] flex flex-col gap-2"
-          >
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight"
-            >
-              Mật khẩu khởi tạo
-            </label>
-            <div class="flex items-center gap-2">
-              <input
-                v-model="formData.password"
-                type="password"
-                placeholder="Nhập mật khẩu khởi tạo"
-                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] w-full"
-              />
-            </div>
-            <p class="font-nunito text-xs leading-4 text-[#6a7282]">
-              Mật khẩu tối thiểu 8 ký tự. Hệ thống sẽ dùng mật khẩu này làm mật
-              khẩu khởi tạo cho tài khoản.
-            </p>
-
-            <!-- Confirm Password -->
-            <div class="flex items-center gap-2 mt-2">
-              <input
-                v-model="formData.passwordConfirmation"
-                type="password"
-                placeholder="Xác nhận mật khẩu"
-                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] w-full"
-              />
-            </div>
-            <p
-              v-if="
-                formData.passwordConfirmation &&
-                formData.password !== formData.passwordConfirmation
-              "
-              class="font-nunito text-xs leading-4 text-[#e53e3e]"
-            >
-              Xác nhận mật khẩu không khớp.
-            </p>
-          </div>
-
-          <!-- Account Status -->
-          <div
-            class="border-t border-gray-200/60 pt-[12px] flex flex-col gap-2"
-          >
-            <label
-              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight"
-            >
-              Trạng thái tài khoản
-            </label>
-            <div class="flex items-center gap-3 mt-1">
-              <label class="inline-flex items-center cursor-pointer">
-                <input
-                  type="radio"
-                  v-model="formData.status"
-                  value="active"
-                  class="hidden"
-                />
-                <span
-                  :class="
-                    formData.status === 'active'
-                      ? 'bg-[#009689] text-white px-3 py-1 rounded-lg'
-                      : 'bg-[#f3f3f5] text-[#364153] px-3 py-1 rounded-lg'
-                  "
-                  >Hoạt động</span
-                >
-              </label>
-
-              <label class="inline-flex items-center cursor-pointer">
-                <input
-                  type="radio"
-                  v-model="formData.status"
-                  value="locked"
-                  class="hidden"
-                />
-                <span
-                  :class="
-                    formData.status === 'locked'
-                      ? 'bg-[#e53e3e] text-white px-3 py-1 rounded-lg'
-                      : 'bg-[#f3f3f5] text-[#364153] px-3 py-1 rounded-lg'
-                  "
-                  >Đã khóa</span
-                >
-              </label>
-            </div>
-            <p class="font-nunito text-xs leading-4 text-[#6a7282]">
-              Chọn trạng thái cho tài khoản khi tạo.
-            </p>
           </div>
         </div>
 
         <!-- Footer Buttons -->
-        <div class="flex items-center justify-end gap-2 mt-2">
+        <div class="flex gap-2 justify-end mt-4 pt-4 border-t border-gray-200">
           <button
             @click="$emit('close')"
-            class="bg-white border border-gray-200/60 rounded-lg h-9 px-[17px] py-[9px] hover:bg-gray-50 transition-colors"
+            class="bg-white border !border-gray-300 rounded-lg h-9 px-[17px] py-[9px] flex items-center justify-center hover:bg-gray-50 transition-colors"
           >
-            <span
-              class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
-              >Hủy</span
-            >
+            <span class="font-medium text-sm text-neutral-950">Hủy</span>
           </button>
           <button
             @click="handleSubmit"
-            class="bg-[#009689] rounded-lg h-9 px-4 py-2 hover:bg-[#007d72] transition-colors"
+            class="bg-[#5a9690] rounded-lg h-9 px-4 py-2 flex items-center justify-center hover:bg-[#5a9690]/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             :disabled="!isFormValid"
-            :class="{ 'opacity-50 cursor-not-allowed': !isFormValid }"
           >
-            <span
-              class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
-              >Tạo tài khoản</span
-            >
+            <span class="font-medium text-sm text-white">Tạo tài khoản</span>
           </button>
         </div>
       </div>
@@ -415,16 +349,6 @@ import { showSuccessToast, showErrorToast } from "@/utils/toast";
 
 // Emits
 const emit = defineEmits(["close", "submit"]);
-
-// Icons (from Figma - expire in 7 days)
-const iconUpload =
-  "https://www.figma.com/api/mcp/asset/ac3b14ff-9b65-40de-814c-7485b9cb246e";
-const iconChevronDown =
-  "https://www.figma.com/api/mcp/asset/01da1adc-0fe6-4647-ab0c-b8f938f03b86";
-const iconX =
-  "https://www.figma.com/api/mcp/asset/7aabb16d-9bbd-4b42-8e59-b92fc982e8aa";
-const iconCheck =
-  "https://www.figma.com/api/mcp/asset/0ff2272d-970d-484f-8ee5-78a87be20090";
 
 // Form Data
 const formData = ref({
@@ -648,52 +572,20 @@ const handleSubmit = async () => {
 
 <style scoped>
 /* Custom scrollbar for modal */
-div::-webkit-scrollbar {
-  width: 8px;
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
 }
 
-div::-webkit-scrollbar-track {
-  background: #f1f1f1;
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
   border-radius: 10px;
 }
 
-div::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
-}
-
-div::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* Custom checkbox styling */
-input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 1px solid #030213;
-  border-radius: 4px;
-  background-color: white;
-  cursor: pointer;
-  position: relative;
-}
-
-input[type="checkbox"]:checked {
-  background-color: #030213;
-  border-color: #030213;
-}
-
-input[type="checkbox"]:checked::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 14px;
-  height: 14px;
-  background-image: url("https://www.figma.com/api/mcp/asset/0ff2272d-970d-484f-8ee5-78a87be20090");
-  background-size: contain;
-  background-repeat: no-repeat;
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
 }
 </style>

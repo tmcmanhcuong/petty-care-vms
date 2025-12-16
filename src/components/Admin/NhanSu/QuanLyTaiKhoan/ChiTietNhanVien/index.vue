@@ -1,12 +1,12 @@
 <template>
   <div
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-[1000] pt-24"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000] p-4"
   >
     <div
-      class="bg-white border border-gray-200/60 rounded-[10px] shadow-xl w-[495px] max-h-[85vh] overflow-y-auto"
+      class="bg-white border !border-gray-300 rounded-[10px] shadow-xl w-full max-w-[495px] max-h-[90vh] flex flex-col"
     >
-      <div class="p-6 flex flex-col gap-4">
-        <!-- Header -->
+      <!-- Fixed Header -->
+      <div class="flex-shrink-0 p-6 pb-4 border-b border-gray-200">
         <div class="flex flex-col gap-2">
           <h2
             class="font-nunito font-semibold text-lg leading-[18px] text-neutral-950 tracking-tight"
@@ -19,8 +19,10 @@
             Thông tin đầy đủ về nhân viên
           </p>
         </div>
+      </div>
 
-        <!-- Content -->
+      <!-- Scrollable Content -->
+      <div class="flex-1 overflow-y-auto px-6 py-4">
         <div class="flex flex-col">
           <!-- Avatar -->
           <div class="flex justify-center mb-6">
@@ -248,10 +250,9 @@
                       'inline-flex items-center gap-2 px-2 py-[3px] rounded-lg text-xs leading-4 font-nunito font-medium mt-[1px] w-fit',
                       isActive
                         ? 'bg-green-100 text-[#008236]'
-                        : 'bg-gray-100 text-[#364153]',
+                        : 'bg-gray-200 text-[#364153]',
                     ]"
                   >
-                    <img :src="displayStatusIcon" alt="" class="w-3 h-3" />
                     {{ displayStatusLabel }}
                   </span>
                 </div>
@@ -269,12 +270,14 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Footer Buttons -->
-        <div class="flex items-center justify-end gap-2 mt-4">
+      <!-- Fixed Footer -->
+      <div class="flex-shrink-0 p-6 pt-4 border-t border-gray-200">
+        <div class="flex items-center justify-end gap-2">
           <button
             @click="$emit('close')"
-            class="bg-white border border-gray-200/60 rounded-lg h-9 px-[17px] py-[9px] hover:bg-gray-50 transition-colors"
+            class="bg-white border !border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors"
           >
             <span
               class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
@@ -283,7 +286,7 @@
           </button>
           <button
             @click="$emit('edit', staff)"
-            class="bg-[#009689] rounded-lg h-9 px-4 py-2 hover:bg-[#007d72] transition-colors"
+            class="bg-[#5a9690] rounded-lg px-4 py-2 hover:bg-[#5a9690]/80 transition-colors"
           >
             <span
               class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"

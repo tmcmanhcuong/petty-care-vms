@@ -1,51 +1,46 @@
 <template>
-  <div
-    class="w-full min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8"
-  >
+  <div class="w-full min-h-screen px-8 py-6">
     <!-- Header Section -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 font-nunito mb-2">
-        Phân ca làm việc
-      </h1>
-      <p class="text-gray-600 font-nunito">
+    <div class="flex flex-col gap-2">
+      <h1 class="text-2xl font-semibold text-black">Phân ca làm việc</h1>
+      <p class="text-gray-500 font-medium text-base">
         Quản lý lịch làm việc và lịch hẹn cho nhân viên
       </p>
     </div>
 
     <!-- Control Panel -->
     <div
-      class="bg-white rounded-xl border border-gray-200 p-6 mb-6 shadow-sm hover:shadow-md transition-shadow"
+      class="bg-white rounded-xl border !border-gray-300 p-6 mb-6 mt-6 shadow-sm hover:shadow-md transition-shadow"
     >
       <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
         <!-- Left: Navigation -->
         <div class="flex items-center gap-3">
           <button
             @click="previousWeek"
-            class="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition"
+            class="p-2 rounded-lg border !border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition"
             title="Tuần trước"
           >
-            <img :src="iconChevronLeft" class="w-5 h-5" />
+            <ChevronLeftIcon />
           </button>
 
           <div
-            class="bg-gradient-to-r from-teal-50 to-cyan-50 px-6 py-2 rounded-lg font-medium text-sm text-gray-800 border border-teal-200 min-w-max"
+            class="bg-gradient-to-r from-teal-50 to-cyan-50 px-6 py-2 rounded-lg font-medium text-sm text-gray-800 border !border-teal-200 min-w-max"
           >
             {{ currentWeekRange }}
           </div>
 
           <button
             @click="nextWeek"
-            class="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition"
+            class="p-2 rounded-lg border !border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition"
             title="Tuần sau"
           >
-            <img :src="iconChevronRight" class="w-5 h-5" />
+            <ChevronRightIcon />
           </button>
 
           <button
             @click="goToToday"
             class="flex items-center gap-2 px-4 py-2 rounded-lg border border-teal-200 bg-teal-50 hover:bg-teal-100 transition text-teal-700 font-medium text-sm"
           >
-            <img :src="iconCalendar" class="w-4 h-4" />
             Hôm nay
           </button>
         </div>
@@ -56,19 +51,18 @@
             <input
               type="text"
               placeholder="Tìm nhân viên..."
-              class="w-full lg:w-48 pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white transition"
+              class="w-full lg:w-48 pl-10 pr-4 py-2 bg-gray-50 border !border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white transition"
             />
-            <img
-              :src="iconSearch"
+            <SearchIcon
               class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
             />
           </div>
 
           <button
             @click="handleAddShift"
-            class="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white px-5 py-2 rounded-lg flex items-center gap-2 font-medium text-sm transition shadow-sm hover:shadow-md"
+            class="bg-[#5a9690] hover:bg-[#5a9690]/80 text-white px-5 py-2 rounded-lg flex items-center gap-2 font-medium text-sm transition shadow-sm hover:shadow-md"
           >
-            <img :src="iconPlus" class="w-4 h-4" />
+            <AddIcon />
             Thêm ca
           </button>
         </div>
@@ -76,13 +70,13 @@
     </div>
 
     <!-- Tabs Navigation -->
-    <div class="mb-6 flex gap-2 border-b border-gray-200">
+    <div class="mb-6 flex gap-2 border-b !border-gray-200">
       <button
         @click="activeTab = 'schedule'"
         :class="[
           'px-6 py-3 font-medium text-sm transition-all',
           activeTab === 'schedule'
-            ? 'text-teal-600 border-b-2 border-teal-600'
+            ? 'text-teal-500 border-b-2 border-teal-500'
             : 'text-gray-600 hover:text-gray-900',
         ]"
       >
@@ -108,7 +102,7 @@
         :class="[
           'px-6 py-3 font-medium text-sm transition-all',
           activeTab === 'confirmations'
-            ? 'text-teal-600 border-b-2 border-teal-600'
+            ? 'text-teal-500 border-b-2 border-teal-500'
             : 'text-gray-600 hover:text-gray-900',
         ]"
       >
@@ -137,7 +131,7 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <!-- Overall Total -->
         <div
-          class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm hover:shadow-md transition"
+          class="bg-white border !border-gray-300 rounded-lg p-5 shadow-sm hover:shadow-md transition"
         >
           <p class="text-gray-600 text-sm font-medium mb-2">Tổng giờ tuần</p>
           <p class="text-3xl font-bold text-teal-600">
@@ -149,7 +143,7 @@
         <template v-for="day in weekDays" :key="day.dateStr">
           <div
             :class="[
-              'bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition text-center',
+              'bg-white border !border-gray-300 rounded-lg p-4 shadow-sm hover:shadow-md transition text-center',
               day.isToday
                 ? 'border-teal-300 bg-gradient-to-br from-teal-50 to-cyan-50'
                 : 'border-gray-200',
@@ -208,7 +202,7 @@
 
       <!-- Schedule Table -->
       <div
-        class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden"
+        class="bg-white rounded-lg border !border-gray-300 shadow-sm overflow-hidden"
       >
         <div class="overflow-x-auto">
           <table class="w-full">
@@ -382,7 +376,7 @@
     <!-- Confirmations Tab Content -->
     <div v-if="activeTab === 'confirmations'" class="space-y-6">
       <!-- Filter Section -->
-      <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+      <div class="bg-white rounded-lg border !border-gray-300 p-6 shadow-sm">
         <div class="flex flex-col lg:flex-row gap-4 items-end">
           <div class="flex-1">
             <label class="block text-sm font-medium text-gray-700 mb-2">
@@ -390,7 +384,7 @@
             </label>
             <select
               v-model="confirmationFilter"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              class="w-full px-4 py-2 border !border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
             >
               <option value="">Tất cả</option>
               <option value="pending">Chờ xác nhận</option>
@@ -406,7 +400,7 @@
               v-model="confirmationSearch"
               type="text"
               placeholder="Nhập tên nhân viên..."
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              class="w-full px-4 py-2 border !border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -415,7 +409,7 @@
       <!-- Confirmations List -->
       <div
         v-if="filteredConfirmations.length === 0"
-        class="text-center py-12 bg-white rounded-lg border border-gray-200"
+        class="text-center py-12 bg-white rounded-lg border !border-gray-300"
       >
         <svg
           class="w-16 h-16 mx-auto text-gray-300 mb-4"
@@ -436,23 +430,23 @@
       <!-- Table View -->
       <div
         v-else
-        class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm"
+        class="bg-white rounded-lg border !border-gray-300 overflow-hidden shadow-sm"
       >
         <div class="overflow-x-auto">
           <table class="w-full">
             <thead>
-              <tr class="bg-gray-50 border-b border-gray-200">
+              <tr class="bg-gray-50 border-b !border-gray-300">
                 <th class="px-6 py-4 text-left text-sm font-bold text-gray-900">
-                  👤 Nhân viên
+                  Nhân viên
                 </th>
                 <th class="px-6 py-4 text-left text-sm font-bold text-gray-900">
-                  📅 Ngày giờ
+                  Ngày giờ
                 </th>
                 <th class="px-6 py-4 text-left text-sm font-bold text-gray-900">
-                  📝 Ghi chú
+                  Ghi chú
                 </th>
                 <th class="px-6 py-4 text-left text-sm font-bold text-gray-900">
-                  ⏳ Trạng thái
+                  Trạng thái
                 </th>
               </tr>
             </thead>
@@ -517,11 +511,11 @@
                           )
                       "
                       :disabled="updatingStatusId === confirmation.id"
-                      class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                      class="w-full px-3 py-2 border !border-gray-300 rounded-lg text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <option value="chua_xac_nhan">⏳ Chờ duyệt</option>
-                      <option value="da_xac_nhan">✅ Đã duyệt</option>
-                      <option value="tu_choi">❌ Từ chối</option>
+                      <option value="chua_xac_nhan">Chờ duyệt</option>
+                      <option value="da_xac_nhan">Đã duyệt</option>
+                      <option value="tu_choi">Từ chối</option>
                     </select>
                   </div>
                   <button
@@ -539,11 +533,11 @@
                   >
                     {{
                       confirmation.status === "pending"
-                        ? "⏳ Chờ duyệt"
+                        ? "Chờ duyệt"
                         : confirmation.status === "confirmed" ||
                           confirmation.status === "đã_xác_nhận"
-                        ? "✅ Đã duyệt"
-                        : "❌ Từ chối"
+                        ? "Đã duyệt"
+                        : "Từ chối"
                     }}
                   </button>
                 </td>
@@ -583,20 +577,14 @@ import PhanCaTruc from "./PhanCaTruc/index.vue";
 import XacNhanDangKy from "./XacNhanDangKy/index.vue";
 import api from "@/utils/api";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
-
-// Icons
-const iconChevronLeft =
-  "https://www.figma.com/api/mcp/asset/b9509eb5-3157-4012-a086-91b4ade81fc8";
-const iconChevronRight =
-  "https://www.figma.com/api/mcp/asset/b779fc4b-d0d6-4c7c-a642-6b25429867b0";
-const iconCalendar =
-  "https://www.figma.com/api/mcp/asset/5bb1b000-78c1-46b1-bd87-17b2263bbd78";
-const iconChevronDown =
-  "https://www.figma.com/api/mcp/asset/fc11cada-6bb9-4808-bc7e-4762d45854bc";
-const iconSearch =
-  "https://www.figma.com/api/mcp/asset/fb2a8768-bd69-4b3b-9191-13487ee0138c";
-const iconPlus =
-  "https://www.figma.com/api/mcp/asset/0f3e9ec3-0c1c-45bd-986e-ca0749a17b23";
+//Icon SVG
+import ChevronLeftIcon from "@/assets/svg/chevron-left.svg";
+import ChevronRightIcon from "@/assets/svg/chevron-right.svg";
+import CalendarIcon from "@/assets/svg/calendar.svg";
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
+import SearchIcon from "@/assets/svg/search.svg";
+import AddIcon from "@/assets/svg/add.svg";
+import CloseIcon from "@/assets/svg/close.svg";
 
 // State
 const staffList = ref([]);
@@ -622,9 +610,9 @@ const updatingStatusId = ref(null);
 
 // Status options
 const statusOptions = [
-  { value: "chua_xac_nhan", label: "⏳ Chờ duyệt" },
-  { value: "da_xac_nhan", label: "✅ Đã duyệt" },
-  { value: "tu_choi", label: "❌ Từ chối" },
+  { value: "chua_xac_nhan", label: "Chờ duyệt" },
+  { value: "da_xac_nhan", label: "Đã duyệt" },
+  { value: "tu_choi", label: "Từ chối" },
 ];
 
 // Modal

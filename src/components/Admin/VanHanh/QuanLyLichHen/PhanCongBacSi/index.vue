@@ -5,14 +5,14 @@
   >
     <!-- Modal Card -->
     <div
-      class="bg-white border border-black/10 rounded-[10px] shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1),0px_4px_6px_-4px_rgba(0,0,0,0.1)] w-[510px] relative"
+      class="bg-white border !border-gray-300 rounded-[10px] shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1),0px_4px_6px_-4px_rgba(0,0,0,0.1)] w-[510px] relative"
     >
       <!-- Close Button -->
       <button
         @click="$emit('close')"
-        class="absolute right-4 top-4 w-4 h-4 opacity-70 hover:opacity-100 transition-opacity"
+        class="absolute right-6 top-4 w-4 h-4 opacity-70 hover:opacity-100 transition-opacity"
       >
-        <img :src="iconClose" alt="Close" class="w-full h-full" />
+        <CloseIcon />
       </button>
 
       <!-- Dialog Header -->
@@ -48,10 +48,10 @@
         <div v-else class="flex flex-col gap-4">
           <!-- Appointment Info Alert -->
           <div
-            class="bg-teal-50 border border-[#96f7e4] rounded-[10px] px-[17px] py-[13px] relative"
+            class="bg-teal-50 border !border-teal-200 rounded-[10px] px-[17px] py-[13px] relative"
           >
             <div class="absolute left-[17px] top-[15px] w-4 h-4">
-              <img :src="iconInfo" alt="Info" class="w-full h-full" />
+              <CalendarIcon />
             </div>
             <div class="ml-7 flex flex-col gap-1">
               <div class="flex items-start">
@@ -67,7 +67,7 @@
                 </p>
               </div>
               <div class="flex items-center gap-1">
-                <img :src="iconClock" alt="Time" class="w-3 h-3" />
+                <ClockIcon class="w-3 h-3" />
                 <p class="font-nunito text-sm text-[#717182] tracking-tight">
                   {{ appointmentInfo.time }} - {{ appointmentInfo.date }} | 🐾
                   {{ appointmentInfo.pet }}
@@ -93,7 +93,7 @@
                 <div
                   v-for="staff in availableStaff"
                   :key="staff.id"
-                  class="bg-green-50 border border-[#b9f8cf] rounded-[10px] px-[13px] py-[13px] flex items-center justify-between"
+                  class="bg-green-50 border !border-green-200 rounded-[10px] px-[13px] py-[13px] flex items-center justify-between"
                 >
                   <div class="flex items-center gap-3">
                     <!-- Avatar -->
@@ -138,7 +138,6 @@
                     :disabled="isAssigning"
                     class="bg-[#00a63e] rounded-lg h-8 px-[10px] flex items-center gap-1 hover:bg-[#008c35] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
-                    <img :src="iconCheck" alt="Check" class="w-4 h-4" />
                     <span
                       class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
                     >
@@ -208,7 +207,7 @@
       <div class="px-6 pt-4 pb-6 flex items-center justify-end">
         <button
           @click="$emit('close')"
-          class="bg-white border border-black/10 rounded-lg h-9 px-[17px] py-[9px] font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight hover:bg-gray-50 transition-colors"
+          class="bg-white border !border-gray-300 rounded-lg px-4 py-2 font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight hover:bg-gray-50 transition-colors"
         >
           Đóng
         </button>
@@ -220,16 +219,10 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import client from "../../../../../utils/api.js";
-
-// Icons (from Figma - expire in 7 days)
-const iconInfo =
-  "https://www.figma.com/api/mcp/asset/e0c17bea-ec11-4dc3-b389-ae1f90d8cc45";
-const iconClock =
-  "https://www.figma.com/api/mcp/asset/65653d7b-7617-45e9-bbdd-dda45e426845";
-const iconCheck =
-  "https://www.figma.com/api/mcp/asset/a7a71d83-f7b3-46f8-8431-aa9d01394c2a";
-const iconClose =
-  "https://www.figma.com/api/mcp/asset/2c1ab02b-5882-483d-8198-c600112252fd";
+//Icon SVG
+import CloseIcon from "@/assets/svg/close.svg";
+import CalendarIcon from "@/assets/svg/calendar.svg";
+import ClockIcon from "@/assets/svg/clock.svg";
 
 // Props
 const props = defineProps({

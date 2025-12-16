@@ -10,19 +10,18 @@
         <!-- Header -->
         <div class="flex flex-col gap-2 shrink-0">
           <div class="flex items-center gap-2">
-            <img :src="iconFolder" alt="" class="w-5 h-5" />
-            <h2 class="font-nunito font-semibold text-lg text-gray-900">
+            <h2 class="font-semibold text-lg text-gray-900">
               Quản lý Danh Mục Dịch vụ
             </h2>
           </div>
-          <p class="font-nunito text-sm text-gray-600">
+          <p class="text-sm text-gray-600">
             Tạo và quản lý các danh mục dịch vụ để phân loại dịch vụ
           </p>
         </div>
 
         <!-- Categories List -->
         <div
-          class="flex-1 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden flex flex-col min-h-0 p-4"
+          class="flex-1 bg-gray-50 border !border-gray-200 rounded-lg overflow-hidden flex flex-col min-h-0 p-4"
         >
           <div class="flex-1 overflow-y-auto space-y-2 custom-scrollbar">
             <div
@@ -31,11 +30,10 @@
               class="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between hover:border-teal-600/30 hover:bg-teal-50/30 transition-all"
             >
               <div class="flex flex-col flex-1">
-                <span
-                  class="font-nunito font-normal text-base text-gray-900 leading-6"
-                  >{{ category.name }}</span
-                >
-                <span class="text-xs text-gray-600 font-nunito"
+                <span class="font-normal text-base text-gray-900 leading-6">{{
+                  category.name
+                }}</span>
+                <span class="text-xs text-gray-600"
                   >{{ category.description }} • {{ category.serviceCount }} dịch
                   vụ</span
                 >
@@ -46,11 +44,7 @@
                 :disabled="deletingId === category.id"
                 title="Xóa nhóm"
               >
-                <img
-                  v-if="deletingId !== category.id"
-                  :src="iconDelete"
-                  class="w-4 h-4"
-                />
+                <TrashIcon v-if="deletingId !== category.id" class="w-4 h-4" />
                 <span v-else class="text-xs text-gray-500">Đang xóa...</span>
               </button>
             </div>
@@ -60,12 +54,10 @@
               v-if="categories.length === 0"
               class="flex flex-col items-center justify-center h-full text-gray-400 py-8 gap-2"
             >
-              <div
-                class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center"
-              >
-                <img :src="iconFolder" class="w-6 h-6 opacity-20 grayscale" />
+              <div class="w-12 h-12 flex items-center justify-center">
+                <FolderIcon class="text-gray-400" />
               </div>
-              <p class="text-sm font-nunito">Chưa có danh mục nào</p>
+              <p class="text-sm">Chưa có danh mục nào</p>
             </div>
           </div>
         </div>
@@ -91,11 +83,10 @@
               @keyup.enter="handleAddCategory"
             />
             <button
-              class="w-full py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed font-nunito"
+              class="w-full py-2 bg-[#5a9690] hover:bg-[#5a9690]/80 text-white rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed font-nunito"
               :disabled="!newCategoryName.trim() || adding"
               @click="handleAddCategory"
             >
-              <img :src="iconPlus" class="w-4 h-4 brightness-0 invert" />
               <span v-if="!adding">Thêm nhóm</span>
               <span v-else>Đang tạo...</span>
             </button>
@@ -111,6 +102,10 @@ import { ref, onMounted } from "vue";
 import api, { attachToken } from "@/utils/api";
 import { showSuccessToast, showErrorToast, showInfoToast } from "@/utils/toast";
 import { clearAuth } from "@/utils/auth";
+
+// Icon SVG
+import FolderIcon from "@/assets/svg/folder.svg";
+import TrashIcon from "@/assets/svg/trash.svg";
 
 const emit = defineEmits(["close", "addCategory", "deleteCategory"]);
 

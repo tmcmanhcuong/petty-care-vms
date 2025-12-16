@@ -1,297 +1,284 @@
 <template>
   <div
-    class="relative bg-white border border-gray-200/60 rounded-[10px] w-full h-full overflow-y-auto"
+    class="relative bg-white border !border-gray-200 rounded-[10px] w-full max-h-[85vh] overflow-hidden flex flex-col"
   >
-    <div class="flex flex-col gap-4 p-6">
+    <div class="flex flex-col p-6 flex-1 overflow-hidden">
       <!-- Header -->
-      <div class="flex flex-col gap-2 h-[46px]">
+      <div class="flex flex-col gap-2 mb-4">
         <h2
-          class="font-nunito font-semibold text-lg leading-[18px] text-neutral-950 tracking-tight"
+          class="font-semibold text-lg leading-[18px] text-neutral-950 tracking-tight"
         >
           Thêm dịch vụ mới
         </h2>
-        <p class="font-nunito text-sm leading-5 text-[#717182] tracking-tight">
+        <p class="text-sm leading-5 text-[#717182] tracking-tight">
           Nhập đầy đủ thông tin dịch vụ
         </p>
       </div>
 
-      <!-- Form Content -->
-      <div class="flex flex-col gap-4">
-        <!-- Step 1: Select Category -->
-        <div class="relative h-[58px]">
-          <label
-            class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight absolute top-0 left-0"
-          >
-            Bước 1: Chọn Danh mục dịch vụ (*)
-          </label>
-          <button
-            class="bg-[#f3f3f5] border-none rounded-lg h-9 px-[13px] py-0.5 flex items-center justify-between absolute top-[22px] left-0 w-full transition-colors hover:bg-gray-200 cursor-pointer"
-            @click="toggleCategoryDropdown"
-          >
-            <span class="flex items-center gap-2">
-              <span
-                class="font-nunito text-sm leading-5 text-[#717182] tracking-tight"
-              >
-                {{ selectedCategory || "Vui lòng chọn danh mục dịch vụ trước" }}
-              </span>
-              <!-- small spinner when loading categories -->
-              <svg
-                v-if="loadingCats"
-                class="animate-spin h-4 w-4 text-gray-500"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  class="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  stroke-width="4"
-                ></circle>
-                <path
-                  class="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                ></path>
-              </svg>
-            </span>
-            <img :src="iconChevronDown" alt="" class="w-4 h-4" />
-          </button>
-          <!-- Category dropdown -->
-          <div
-            v-if="showCategoryDropdown"
-            class="absolute top-[66px] left-0 w-full z-50"
-          >
-            <div
-              class="bg-white border border-gray-200 rounded-lg max-h-48 overflow-auto shadow"
+      <!-- Form Content - 2 Column Layout -->
+      <div class="grid grid-cols-2 gap-6 flex-1 overflow-y-auto pr-2">
+        <!-- Left Column -->
+        <div class="flex flex-col gap-4">
+          <!-- Step 1: Select Category -->
+          <div class="relative">
+            <label
+              class="font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-2 block"
             >
-              <button
-                v-for="c in categories"
-                :key="c.id"
-                @click="selectCategory(c)"
-                class="w-full text-left px-3 py-2 hover:bg-gray-100 transition-colors text-sm"
-              >
-                {{ c.ten_nhom }}
-              </button>
-              <div v-if="loadingCats" class="p-3 text-xs text-gray-500">
-                Đang tải...
-              </div>
+              Bước 1: Chọn Danh mục dịch vụ (*)
+            </label>
+            <button
+              class="bg-[#f3f3f5] border-none rounded-lg h-9 px-[13px] py-0.5 flex items-center justify-between w-full transition-colors hover:bg-gray-200 cursor-pointer"
+              @click="toggleCategoryDropdown"
+            >
+              <span class="flex items-center gap-2">
+                <span
+                  class="text-sm leading-5 text-[#717182] tracking-tight truncate"
+                >
+                  {{ selectedCategory || "Vui lòng chọn danh mục dịch vụ" }}
+                </span>
+                <!-- small spinner when loading categories -->
+                <svg
+                  v-if="loadingCats"
+                  class="animate-spin h-4 w-4 text-gray-500 flex-shrink-0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+              </span>
+              <ChevronDownIcon />
+            </button>
+            <!-- Category dropdown -->
+            <div
+              v-if="showCategoryDropdown"
+              class="absolute top-[70px] left-0 w-full z-50"
+            >
               <div
-                v-if="!loadingCats && categories.length === 0"
-                class="p-3 text-xs text-gray-500"
+                class="bg-white border border-gray-200 rounded-lg max-h-48 overflow-auto shadow"
               >
-                Chưa có danh mục
+                <button
+                  v-for="c in categories"
+                  :key="c.id"
+                  @click="selectCategory(c)"
+                  class="w-full text-left px-3 py-2 hover:bg-gray-100 transition-colors text-sm"
+                >
+                  {{ c.ten_nhom }}
+                </button>
+                <div v-if="loadingCats" class="p-3 text-xs text-gray-500">
+                  Đang tải...
+                </div>
+                <div
+                  v-if="!loadingCats && categories.length === 0"
+                  class="p-3 text-xs text-gray-500"
+                >
+                  Chưa có danh mục
+                </div>
               </div>
             </div>
+            <!-- inline category error -->
+            <div v-if="errors.category" class="text-xs text-red-600 mt-1">
+              {{ errors.category }}
+            </div>
           </div>
-          <!-- inline category error -->
-          <div v-if="errors.category" class="text-xs text-red-600 mt-1">
-            {{ errors.category }}
+
+          <!-- Service Name -->
+          <div class="flex flex-col gap-2">
+            <label
+              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight"
+            >
+              Tên dịch vụ (*)
+            </label>
+            <input
+              v-model="formData.name"
+              type="text"
+              placeholder="Ví dụ: Cắt tỉa lông chó < 5kg"
+              class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182]"
+            />
+            <div v-if="errors.name" class="text-xs text-red-600">
+              {{ errors.name }}
+            </div>
+          </div>
+
+          <!-- Service Code -->
+          <div class="flex flex-col gap-2">
+            <label
+              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight"
+            >
+              Mã Dịch Vụ (*)
+            </label>
+            <input
+              v-model="formData.code"
+              type="text"
+              placeholder="Ví dụ: SPA-CT-001"
+              class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182]"
+            />
+            <div v-if="errors.code" class="text-xs text-red-600">
+              {{ errors.code }}
+            </div>
+          </div>
+
+          <!-- Price -->
+          <div class="flex flex-col gap-2">
+            <label
+              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight"
+            >
+              Giá bán (VNĐ) (*)
+            </label>
+            <input
+              v-model="formattedPrice"
+              type="text"
+              inputmode="numeric"
+              placeholder="200000"
+              @input="onPriceInput"
+              @keydown="priceKeydown"
+              class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182]"
+            />
+            <div v-if="errors.price" class="text-xs text-red-600">
+              {{ errors.price }}
+            </div>
+          </div>
+
+          <!-- Duration -->
+          <div class="flex flex-col gap-2">
+            <label
+              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight"
+            >
+              Thời gian (phút) (*)
+            </label>
+            <input
+              v-model.number="formData.duration"
+              type="number"
+              placeholder="60"
+              class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182]"
+            />
+            <div v-if="errors.duration" class="text-xs text-red-600">
+              {{ errors.duration }}
+            </div>
+            <p class="font-nunito text-xs leading-4 text-[#6a7282]">
+              Quan trọng để xếp lịch
+            </p>
           </div>
         </div>
 
-        <!-- Step 2: Details -->
-        <div class="border-t border-gray-200/60 pt-[17px] flex flex-col gap-3">
-          <h4
-            class="font-nunito font-semibold text-sm leading-5 text-neutral-950 tracking-tight"
-          >
-            Bước 2: Thông tin chi tiết
-          </h4>
-
-          <div class="flex flex-col gap-4">
-            <!-- Service Name -->
-            <div class="flex flex-col gap-0 h-[50px]">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-[10px]"
-              >
-                Tên dịch vụ (*)
-              </label>
-              <input
-                v-model="formData.name"
-                type="text"
-                placeholder="Ví dụ: Cắt tỉa lông chó < 5kg"
-                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182]"
-              />
-              <div v-if="errors.name" class="text-xs text-red-600 mt-1">
-                {{ errors.name }}
-              </div>
-            </div>
-
-            <!-- Service Code -->
-            <div class="flex flex-col gap-0 h-[50px]">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-[10px]"
-              >
-                Mã Dịch Vụ (*)
-              </label>
-              <input
-                v-model="formData.code"
-                type="text"
-                placeholder="Ví dụ: SPA-CT-001"
-                class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182]"
-              />
-              <div v-if="errors.code" class="text-xs text-red-600 mt-1">
-                {{ errors.code }}
-              </div>
-            </div>
-
-            <!-- Price and Duration -->
-            <div class="grid grid-cols-2 gap-4 h-[70px]">
-              <!-- Price -->
-              <div class="flex flex-col gap-0">
-                <label
-                  class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-[10px]"
-                >
-                  Giá bán (VNĐ) (*)
-                </label>
-                <input
-                  v-model="formattedPrice"
-                  type="text"
-                  inputmode="numeric"
-                  placeholder="200000"
-                  @input="onPriceInput"
-                  @keydown="priceKeydown"
-                  class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182]"
-                />
-                <div v-if="errors.price" class="text-xs text-red-600 mt-1">
-                  {{ errors.price }}
-                </div>
-              </div>
-
-              <!-- Duration -->
-              <div class="flex flex-col gap-0">
-                <label
-                  class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-[10px]"
-                >
-                  Thời gian (phút) (*)
-                </label>
-                <input
-                  v-model.number="formData.duration"
-                  type="number"
-                  placeholder="60"
-                  class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182]"
-                />
-                <div v-if="errors.duration" class="text-xs text-red-600 mt-1">
-                  {{ errors.duration }}
-                </div>
-                <p class="font-nunito text-xs leading-4 text-[#6a7282] mt-1">
-                  Quan trọng để xếp lịch
-                </p>
-              </div>
-            </div>
-
-            <!-- Description -->
-            <div class="flex flex-col gap-0 h-[78px]">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-[10px]"
-              >
-                Mô tả
-              </label>
-              <textarea
-                v-model="formData.description"
-                placeholder="Nhập mô tả chi tiết về dịch vụ..."
-                rows="3"
-                class="bg-[#f3f3f5] border-none rounded-lg h-16 px-3 py-2 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] resize-none"
-              ></textarea>
-            </div>
-
-            <!-- Instructions -->
-            <div class="flex flex-col gap-0 h-[78px]">
-              <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-[10px]"
-              >
-                Hướng dẫn
-              </label>
-              <textarea
-                v-model="formData.instructions"
-                placeholder="Nhập mô tả chi tiết về dịch vụ..."
-                rows="3"
-                class="bg-[#f3f3f5] border-none rounded-lg h-16 px-3 py-2 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] resize-none"
-              ></textarea>
-            </div>
-
-            <!-- Status -->
-            <div
-              class="bg-gray-50 rounded-[10px] h-[54px] px-3 flex items-center justify-between"
+        <!-- Right Column -->
+        <div class="flex flex-col gap-4">
+          <!-- Description -->
+          <div class="flex flex-col gap-2">
+            <label
+              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight"
             >
-              <div class="flex flex-col">
-                <label
-                  class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight"
-                >
-                  Trạng thái
-                </label>
-                <p class="font-nunito text-xs leading-4 text-[#4a5565]">
-                  Cho phép khách hàng đặt dịch vụ này
-                </p>
-              </div>
-              <button
-                type="button"
-                class="relative w-8 h-[18.398px] rounded-full transition-colors"
-                :class="formData.isActive ? 'bg-[#030213]' : 'bg-gray-300'"
-                @click="formData.isActive = !formData.isActive"
-              >
-                <span
-                  class="absolute top-0.5 w-4 h-4 bg-white rounded-full transition-transform"
-                  :class="formData.isActive ? 'left-[15px]' : 'left-0.5'"
-                ></span>
-              </button>
-            </div>
+              Mô tả
+            </label>
+            <textarea
+              v-model="formData.description"
+              placeholder="Nhập mô tả chi tiết về dịch vụ..."
+              rows="3"
+              class="bg-[#f3f3f5] border-none rounded-lg px-3 py-2 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] resize-none"
+            ></textarea>
+          </div>
 
-            <!-- Image Upload -->
-            <div class="flex flex-col gap-0 h-[206px]">
+          <!-- Instructions -->
+          <div class="flex flex-col gap-2">
+            <label
+              class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight"
+            >
+              Hướng dẫn
+            </label>
+            <textarea
+              v-model="formData.instructions"
+              placeholder="Nhập hướng dẫn sử dụng dịch vụ..."
+              rows="3"
+              class="bg-[#f3f3f5] border-none rounded-lg px-3 py-2 font-nunito text-sm text-neutral-950 tracking-tight outline-none placeholder:text-[#717182] resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Status -->
+          <div
+            class="bg-gray-50 rounded-[10px] px-3 py-3 flex items-center justify-between"
+          >
+            <div class="flex flex-col">
               <label
-                class="font-nunito font-medium text-sm leading-[14px] text-neutral-950 tracking-tight mb-[10px]"
+                class="font-medium text-sm leading-[14px] text-neutral-950 tracking-tight"
               >
-                Ảnh đại diện
+                Trạng thái
               </label>
-              <div
-                class="border-2 border-dashed border-[#d1d5dc] rounded-[10px] h-48 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-gray-400 transition-colors"
-                @click="triggerFileInput"
-              >
-                <img :src="iconUpload" alt="" class="w-12 h-12" />
-                <p
-                  class="font-nunito text-base leading-6 text-[#4a5565] tracking-tight"
-                >
-                  Click để chọn ảnh
-                </p>
-                <p class="font-nunito text-xs leading-4 text-[#99a1af]">
-                  PNG, JPG, GIF (Max 5MB)
-                </p>
-              </div>
-              <input
-                ref="fileInput"
-                type="file"
-                accept="image/png,image/jpeg,image/gif"
-                class="hidden"
-                @change="handleFileUpload"
-              />
+              <p class="text-xs leading-4 text-[#4a5565]">
+                Cho phép KH đặt dịch vụ này
+              </p>
             </div>
+            <button
+              type="button"
+              class="relative w-8 h-5 rounded-full transition-colors flex-shrink-0"
+              :class="formData.isActive ? 'bg-[#030213]' : 'bg-gray-300'"
+              @click="formData.isActive = !formData.isActive"
+            >
+              <span
+                class="absolute top-0.5 w-4 h-4 bg-white rounded-full transition-transform"
+                :class="formData.isActive ? 'left-[15px]' : 'left-0.5'"
+              ></span>
+            </button>
+          </div>
+
+          <!-- Image Upload -->
+          <div class="flex flex-col gap-2">
+            <label
+              class="font-medium text-sm leading-[14px] text-neutral-950 tracking-tight"
+            >
+              Ảnh đại diện
+            </label>
+            <div
+              class="border-2 border-dashed border-[#d1d5dc] rounded-[10px] h-40 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-gray-400 transition-colors"
+              @click="triggerFileInput"
+            >
+              <p class="text-sm leading-6 text-[#4a5565] tracking-tight">
+                Click để chọn ảnh
+              </p>
+              <p class="text-xs leading-4 text-[#99a1af]">
+                PNG, JPG, GIF (Max 5MB)
+              </p>
+            </div>
+            <input
+              ref="fileInput"
+              type="file"
+              accept="image/png,image/jpeg,image/gif"
+              class="hidden"
+              @change="handleFileUpload"
+            />
           </div>
         </div>
       </div>
 
       <!-- Footer Buttons -->
-      <div class="flex gap-2 justify-end h-9">
+      <div class="flex gap-2 justify-end mt-4 pt-4 border-t border-gray-200">
         <button
-          class="bg-white border border-gray-200/60 rounded-lg h-9 px-[17px] py-[9px] flex items-center justify-center hover:bg-gray-50 transition-colors"
+          class="bg-white border !border-gray-300 rounded-lg h-9 px-[17px] py-[9px] flex items-center justify-center hover:bg-gray-50 transition-colors"
           @click="handleCancel"
         >
           <span
-            class="font-nunito font-medium text-sm leading-5 text-neutral-950 tracking-tight"
+            class="font-medium text-sm leading-5 text-neutral-950 tracking-tight"
           >
             Hủy
           </span>
         </button>
         <button
-          class="bg-[#009689] rounded-lg h-9 px-4 py-2 flex items-center justify-center hover:bg-[#007d72] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          class="bg-[#5a9690] rounded-lg h-9 px-4 py-2 flex items-center justify-center hover:bg-[#007d72] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           @click="handleSave"
           :disabled="saving"
         >
-          <span
-            class="font-nunito font-medium text-sm leading-5 text-white tracking-tight"
-          >
+          <span class="font-medium text-sm leading-5 text-white tracking-tight">
             <span v-if="!saving">Lưu lại</span>
             <span v-else>Đang lưu...</span>
           </span>
@@ -308,7 +295,8 @@ import api, { attachToken } from "@/utils/api";
 const API_BASE = import.meta.env.VITE_API_BASE || "http://127.0.0.1:8000/api";
 const API_ORIGIN = API_BASE.replace(/\/api\/?$/, "");
 import { showErrorToast, showSuccessToast } from "@/utils/toast";
-
+// Icon SVG
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
 const emit = defineEmits(["close", "save"]);
 
 // State

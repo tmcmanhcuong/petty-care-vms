@@ -5,9 +5,7 @@
         <!-- Header -->
         <div class="flex flex-col h-[54px] items-start w-full">
           <div class="h-[30px] w-full">
-            <p class="font-bold text-xl leading-7 text-black">
-              Thanh toán
-            </p>
+            <p class="font-bold text-xl leading-7 text-black">Thanh toán</p>
           </div>
           <div class="h-6 w-full">
             <p class="font-medium text-lg leading-6 text-gray-700">
@@ -19,7 +17,9 @@
         <!-- Statistics Cards -->
         <div class="grid grid-cols-3 gap-6 w-full">
           <!-- Card 1: Tổng đã thanh toán -->
-          <div class="bg-white border !border-teal-400 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between">
+          <div
+            class="bg-white border !border-teal-400 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between"
+          >
             <div class="h-5 pt-[25px]">
               <p class="font-medium text-base leading-6 text-gray-700">
                 Tổng đã thanh toán
@@ -36,7 +36,9 @@
           </div>
 
           <!-- Card 2: Tổng dư nợ -->
-          <div class="bg-white border !border-amber-300 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between">
+          <div
+            class="bg-white border !border-amber-300 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between"
+          >
             <div class="h-5 pt-[25px]">
               <p class="font-medium text-base leading-6 text-gray-700">
                 Tổng dư nợ
@@ -53,7 +55,9 @@
           </div>
 
           <!-- Card 3: Tổng chi tiêu -->
-          <div class="bg-white border !border-gray-400 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between">
+          <div
+            class="bg-white border !border-gray-400 rounded-[14px] h-[164px] px-6 py-0 flex flex-col justify-between"
+          >
             <div class="h-5 pt-[25px]">
               <p class="font-medium text-base leading-6 text-gray-700">
                 Tổng chi tiêu
@@ -71,7 +75,9 @@
         </div>
 
         <!-- Payment History -->
-        <div class="bg-white border !border-black/15 shadow-sm rounded-[14px] px-8 py-6 flex flex-col gap-6 w-full">
+        <div
+          class="bg-white border !border-black/15 shadow-sm rounded-[14px] px-8 py-6 flex flex-col gap-6 w-full"
+        >
           <!-- Card Header -->
           <div class="flex flex-col h-[70px] items-start w-full">
             <p class="font-bold text-lg leading-7 text-black">
@@ -83,7 +89,9 @@
           </div>
 
           <!-- Filter Payments -->
-          <div class="bg-white rounded-[10px] shadow-md px-6 py-6 flex items-center gap-9">
+          <div
+            class="bg-white rounded-[10px] shadow-md px-6 py-6 flex items-center gap-9"
+          >
             <div class="flex items-center gap-2">
               <p class="font-medium text-base leading-6 text-black">
                 Lọc theo:
@@ -93,12 +101,12 @@
             <div class="flex items-center gap-6">
               <!-- Filter: Dịch vụ -->
               <div class="relative">
-                <button 
+                <button
                   @click="toggleServiceFilter"
                   class="bg-gray-200 border !border-black/15 rounded-lg px-[13px] py-[9px] flex items-center gap-16"
                 >
                   <span class="text-sm font-medium text-gray-500 w-[111px]">
-                    {{ selectedService || 'Dịch vụ' }}
+                    {{ selectedService || "Dịch vụ" }}
                   </span>
                   <div class="">
                     <ChevronDownIcon class="text-gray-500" />
@@ -108,14 +116,14 @@
 
               <!-- Filter: Tháng -->
               <div class="relative">
-                <button 
+                <button
                   @click="toggleMonthFilter"
                   class="bg-gray-200 border !border-black/15 rounded-lg px-[13px] py-[9px] flex items-center gap-16"
                 >
                   <span class="text-sm font-medium text-gray-500 w-[111px]">
-                    {{ selectedMonth || 'Tháng' }}
+                    {{ selectedMonth || "Tháng" }}
                   </span>
-                  <div >
+                  <div>
                     <ChevronDownIcon class="text-gray-500" />
                   </div>
                 </button>
@@ -123,14 +131,14 @@
 
               <!-- Filter: Năm -->
               <div class="relative">
-                <button 
+                <button
                   @click="toggleYearFilter"
                   class="bg-gray-200 border !border-black/15 rounded-lg px-[13px] py-[9px] flex items-center gap-16"
                 >
                   <span class="text-sm font-medium text-gray-500 w-[111px]">
-                    {{ selectedYear || 'Năm' }}
+                    {{ selectedYear || "Năm" }}
                   </span>
-                  <div >
+                  <div>
                     <ChevronDownIcon class="text-gray-500" />
                   </div>
                 </button>
@@ -138,7 +146,7 @@
             </div>
 
             <!-- Clear Filters -->
-            <button 
+            <button
               @click="clearFilters"
               class="rounded-lg px-3 py-0 flex items-center justify-center"
             >
@@ -174,7 +182,9 @@
                   </p>
                 </div>
                 <div class="flex-1 px-2">
-                  <p class="font-semibold text-base leading-6 text-black text-right">
+                  <p
+                    class="font-semibold text-base leading-6 text-black text-right"
+                  >
                     Thao tác
                   </p>
                 </div>
@@ -182,14 +192,14 @@
 
               <!-- Table Body -->
               <div class="flex flex-col">
-                <div 
-                  v-for="payment in paginatedPayments" 
+                <div
+                  v-for="payment in paginatedPayments"
                   :key="payment.id"
                   class="border-b border-black/15 h-[53px] flex items-center"
                 >
                   <!-- Mã hóa đơn -->
                   <div class="w-[126.688px] px-2">
-                    <p 
+                    <p
                       class="font-bold text-sm leading-5"
                       :class="getInvoiceCodeColor(payment.status)"
                     >
@@ -214,7 +224,7 @@
                   <!-- Trạng thái & Số tiền -->
                   <div class="w-[250.727px] px-2">
                     <div class="flex flex-col gap-0">
-                      <p 
+                      <p
                         class="font-semibold text-sm leading-5"
                         :class="getStatusColor(payment.status)"
                       >
@@ -234,22 +244,29 @@
                       class="bg-amber-600 rounded-lg px-3 py-1 flex items-center gap-2"
                     >
                       <div class="w-4 h-4">
-                       <WalletIcon />
+                        <WalletIcon />
                       </div>
-                      <span class="font-semibold text-base leading-6 text-white">
+                      <span
+                        class="font-semibold text-base leading-6 text-white"
+                      >
                         Thanh toán ngay
                       </span>
                     </button>
 
                     <button
-                      v-else-if="payment.status === 'prepaid' || payment.status === 'refunded'"
+                      v-else-if="
+                        payment.status === 'prepaid' ||
+                        payment.status === 'refunded'
+                      "
                       @click="handleViewDetail(payment)"
                       class="bg-white border !border-black/15 rounded-lg px-3 py-1 flex items-center gap-2"
                     >
                       <div class="w-4 h-4">
                         <EyeIcon />
                       </div>
-                      <span class="font-semibold text-base leading-6 text-black">
+                      <span
+                        class="font-semibold text-base leading-6 text-black"
+                      >
                         Xem chi tiết
                       </span>
                     </button>
@@ -262,7 +279,9 @@
                       <div class="w-4 h-4">
                         <DownloadIcon />
                       </div>
-                      <span class="font-semibold text-base leading-6 text-black">
+                      <span
+                        class="font-semibold text-base leading-6 text-black"
+                      >
                         Xem biên lai
                       </span>
                     </button>
@@ -272,10 +291,12 @@
                       @click="handleViewRefundStatus(payment)"
                       class="bg-white border !border-black/15 rounded-lg px-3 py-1 flex items-center gap-2"
                     >
-                      <div class=" text-black">
-                        <ClockIcon class="text-black"/>
+                      <div class="!text-black">
+                        <ClockIcon class="w-4 h-4" />
                       </div>
-                      <span class="font-semibold text-base leading-6 text-black">
+                      <span
+                        class="font-semibold text-base leading-6 text-black"
+                      >
                         Đang xử lý
                       </span>
                     </button>
@@ -293,9 +314,7 @@
                 <p class="font-medium text-base leading-4 text-[#101828]">
                   {{ startIndex }}-{{ endIndex }}
                 </p>
-                <p class="font-medium text-sm leading-4 text-gray-600">
-                  trong
-                </p>
+                <p class="font-medium text-sm leading-4 text-gray-600">trong</p>
                 <p class="font-medium text-base leading-4 text-[#101828]">
                   {{ totalPayments }}
                 </p>
@@ -322,7 +341,11 @@
                   v-for="page in visiblePages"
                   :key="page"
                   @click="goToPage(page)"
-                  :class="page === currentPage ? 'bg-teal-700 text-white' : 'bg-white text-black'"
+                  :class="
+                    page === currentPage
+                      ? 'bg-teal-700 text-white'
+                      : 'bg-white text-black'
+                  "
                   class="border border-black/10 rounded-lg h-8 px-[13px] py-px flex items-center justify-center min-w-[32px]"
                 >
                   <span class="font-semibold text-sm leading-5">
@@ -346,7 +369,9 @@
         </div>
 
         <!-- Payment Methods -->
-        <div class="bg-teal-50/50 border !border-teal-500 rounded-[14px] px-8 py-6 flex flex-col gap-6 w-full">
+        <div
+          class="bg-teal-50/50 border !border-teal-500 rounded-[14px] px-8 py-6 flex flex-col gap-6 w-full"
+        >
           <!-- Card Header -->
           <div class="flex flex-col h-[70px] items-start w-full">
             <p class="font-bold text-xl leading-6 text-teal-800">
@@ -360,10 +385,16 @@
           <!-- Payment Method List -->
           <div class="flex flex-col gap-4">
             <!-- VNPay -->
-            <div class="bg-white border !border-teal-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
+            <div
+              class="bg-white border !border-teal-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between"
+            >
               <div class="flex items-center gap-3">
                 <div class="rounded-[10px] shadow-md w-12 h-12">
-                  <img src="/src/assets/img_imports/public_img/vnpay.png" alt="VNPay" class="w-full h-full rounded-[10px] object-contain" />
+                  <img
+                    src="/src/assets/img_imports/public_img/vnpay.png"
+                    alt="VNPay"
+                    class="w-full h-full rounded-[10px] object-contain"
+                  />
                 </div>
                 <div class="flex flex-col">
                   <p class="font-medium text-base leading-6 text-black">
@@ -375,7 +406,9 @@
                 </div>
               </div>
               <div class="flex items-center gap-3">
-                <div class="bg-gray-100 border !border-black/15 rounded-lg px-[17px] py-[3px]">
+                <div
+                  class="bg-gray-100 border !border-black/15 rounded-lg px-[17px] py-[3px]"
+                >
                   <p class="font-semibold text-sm leading-5 text-black/60">
                     Chưa liên kết
                   </p>
@@ -392,22 +425,28 @@
             </div>
 
             <!-- MoMo -->
-            <div class="bg-white border !border-teal-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between">
+            <div
+              class="bg-white border !border-teal-300 rounded-[10px] h-[82px] px-[17px] py-px flex items-center justify-between"
+            >
               <div class="flex items-center gap-3">
                 <div class="rounded-[10px] shadow-md w-12 h-12">
-                  <img src="/src/assets/img_imports/public_img/momo.png" alt="MoMo" class="w-full h-full rounded-[10px] object-contain" />
+                  <img
+                    src="/src/assets/img_imports/public_img/momo.png"
+                    alt="MoMo"
+                    class="w-full h-full rounded-[10px] object-contain"
+                  />
                 </div>
                 <div class="flex flex-col">
-                  <p class="font-medium text-base leading-6 text-black">
-                    MoMo
-                  </p>
+                  <p class="font-medium text-base leading-6 text-black">MoMo</p>
                   <p class="font-medium text-sm leading-6 text-gray-500">
                     Ví điện tử MoMo
                   </p>
                 </div>
               </div>
               <div class="flex items-center gap-3">
-                <div class="bg-gray-100 border !border-black/15 rounded-lg px-[17px] py-[3px]">
+                <div
+                  class="bg-gray-100 border !border-black/15 rounded-lg px-[17px] py-[3px]"
+                >
                   <p class="font-semibold text-sm leading-5 text-black/60">
                     Chưa liên kết
                   </p>
@@ -527,22 +566,18 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import ChiTietHoaDon from './ChiTietHoaDon/index.vue';
-import BienLaiThanhToan from './BienLaiThanhToan/index.vue';
+import { ref, computed } from "vue";
+import ChiTietHoaDon from "./ChiTietHoaDon/index.vue";
+import BienLaiThanhToan from "./BienLaiThanhToan/index.vue";
 // Icon
-import Calendar from '@/assets/svg/calendar.svg';
-import ChevronDownIcon from '@/assets/svg/chevron-down.svg';
-import ChevronRightIcon from '@/assets/svg/chevron-right.svg';
-import ChevronLeftIcon from '@/assets/svg/chevron-left.svg';
-import EyeIcon from '@/assets/svg/eye.svg';
-import DownloadIcon from '@/assets/svg/download.svg';
-import WalletIcon from '@/assets/svg/wallet.svg';
-import ClockIcon from '@/assets/svg/clock.svg';
-
-
-
-
+import Calendar from "@/assets/svg/calendar.svg";
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
+import ChevronRightIcon from "@/assets/svg/chevron-right.svg";
+import ChevronLeftIcon from "@/assets/svg/chevron-left.svg";
+import EyeIcon from "@/assets/svg/eye.svg";
+import DownloadIcon from "@/assets/svg/download.svg";
+import WalletIcon from "@/assets/svg/wallet.svg";
+import ClockIcon from "@/assets/svg/clock.svg";
 
 // Statistics data
 const totalPaid = ref(700000);
@@ -553,14 +588,14 @@ const totalSpending = ref(1200000);
 const currentYear = ref(2025);
 
 // Filter state
-const selectedService = ref('');
-const selectedMonth = ref('');
-const selectedYear = ref('');
+const selectedService = ref("");
+const selectedMonth = ref("");
+const selectedYear = ref("");
 
 // Payment popup state
 const showPaymentPopup = ref(false);
 const selectedPayment = ref(null);
-const paymentStatus = ref('pending');
+const paymentStatus = ref("pending");
 const showReceiptPopup = ref(false);
 const selectedReceipt = ref(null);
 
@@ -568,70 +603,70 @@ const selectedReceipt = ref(null);
 const payments = ref([
   {
     id: 1,
-    invoiceCode: 'HD001234',
-    service: 'Khám bệnh + 1 dịch vụ khác',
-    date: '10/11/2025',
-    status: 'pending',
-    statusText: 'Cần thanh toán: 100.000 ₫',
-    amountText: '(Tổng: 250.000 ₫)',
+    invoiceCode: "HD001234",
+    service: "Khám bệnh + 1 dịch vụ khác",
+    date: "10/11/2025",
+    status: "pending",
+    statusText: "Cần thanh toán: 100.000 ₫",
+    amountText: "(Tổng: 250.000 ₫)",
     totalAmount: 250000,
-    paidAmount: 0
+    paidAmount: 0,
   },
   {
     id: 2,
-    invoiceCode: 'HD001230',
-    service: 'Tắm rửa',
-    date: '15/11/2025',
-    status: 'prepaid',
-    statusText: 'Đã thanh toán trước',
-    amountText: '(Đã trả: 200.000 ₫)',
+    invoiceCode: "HD001230",
+    service: "Tắm rửa",
+    date: "15/11/2025",
+    status: "prepaid",
+    statusText: "Đã thanh toán trước",
+    amountText: "(Đã trả: 200.000 ₫)",
     totalAmount: 200000,
-    paidAmount: 200000
+    paidAmount: 200000,
   },
   {
     id: 3,
-    invoiceCode: 'HD001228',
-    service: 'Tiêm phòng + 2 dịch vụ khác',
-    date: '25/10/2025',
-    status: 'completed',
-    statusText: 'Đã hoàn thành',
-    amountText: '(Tổng: 350.000 ₫)',
+    invoiceCode: "HD001228",
+    service: "Tiêm phòng + 2 dịch vụ khác",
+    date: "25/10/2025",
+    status: "completed",
+    statusText: "Đã hoàn thành",
+    amountText: "(Tổng: 350.000 ₫)",
     totalAmount: 350000,
-    paidAmount: 350000
+    paidAmount: 350000,
   },
   {
     id: 4,
-    invoiceCode: 'HD001227',
-    service: 'Khám răng miệng',
-    date: '01/10/2025',
-    status: 'refunding',
-    statusText: 'Đang hoàn tiền',
-    amountText: '(Dự kiến: 24h)',
+    invoiceCode: "HD001227",
+    service: "Khám răng miệng",
+    date: "01/10/2025",
+    status: "refunding",
+    statusText: "Đang hoàn tiền",
+    amountText: "(Dự kiến: 24h)",
     totalAmount: 150000,
-    paidAmount: 150000
+    paidAmount: 150000,
   },
   {
     id: 5,
-    invoiceCode: 'HD001226',
-    service: 'Tiêm phòng 6 bệnh',
-    date: '24/09/2025',
-    status: 'refunded',
-    statusText: 'Đã hoàn tiền',
-    amountText: '(+ 350.000 ₫)',
+    invoiceCode: "HD001226",
+    service: "Tiêm phòng 6 bệnh",
+    date: "24/09/2025",
+    status: "refunded",
+    statusText: "Đã hoàn tiền",
+    amountText: "(+ 350.000 ₫)",
     totalAmount: 350000,
-    paidAmount: 350000
+    paidAmount: 350000,
   },
   {
     id: 6,
-    invoiceCode: 'HD001225',
-    service: 'Khám tổng quát',
-    date: '20/09/2025',
-    status: 'completed',
-    statusText: 'Đã hoàn thành',
-    amountText: '(Tổng: 150.000 ₫)',
+    invoiceCode: "HD001225",
+    service: "Khám tổng quát",
+    date: "20/09/2025",
+    status: "completed",
+    statusText: "Đã hoàn thành",
+    amountText: "(Tổng: 150.000 ₫)",
     totalAmount: 150000,
-    paidAmount: 150000
-  }
+    paidAmount: 150000,
+  },
 ]);
 
 // Pagination
@@ -639,7 +674,9 @@ const currentPage = ref(1);
 const itemsPerPage = ref(6);
 
 const totalPayments = computed(() => payments.value.length);
-const totalPages = computed(() => Math.ceil(totalPayments.value / itemsPerPage.value));
+const totalPages = computed(() =>
+  Math.ceil(totalPayments.value / itemsPerPage.value)
+);
 
 const paginatedPayments = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;
@@ -647,138 +684,141 @@ const paginatedPayments = computed(() => {
   return payments.value.slice(start, end);
 });
 
-const startIndex = computed(() => (currentPage.value - 1) * itemsPerPage.value + 1);
-const endIndex = computed(() => Math.min(currentPage.value * itemsPerPage.value, totalPayments.value));
+const startIndex = computed(
+  () => (currentPage.value - 1) * itemsPerPage.value + 1
+);
+const endIndex = computed(() =>
+  Math.min(currentPage.value * itemsPerPage.value, totalPayments.value)
+);
 
 const visiblePages = computed(() => {
   const pages = [];
   const maxVisible = 3;
-  
+
   for (let i = 1; i <= Math.min(maxVisible, totalPages.value); i++) {
     pages.push(i);
   }
-  
+
   return pages;
 });
 
 // Methods
 const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'decimal',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(amount) + ' ₫';
+  return (
+    new Intl.NumberFormat("vi-VN", {
+      style: "decimal",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount) + " ₫"
+  );
 };
 
 const getInvoiceCodeColor = (status) => {
   const colors = {
-    pending: 'text-amber-600',
-    prepaid: 'text-blue-500',
-    completed: 'text-green-600',
-    refunding: 'text-yellow-500',
-    refunded: 'text-purple-600'
+    pending: "text-amber-600",
+    prepaid: "text-blue-500",
+    completed: "text-green-600",
+    refunding: "text-yellow-500",
+    refunded: "text-purple-600",
   };
-  return colors[status] || 'text-black';
+  return colors[status] || "text-black";
 };
 
 const getStatusColor = (status) => {
   const colors = {
-    pending: 'text-amber-600',
-    prepaid: 'text-blue-500',
-    completed: 'text-green-600',
-    refunding: 'text-yellow-500',
-    refunded: 'text-purple-600'
+    pending: "text-amber-600",
+    prepaid: "text-blue-500",
+    completed: "text-green-600",
+    refunding: "text-yellow-500",
+    refunded: "text-purple-600",
   };
-  return colors[status] || 'text-black';
+  return colors[status] || "text-black";
 };
 
 const toggleServiceFilter = () => {
   // Implement dropdown toggle
-  console.log('Toggle service filter');
+  console.log("Toggle service filter");
 };
 
 const toggleMonthFilter = () => {
   // Implement dropdown toggle
-  console.log('Toggle month filter');
+  console.log("Toggle month filter");
 };
 
 const toggleYearFilter = () => {
   // Implement dropdown toggle
-  console.log('Toggle year filter');
+  console.log("Toggle year filter");
 };
 
 const clearFilters = () => {
-  selectedService.value = '';
-  selectedMonth.value = '';
-  selectedYear.value = '';
+  selectedService.value = "";
+  selectedMonth.value = "";
+  selectedYear.value = "";
 };
 
 const handlePayNow = (payment) => {
-  console.log('Pay now:', payment);
+  console.log("Pay now:", payment);
   selectedPayment.value = {
     invoiceCode: payment.invoiceCode,
     services: [
       {
         id: 1,
         name: payment.service,
-        note: '(Dịch vụ đã đặt)',
-        price: payment.totalAmount
-      }
+        note: "(Dịch vụ đã đặt)",
+        price: payment.totalAmount,
+      },
     ],
     totalAmount: payment.totalAmount,
     paidAmount: payment.paidAmount || 0,
-    remainingAmount: payment.totalAmount - (payment.paidAmount || 0)
+    remainingAmount: payment.totalAmount - (payment.paidAmount || 0),
   };
-  paymentStatus.value = 'pending';
+  paymentStatus.value = "pending";
   showPaymentPopup.value = true;
 };
 
 const handleViewDetail = (payment) => {
-  console.log('View detail:', payment);
-  
-  if (payment.status === 'prepaid') {
+  console.log("View detail:", payment);
+
+  if (payment.status === "prepaid") {
     // Show prepaid appointment details
-    paymentStatus.value = 'prepaid';
+    paymentStatus.value = "prepaid";
     selectedPayment.value = {
       appointmentCode: payment.invoiceCode,
       time: `09:00 - ${payment.date}`,
-      petName: 'Luna', // Mock data - should come from payment
+      petName: "Luna", // Mock data - should come from payment
       service: payment.service,
-      staff: 'NV. Lê Thị C', // Mock data
-      paidAmount: payment.paidAmount
+      staff: "NV. Lê Thị C", // Mock data
+      paidAmount: payment.paidAmount,
     };
-  } else if (payment.status === 'refunded') {
+  } else if (payment.status === "refunded") {
     // Show refunded details
-    paymentStatus.value = 'refunded';
+    paymentStatus.value = "refunded";
     selectedPayment.value = {
-      refundCode: payment.invoiceCode.replace('HD', 'HT'),
+      refundCode: payment.invoiceCode.replace("HD", "HT"),
       originalInvoice: payment.invoiceCode,
       refundDate: payment.date,
-      paymentMethodLogo: 'https://www.figma.com/api/mcp/asset/1d522772-1899-4c7a-ab6f-b5fd5ce56053',
-      paymentMethodName: 'Ví Momo',
-      items: [
-        { id: 1, name: payment.service, amount: payment.totalAmount }
-      ],
-      totalRefund: payment.totalAmount
+      paymentMethodLogo:
+        "https://www.figma.com/api/mcp/asset/1d522772-1899-4c7a-ab6f-b5fd5ce56053",
+      paymentMethodName: "Ví Momo",
+      items: [{ id: 1, name: payment.service, amount: payment.totalAmount }],
+      totalRefund: payment.totalAmount,
     };
   }
-  
+
   showPaymentPopup.value = true;
 };
 
 const handleViewReceipt = (payment) => {
-  console.log('View receipt:', payment);
+  console.log("View receipt:", payment);
   selectedReceipt.value = {
     invoiceCode: payment.invoiceCode,
     visitDate: payment.date,
-    petName: 'Luna', // Mock data - should come from payment
-    doctor: 'BS. Trần Văn D', // Mock data
-    services: [
-      { id: 1, name: payment.service, price: payment.totalAmount }
-    ],
+    petName: "Luna", // Mock data - should come from payment
+    doctor: "BS. Trần Văn D", // Mock data
+    services: [{ id: 1, name: payment.service, price: payment.totalAmount }],
     totalAmount: payment.totalAmount,
     paidAmount: payment.paidAmount,
-    prepaidAmount: payment.paidAmount
+    prepaidAmount: payment.paidAmount,
   };
   showReceiptPopup.value = true;
 };
@@ -800,22 +840,22 @@ const goToPage = (page) => {
 };
 
 const handleLinkPayment = (method) => {
-  console.log('Link payment:', method);
+  console.log("Link payment:", method);
   // Implement payment method linking
 };
 
 const handleUnlinkPayment = (method) => {
-  console.log('Unlink payment:', method);
+  console.log("Unlink payment:", method);
   // Implement payment method unlinking
 };
 
 const handleAddBankAccount = () => {
-  console.log('Add bank account');
+  console.log("Add bank account");
   // Implement add bank account
 };
 
 const handlePaymentSuccess = (paymentData) => {
-  console.log('Payment successful:', paymentData);
+  console.log("Payment successful:", paymentData);
   // TODO: Update payment status in the list
   // TODO: Show success notification
   alert(`Thanh toán thành công! Mã hóa đơn: ${paymentData.invoiceCode}`);
@@ -834,22 +874,24 @@ const closeReceiptPopup = () => {
 };
 
 const handleViewRefundStatus = (payment) => {
-  console.log('View refund status:', payment);
-  
+  console.log("View refund status:", payment);
+
   // Show refunding status popup
-  paymentStatus.value = 'refunding';
+  paymentStatus.value = "refunding";
   selectedPayment.value = {
     invoiceCode: payment.invoiceCode,
     originalInvoice: payment.invoiceCode,
     canceledService: payment.service,
-    refundAmount: payment.totalAmount
+    refundAmount: payment.totalAmount,
   };
-  
+
   showPaymentPopup.value = true;
 };
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&family=Inter:wght@700&display=swap');
-.font-nunitoSans { font-family: 'Nunito Sans', sans-serif; }
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&family=Inter:wght@700&display=swap");
+.font-nunitoSans {
+  font-family: "Nunito Sans", sans-serif;
+}
 </style>

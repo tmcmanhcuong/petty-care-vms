@@ -144,7 +144,7 @@
         <!-- Note Section -->
         <div v-if="confirmation.note" class="mb-8">
           <h4 class="text-lg font-bold text-gray-900 mb-3">
-            💬 Ghi chú từ nhân viên
+            Ghi chú từ nhân viên
           </h4>
           <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
             <p class="text-gray-700">{{ confirmation.note }}</p>
