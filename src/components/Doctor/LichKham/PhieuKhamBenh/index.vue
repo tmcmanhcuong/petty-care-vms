@@ -374,7 +374,13 @@
         <div class="flex flex-col gap-6 w-[358px]">
           <!-- Lab Test Order Button -->
           <button
-            class="h-9 bg-white border-2 border-[#dab2ff] rounded-lg flex items-center justify-center gap-2 text-sm font-medium text-[#8200db] tracking-[-0.1504px] hover:bg-purple-50 transition-colors"
+            @click="selectedPrescriptionType = 'chi_dinh_can_lam_sang'"
+            :class="[
+              'h-9 rounded-lg flex items-center justify-center gap-2 text-sm font-medium tracking-[-0.1504px] transition-colors',
+              selectedPrescriptionType === 'chi_dinh_can_lam_sang'
+                ? 'bg-[#dab2ff] border-2 border-[#8200db] text-[#8200db]'
+                : 'bg-white border-2 border-[#dab2ff] text-[#8200db] hover:bg-purple-50'
+            ]"
           >
             <img :src="icons.labTest" alt="" class="w-4 h-4" />
             Chỉ định cận lâm sàng
@@ -382,7 +388,13 @@
 
           <!-- Prescription Button -->
           <button
-            class="h-9 bg-white border-2 border-[#7bf1a8] rounded-lg flex items-center justify-center gap-2 text-sm font-medium text-[#008236] tracking-[-0.1504px] hover:bg-green-50 transition-colors"
+            @click="selectedPrescriptionType = 'don_thuoc'"
+            :class="[
+              'h-9 rounded-lg flex items-center justify-center gap-2 text-sm font-medium tracking-[-0.1504px] transition-colors',
+              selectedPrescriptionType === 'don_thuoc'
+                ? 'bg-[#7bf1a8] border-2 border-[#008236] text-[#008236]'
+                : 'bg-white border-2 border-[#7bf1a8] text-[#008236] hover:bg-green-50'
+            ]"
           >
             <img :src="icons.prescription" alt="" class="w-4 h-4" />
             Đơn thuốc
@@ -390,7 +402,13 @@
 
           <!-- Follow-up Appointment Button -->
           <button
-            class="h-9 bg-white border-2 border-[#53eafd] rounded-lg flex items-center justify-center gap-2 text-sm font-medium text-[#007595] tracking-[-0.1504px] hover:bg-cyan-50 transition-colors"
+            @click="selectedPrescriptionType = 'hen_tai_kham'"
+            :class="[
+              'h-9 rounded-lg flex items-center justify-center gap-2 text-sm font-medium tracking-[-0.1504px] transition-colors',
+              selectedPrescriptionType === 'hen_tai_kham'
+                ? 'bg-[#53eafd] border-2 border-[#007595] text-[#007595]'
+                : 'bg-white border-2 border-[#53eafd] text-[#007595] hover:bg-cyan-50'
+            ]"
           >
             <img :src="icons.followUp" alt="" class="w-4 h-4" />
             Hẹn Tái Khám
@@ -494,6 +512,9 @@ const reasonForVisit = ref("");
 const symptoms = ref("");
 const diagnosis = ref("");
 const notes = ref("");
+
+// Loại chỉ định được chọn
+const selectedPrescriptionType = ref("don_thuoc"); // default to prescription
 
 // Helper function to parse datetime
 const parseDateTime = (dateString) => {
@@ -622,31 +643,71 @@ const handleBack = () => {
 };
 
 const handleSave = async () => {
+  // Validate required fields
+  if (!diagnosis.value.trim()) {
+    showErrorToast("Vui lòng nhập chẩn đoán bệnh");
+    return;
+  }
+
   saving.value = true;
   try {
-    // TODO: Save examination record to backend
-    const examData = {
-      ly_do_kham: reasonForVisit.value,
-      trieu_chung: symptoms.value,
-      chan_doan: diagnosis.value,
-      ghi_chu: notes.value,
-      nhiet_do: vitalSigns.value.temperature,
-      can_nang: vitalSigns.value.weight,
-      nhip_tim: vitalSigns.value.heartRate,
-      nhip_tho: vitalSigns.value.respiratoryRate,
+    // Prepare data according to backend API spec
+    const phieuKhamData = {
+      lich_hen_id: appointmentId.value,
+      // Vital signs (nullable)
+      nhiet_do: vitalSigns.value.temperature
+        ? parseFloat(vitalSigns.value.temperature)
+        : null,
+      can_nang: vitalSigns.value.weight
+        ? parseFloat(vitalSigns.value.weight)
+        : null,
+      nhip_tim: vitalSigns.value.heartRate
+        ? parseInt(vitalSigns.value.heartRate)
+        : null,
+      nhip_tho: vitalSigns.value.respiratoryRate
+        ? parseInt(vitalSigns.value.respiratoryRate)
+        : null,
+      // Medical information (nullable)
+      ly_do_den_kham: reasonForVisit.value || null,
+      trieu_chung: symptoms.value || null,
+      chan_doan: diagnosis.value, // Required
+      ghi_chu: notes.value || null,
+      // Loại chỉ định (required) - use selected type
+      loai_chi_dinh: selectedPrescriptionType.value,
     };
 
-    console.log("Saving exam data:", examData);
+    console.log("=== Saving Phiếu Khám ===");
+    console.log("Data:", phieuKhamData);
 
-    // Call API to save (placeholder for now)
-    // await api.post(`/lich-hen/${appointmentId.value}/luu-phieu-kham`, examData);
+    // Call backend API to save examination record
+    const response = await api.post("/phieu-kham", phieuKhamData);
 
-    showSuccessToast("Lưu hồ sơ khám bệnh thành công!");
+    console.log("=== Save Response ===");
+    console.log("Response:", response.data);
+
+    if (response.data.status || response.status === 201) {
+      showSuccessToast(response.data.message || "Lưu hồ sơ khám bệnh thành công!");
+      
+      // Optionally redirect after saving
+      setTimeout(() => {
+        router.push("/doctor/lich-kham");
+      }, 1500);
+    } else {
+      showErrorToast(
+        response.data.message || "Lỗi khi lưu hồ sơ khám bệnh"
+      );
+    }
   } catch (error) {
-    console.error("Error saving examination:", error);
-    showErrorToast(
-      error.response?.data?.message || "Lỗi khi lưu hồ sơ khám bệnh"
-    );
+    console.error("=== Error Saving Examination ===");
+    console.error("Error:", error);
+    console.error("Response:", error.response?.data);
+
+    const errorMessage =
+      error.response?.data?.message ||
+      error.response?.data?.errors?.lich_hen_id?.[0] ||
+      "Lỗi khi lưu hồ sơ khám bệnh";
+
+    showErrorToast(errorMessage);
   } finally {
     saving.value = false;
   }
