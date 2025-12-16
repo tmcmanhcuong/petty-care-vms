@@ -11,25 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ho_so_benh_ans', function (Blueprint $table) {
-            $table->id();
-
-            // Mã bệnh án
-            $table->string('ma_benh_an', 50)->unique()->comment('Mã bệnh án duy nhất');
-
-            // Nội dung bệnh án
-            $table->text('noi_dung')->comment('Nội dung chi tiết bệnh án');
-
-            // Quan hệ
-            $table->foreignId('khach_hang_id')->nullable()->constrained('khach_hangs')->nullOnDelete();
-            $table->foreignId('thu_cung_id')->nullable()->constrained('thu_cungs')->nullOnDelete();
-            $table->foreignId('nhan_vien_id')->nullable()->constrained('nhan_viens')->nullOnDelete();
-
-            $table->timestamps();
-
-            // Index
-            $table->index('ma_benh_an');
-        });
+        // Table already created in migration 2025_12_10_143200_create_ho_so_benh_ans_table
+        // This is a duplicate, intentionally left empty to avoid error
     }
 
     /**

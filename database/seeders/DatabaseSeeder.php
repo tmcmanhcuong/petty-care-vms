@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $this->call([
+            PhanQuyenSeeder::class, // Phải chạy trước để tạo dữ liệu quyền
             // KhachHangSeeder::class,
             ThuCungSeeder::class,
             DichVuSeeder::class,
@@ -33,6 +34,8 @@ class DatabaseSeeder extends Seeder
             NhaCungCap::class,
             PhieuNhapKhoSeeder::class,
             KiemKeSeeder::class,
+            AssignDefaultRolesSeeder::class, // Chạy cuối cùng để gán quyền
+            PhieuKhamSeeder::class,
         ]);
     }
 }

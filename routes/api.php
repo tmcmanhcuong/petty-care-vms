@@ -24,6 +24,7 @@ use App\Http\Controllers\PhieuChiController;
 use App\Http\Controllers\KhuyenMaiController;
 use App\Http\Controllers\PhanQuyenController;
 use App\Http\Controllers\LichDangKyController;
+use App\Http\Controllers\PhieuKhamController;
 
 
 Route::post('/khach-hang/dang-ki', [KhachHangController::class, 'dangKi']);
@@ -291,6 +292,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/phan-quyen/danh-sach/tat-ca-quyen', [PhanQuyenController::class, 'getAllPermissions'])->middleware('staff.only');
     Route::get('/phan-quyen/{id}', [PhanQuyenController::class, 'show'])->middleware('staff.only');
     Route::match(['put', 'patch'], '/phan-quyen/{id}', [PhanQuyenController::class, 'update'])->middleware('staff.only');
+
+    // Phiếu khám: CRUD (staff only - bác sĩ/y tá khám bệnh)
+    Route::get('/phieu-kham', [PhieuKhamController::class, 'index'])->middleware('staff.only'); // Lấy danh sách
+    Route::post('/phieu-kham', [PhieuKhamController::class, 'store'])->middleware('staff.only'); // Tạo phiếu khám
+    Route::get('/phieu-kham/{phieuKham}', [PhieuKhamController::class, 'show'])->middleware('staff.only'); // Chi tiết
+    Route::match(['put', 'patch'], '/phieu-kham/{phieuKham}', [PhieuKhamController::class, 'update'])->middleware('staff.only'); // Cập nhật
+    Route::delete('/phieu-kham/{phieuKham}', [PhieuKhamController::class, 'destroy'])->middleware('staff.only'); // Xóa
+
     // Kiểm tra mã khuyến mãi (public - cho khách hàng)
     Route::post('/khuyen-mai/check-code', [KhuyenMaiController::class, 'checkCode']);
 });
