@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-6 h-full bg-[#f3f3f5] p-6">
+  <div class="flex flex-col gap-6 h-full px-8 py-6">
     <!-- Loading State -->
     <div v-if="loading" class="flex items-center justify-center py-12">
       <svg
@@ -28,16 +28,16 @@
     <template v-else>
       <!-- Header -->
       <div class="flex items-center justify-between h-[60px]">
-        <div class="flex flex-col">
-          <h1 class="text-2xl font-medium text-[#101828]">Phân quyền</h1>
-          <p class="text-base text-[#4a5565]">
+        <div class="flex flex-col gap-2">
+          <h1 class="text-2xl font-semibold text-black">Phân quyền</h1>
+          <p class="text-gray-500 font-medium text-base">
             Quản lý vai trò và quyền hạn truy cập
           </p>
         </div>
         <button
           @click="handleSaveAll"
           :disabled="saving"
-          class="flex items-center gap-2 px-4 py-2 bg-[#00a63e] text-white rounded-lg hover:bg-[#008c35] transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+          class="flex items-center gap-2 px-4 py-2 bg-[#5a9690] hover:bg-[#5a9690]/80 text-white rounded-lg transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           <svg
             class="w-4 h-4"
@@ -63,7 +63,7 @@
         <div
           v-for="role in roles"
           :key="role.id"
-          class="bg-white rounded-[14px] border border-[rgba(0,0,0,0.1)] overflow-hidden"
+          class="bg-white rounded-[14px] border !border-gray-300 shadow-sm overflow-hidden"
         >
           <!-- Role Header -->
           <div
@@ -114,7 +114,7 @@
           <!-- Permissions Grid -->
           <div
             v-show="expandedRoles.includes(role.id)"
-            class="px-6 pb-6 border-t border-gray-100"
+            class="px-6 pb-6 border-t !border-gray-200"
           >
             <div
               class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6"
@@ -126,7 +126,7 @@
               >
                 <!-- Group Header -->
                 <div
-                  class="flex items-center gap-2 pb-2 border-b border-gray-200"
+                  class="flex items-center gap-2 pb-2 border-b !border-gray-300"
                 >
                   <svg
                     class="w-4 h-4 text-[#009689]"
@@ -165,24 +165,24 @@
 
             <!-- Quick Actions -->
             <div
-              class="flex items-center gap-3 mt-6 pt-6 border-t border-gray-100"
+              class="flex items-center gap-3 mt-6 pt-6 border-t !border-gray-200"
             >
               <button
                 @click="enableAllPermissions(role)"
                 class="px-3 py-1.5 text-sm bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors"
               >
-                ✓ Bật tất cả
+                Bật tất cả
               </button>
               <button
                 @click="disableAllPermissions(role)"
                 class="px-3 py-1.5 text-sm bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors"
               >
-                ✗ Tắt tất cả
+                Tắt tất cả
               </button>
               <button
                 @click="saveRolePermissions(role)"
                 :disabled="saving"
-                class="ml-auto px-3 py-1.5 text-sm bg-[#009689] text-white rounded-lg hover:bg-[#007d72] transition-colors disabled:bg-gray-400"
+                class="ml-auto px-3 py-1.5 text-sm bg-[#5a9690] hover:bg-[#5a9690]/80 text-white rounded-lg transition-colors disabled:bg-gray-400"
               >
                 {{ saving ? "Đang lưu..." : "Lưu vai trò này" }}
               </button>
@@ -193,7 +193,7 @@
 
       <!-- Info Cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div class="bg-blue-50 border !border-blue-200 rounded-lg p-4">
           <div class="flex items-start gap-3">
             <svg
               class="w-5 h-5 text-blue-600 mt-0.5"
@@ -215,7 +215,7 @@
           </div>
         </div>
 
-        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+        <div class="bg-green-50 border !border-green-200 rounded-lg p-4">
           <div class="flex items-start gap-3">
             <svg
               class="w-5 h-5 text-green-600 mt-0.5"
@@ -235,7 +235,7 @@
           </div>
         </div>
 
-        <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+        <div class="bg-purple-50 border !border-purple-200 rounded-lg p-4">
           <div class="flex items-start gap-3">
             <svg
               class="w-5 h-5 text-purple-600 mt-0.5"

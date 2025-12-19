@@ -9,7 +9,7 @@
           @click="router.back()"
           class="flex items-center justify-center w-9 h-9 hover:bg-gray-100 rounded-lg transition-colors"
         >
-          <img :src="iconBack" alt="Back" class="w-4 h-4" />
+          <ArrowLeftIcon />
         </button>
         <div class="border-l border-[#d1d5dc] h-6"></div>
         <h2 class="text-base font-normal text-[#101828]">Chỉnh sửa bài viết</h2>
@@ -40,16 +40,16 @@
       </div>
 
       <!-- Main Content -->
-      <div v-else class="flex gap-6 p-6">
+      <div v-else class="flex gap-6 px-8 py-6">
         <!-- Main Content (Left) -->
-        <div class="flex-1 flex flex-col gap-6">
+        <div class="flex-1 flex flex-col gap-4">
           <!-- Title -->
           <input
             v-model="post.title"
             @input="titleWatcher"
             type="text"
             placeholder="Nhập tiêu đề bài viết tại đây..."
-            class="w-full text-sm px-4 py-2 bg-[#f3f3f5] rounded-lg border-0 focus:ring-0 text-[#717182] placeholder:text-[#717182]"
+            class="w-full text-sm px-3 py-2 bg-[#f3f3f5] rounded-lg border-0 focus:ring-0 text-[#717182] placeholder:text-[#717182]"
           />
 
           <!-- Slug -->
@@ -69,78 +69,74 @@
 
           <!-- Editor -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] flex flex-col"
+            class="bg-white border !border-gray-400 rounded-[14px] flex flex-col"
           >
             <!-- Toolbar -->
-            <div class="flex items-center gap-3 p-[25px] pb-[30px]">
+            <div class="flex items-center gap-2 p-4 pb-3">
               <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img :src="iconBold" alt="Bold" class="w-4 h-4" />
+                <BoldIcon />
               </button>
               <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img :src="iconItalic" alt="Italic" class="w-4 h-4" />
+                <ItalicIcon />
               </button>
               <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img :src="iconUnderline" alt="Underline" class="w-4 h-4" />
-              </button>
-              <div class="border-l border-[#d1d5dc] h-6"></div>
-              <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
-              >
-                <img :src="iconH1" alt="H1" class="w-4 h-4" />
-              </button>
-              <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
-              >
-                <img :src="iconH2" alt="H2" class="w-4 h-4" />
-              </button>
-              <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
-              >
-                <img :src="iconH3" alt="H3" class="w-4 h-4" />
+                <UnderlineIcon />
               </button>
               <div class="border-l border-[#d1d5dc] h-6"></div>
               <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img :src="iconList" alt="List" class="w-4 h-4" />
+                <H1Icon />
               </button>
               <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img :src="iconNumberList" alt="Number List" class="w-4 h-4" />
-              </button>
-              <div class="border-l border-[#d1d5dc] h-6"></div>
-              <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
-              >
-                <img :src="iconAlignLeft" alt="Align Left" class="w-4 h-4" />
+                <H2Icon />
               </button>
               <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img
-                  :src="iconAlignCenter"
-                  alt="Align Center"
-                  class="w-4 h-4"
-                />
-              </button>
-              <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
-              >
-                <img :src="iconAlignRight" alt="Align Right" class="w-4 h-4" />
+                <H3Icon />
               </button>
               <div class="border-l border-[#d1d5dc] h-6"></div>
               <button
-                class="h-8 px-[10px] bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img :src="iconImage" alt="Image" class="w-4 h-4" />
-                <span class="text-sm font-medium text-neutral-950"
+                <ListIcon />
+              </button>
+              <button
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
+              >
+                <NumberListIcon />
+              </button>
+              <div class="border-l border-[#d1d5dc] h-6"></div>
+              <button
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
+              >
+                <AlignLeftIcon />
+              </button>
+              <button
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
+              >
+                <AlignCenterIcon />
+              </button>
+              <button
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
+              >
+                <AlignRightIcon />
+              </button>
+              <div class="border-l border-[#d1d5dc] h-6"></div>
+              <button
+                class="h-7 px-2 bg-white border !border-gray-300 rounded-lg flex items-center justify-center gap-1.5 hover:bg-gray-50"
+              >
+                <ImageIcon class="w-4 h-4" />
+                <span class="text-xs font-medium text-neutral-950"
                   >Chèn ảnh/Video</span
                 >
               </button>
@@ -148,7 +144,7 @@
             <!-- Textarea -->
             <textarea
               v-model="post.content"
-              class="flex-1 min-h-[525px] px-[25px] pb-[25px] resize-none bg-[#f3f3f5] rounded-b-[14px] border-0 focus:ring-0 text-sm text-[#717182] placeholder:text-[#717182] font-['Tinos']"
+              class="flex-1 min-h-[320px] px-4 pb-4 resize-none bg-[#f3f3f5] rounded-b-[14px] border-0 focus:ring-0 text-sm text-[#717182] placeholder:text-[#717182] font-['Tinos']"
               placeholder="Nhập nội dung bài viết..."
             ></textarea>
           </div>
@@ -171,20 +167,19 @@
         </div>
 
         <!-- Sidebar (Right) -->
-        <div class="w-[353px] flex flex-col gap-6">
+        <div class="w-[320px] flex flex-col gap-4">
           <!-- Publish Status -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-6 flex flex-col gap-4"
+            class="bg-white border !border-gray-400 rounded-[14px] p-4 flex flex-col gap-3"
           >
-            <h3 class="text-base font-medium text-neutral-950">
+            <h3 class="text-sm font-semibold text-neutral-950">
               Đăng (Publish)
             </h3>
             <button
               @click="updatePost"
               :disabled="isSaving"
-              class="w-full h-9 bg-[#00a63e] text-white rounded-lg flex items-center justify-center gap-2 text-sm font-medium hover:bg-[#008c35] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              class="w-full h-9 bg-[#5a9690] text-white rounded-lg flex items-center justify-center gap-2 text-sm font-medium hover:bg-[#5a9590]/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <img :src="iconCheck" alt="Check" class="w-4 h-4" />
               {{ isSaving ? "Đang lưu..." : "Cập nhật" }}
             </button>
             <p class="text-xs text-[#6a7282]">
@@ -194,10 +189,10 @@
 
           <!-- Categories -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-6 flex flex-col gap-4"
+            class="bg-white border !border-gray-400 rounded-[14px] p-4 flex flex-col gap-3"
           >
-            <h3 class="text-base font-medium text-neutral-950">Phân loại</h3>
-            <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-neutral-950">Phân loại</h3>
+            <div class="flex flex-col gap-2">
               <select
                 v-model="post.categoryId"
                 class="w-full px-3 py-2 bg-[#f3f3f5] rounded-lg border-0 focus:ring-0 text-sm text-neutral-950"
@@ -215,10 +210,10 @@
 
           <!-- Featured Image -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-6 flex flex-col gap-4"
+            class="bg-white border !border-gray-400 rounded-[14px] p-4 flex flex-col gap-3"
           >
-            <h3 class="text-base font-medium text-neutral-950">Ảnh đại diện</h3>
-            <div class="relative h-[128px] bg-gray-100 rounded overflow-hidden">
+            <h3 class="text-sm font-semibold text-neutral-950">Ảnh đại diện</h3>
+            <div class="relative h-[120px] bg-gray-100 rounded overflow-hidden">
               <img
                 v-if="post.thumbnail"
                 :src="post.thumbnail"
@@ -236,7 +231,7 @@
                 @click="removeImage"
                 class="absolute top-2 right-2 w-9 h-8 bg-[#d4183d] text-white rounded-lg flex items-center justify-center hover:bg-[#b01432] transition-colors"
               >
-                <img :src="iconTrash" alt="Delete" class="w-4 h-4" />
+                <TrashIcon class="w-4 h-4" />
               </button>
             </div>
 
@@ -252,7 +247,7 @@
               @click="$refs.imageInput?.click()"
               class="w-full h-9 bg-[#f3f3f5] text-neutral-950 rounded-lg flex items-center justify-center gap-2 text-sm font-medium hover:bg-gray-200 transition-colors"
             >
-              <img :src="iconImage" alt="Upload" class="w-4 h-4" />
+              <ImageIcon class="w-4 h-4" />
               {{ post.thumbnail ? "Thay ảnh" : "Tải ảnh lên" }}
             </button>
 
@@ -274,43 +269,24 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-// Icons
-const iconBack =
-  "https://www.figma.com/api/mcp/asset/5e128e4f-26a0-4df7-8d47-9ecda4c56d4c";
-const iconBold =
-  "https://www.figma.com/api/mcp/asset/106874c1-e3c4-4da5-a149-2c8e4b7f5639";
-const iconItalic =
-  "https://www.figma.com/api/mcp/asset/b41f26cc-d0df-491d-81c5-184c4dd0d3be";
-const iconUnderline =
-  "https://www.figma.com/api/mcp/asset/d167c75d-986e-4e02-88f2-41f1e870f54d";
-const iconH1 =
-  "https://www.figma.com/api/mcp/asset/987ef401-4438-4f9a-939c-12969ca04c12";
-const iconH2 =
-  "https://www.figma.com/api/mcp/asset/00e77e58-f523-4e3a-9aa8-156de6669040";
-const iconH3 =
-  "https://www.figma.com/api/mcp/asset/982b0fb4-5a41-46b3-a318-4bc6843b66ba";
-const iconList =
-  "https://www.figma.com/api/mcp/asset/14a76ad9-4465-4dfc-b653-26dcd85dfee9";
-const iconNumberList =
-  "https://www.figma.com/api/mcp/asset/6984cde9-87cd-41aa-bcac-78e767b35430";
-const iconAlignLeft =
-  "https://www.figma.com/api/mcp/asset/a1410641-8671-4cd9-87f5-1aca4e512df9";
-const iconAlignCenter =
-  "https://www.figma.com/api/mcp/asset/3b9cc00e-c3e7-4f56-9edb-75a8e3798699";
-const iconAlignRight =
-  "https://www.figma.com/api/mcp/asset/a42f83cd-2f74-4e40-aef7-43656c646d00";
-const iconImage =
-  "https://www.figma.com/api/mcp/asset/88e192cd-0858-4dfd-b07f-3d1cf5616499";
-const iconCheck =
-  "https://www.figma.com/api/mcp/asset/ffec0959-6b87-41c2-8fa5-eb02934bfb81";
-const iconPlus =
-  "https://www.figma.com/api/mcp/asset/4ec6f8f5-721f-46e7-a846-7a33148be482";
-const iconTrash =
-  "https://www.figma.com/api/mcp/asset/e4c06032-6550-4cf9-b2dd-2c6bf3718cfe";
-
 // Import API client
 import client from "../../../../../utils/api.js";
 
+// Icon SVG
+import ArrowLeftIcon from "@/assets/svg/arrow-left.svg";
+import BoldIcon from "@/assets/svg/bold.svg";
+import ItalicIcon from "@/assets/svg/italic.svg";
+import UnderlineIcon from "@/assets/svg/underline.svg";
+import H1Icon from "@/assets/svg/heading1.svg";
+import H2Icon from "@/assets/svg/heading2.svg";
+import H3Icon from "@/assets/svg/heading3.svg";
+import ListIcon from "@/assets/svg/list.svg";
+import NumberListIcon from "@/assets/svg/list-number.svg";
+import AlignLeftIcon from "@/assets/svg/align-left.svg";
+import AlignCenterIcon from "@/assets/svg/align-center.svg";
+import AlignRightIcon from "@/assets/svg/align-right.svg";
+import ImageIcon from "@/assets/svg/image.svg";
+import TrashIcon from "@/assets/svg/trash.svg";
 // Post Data
 const post = ref({
   id: null,

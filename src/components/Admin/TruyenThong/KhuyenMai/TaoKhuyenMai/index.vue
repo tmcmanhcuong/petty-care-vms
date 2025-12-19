@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-6 h-full bg-[#f3f3f5] p-6">
+  <div class="flex flex-col gap-6 h-full p-6">
     <!-- Header -->
     <div class="flex items-center justify-between h-[60px]">
       <div class="flex items-center gap-4">
@@ -7,7 +7,7 @@
           @click="handleBack"
           class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
         >
-          <img :src="iconBack" alt="Back" class="w-4 h-4" />
+          <ArrowLeftIcon />
           <span class="text-sm font-medium text-neutral-950">Quay lại</span>
         </button>
         <div class="flex flex-col">
@@ -19,7 +19,7 @@
           </p>
         </div>
       </div>
-      <button
+      <!-- <button
         @click="handleSave"
         :disabled="loading"
         class="flex items-center gap-2 px-4 py-2 bg-[#00a63e] text-white rounded-lg hover:bg-[#008c35] transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
@@ -28,15 +28,15 @@
         <span class="text-sm font-medium">{{
           loading ? "Đang lưu..." : "Lưu chương trình"
         }}</span>
-      </button>
+      </button> -->
     </div>
 
     <!-- Main Content Grid -->
     <div class="grid grid-cols-2 gap-6">
       <!-- Card 1: Thông tin cơ bản -->
-      <div class="bg-white rounded-[14px] border border-[rgba(0,0,0,0.1)] p-6">
+      <div class="bg-white rounded-[14px] border !border-gray-300 p-6">
         <div class="flex items-center gap-2 mb-6">
-          <img :src="iconInfo" alt="Info" class="w-5 h-5" />
+          <!-- <img :src="iconInfo" alt="Info" class="w-5 h-5" /> -->
           <h2 class="text-base text-neutral-950">1. Thông tin cơ bản</h2>
         </div>
 
@@ -51,7 +51,7 @@
               v-model="form.name"
               type="text"
               placeholder="VD: Tri ân khách hàng tháng 11"
-              class="w-full px-3 py-2 bg-[#f3f3f5] border border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
+              class="w-full px-3 py-2 bg-[#f3f3f5] border !border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
               :class="{ 'border-red-500': errors.name }"
             />
             <p v-if="errors.name" class="text-xs text-red-500">
@@ -68,7 +68,7 @@
               v-model="form.description"
               rows="3"
               placeholder="Giải thích về chương trình khuyến mãi này..."
-              class="w-full px-3 py-2 bg-[#f3f3f5] border border-transparent rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#009689]"
+              class="w-full px-3 py-2 bg-[#f3f3f5] border !border-transparent rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#009689]"
             ></textarea>
           </div>
 
@@ -86,7 +86,7 @@
                 'flex flex-col gap-1 p-4 rounded-[10px] border-2 cursor-pointer transition-all',
                 form.type === 'voucher'
                   ? 'bg-teal-50 border-[#009689]'
-                  : 'bg-white border-gray-200 hover:border-gray-300',
+                  : 'bg-white !border-gray-200 hover:border-gray-300',
               ]"
             >
               <div class="flex items-start gap-3">
@@ -107,7 +107,7 @@
                 </div>
                 <div class="flex-1">
                   <div class="flex items-center gap-2 mb-1">
-                    <img :src="iconVoucher" alt="Voucher" class="w-4 h-4" />
+                    <!-- <img :src="iconVoucher" alt="Voucher" class="w-4 h-4" /> -->
                     <span class="text-base text-[#101828]"
                       >Mã giảm giá (Voucher)</span
                     >
@@ -147,7 +147,7 @@
                 </div>
                 <div class="flex-1">
                   <div class="flex items-center gap-2 mb-1">
-                    <img :src="iconAuto" alt="Auto" class="w-4 h-4" />
+                    <!-- <img :src="iconAuto" alt="Auto" class="w-4 h-4" /> -->
                     <span class="text-base text-[#101828]"
                       >Chương trình tự động</span
                     >
@@ -163,7 +163,7 @@
           <!-- Mã Code (chỉ hiện khi chọn voucher) -->
           <div
             v-if="form.type === 'voucher'"
-            class="flex flex-col gap-2 p-4 bg-purple-50 border border-[#e9d4ff] rounded-[10px]"
+            class="flex flex-col gap-2 p-4 bg-purple-50 border !border-[#e9d4ff] rounded-[10px]"
           >
             <label class="text-sm font-medium text-neutral-950">
               Mã Code
@@ -173,41 +173,38 @@
               v-model="form.code"
               type="text"
               placeholder="VD: SALE11, TET2025"
-              class="w-full px-3 py-2 bg-white border border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
+              class="w-full px-3 py-2 bg-white border !border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
               :class="{ 'border-red-500': errors.code }"
             />
             <p v-if="errors.code" class="text-xs text-red-500">
               {{ errors.code }}
             </p>
             <p v-else class="text-xs text-[#4a5565]">
-              💡 Gợi ý: Dùng chữ in hoa, dễ nhớ (6-12 ký tự)
+              Gợi ý: Dùng chữ in hoa, dễ nhớ (6-12 ký tự)
             </p>
           </div>
         </div>
       </div>
 
       <!-- Card 2: Mức giảm giá -->
-      <div class="bg-white rounded-[14px] border border-[rgba(0,0,0,0.1)] p-6">
+      <div class="bg-white rounded-[14px] border !border-gray-300 p-6">
         <div class="flex items-center gap-2 mb-6">
-          <img :src="iconDiscount" alt="Discount" class="w-5 h-5" />
-          <h2 class="text-base text-neutral-950">
-            2. Mức giảm giá (The Logic)
-          </h2>
+          <!-- <img :src="iconDiscount" alt="Discount" class="w-5 h-5" /> -->
+          <h2 class="text-base text-neutral-950">2. Mức giảm giá</h2>
         </div>
 
         <div class="flex flex-col gap-4">
           <!-- Hình thức giảm -->
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-2 relative">
             <label class="text-sm font-medium text-neutral-950">
               Hình thức giảm
               <span class="text-[#fb2c36]">*</span>
             </label>
             <div
-              @click="toggleDiscountType"
-              class="flex items-center justify-between px-3 py-2 bg-[#f3f3f5] border border-transparent rounded-lg cursor-pointer hover:bg-gray-100"
+              @click="showDiscountTypeDropdown = !showDiscountTypeDropdown"
+              class="flex items-center justify-between px-3 py-2 bg-[#f3f3f5] border !border-transparent rounded-lg cursor-pointer hover:bg-gray-100"
             >
               <div class="flex items-center gap-2">
-                <img :src="iconPercent" alt="Percent" class="w-4 h-4" />
                 <span class="text-sm text-neutral-950">
                   {{
                     form.discountType === "percent"
@@ -216,7 +213,36 @@
                   }}
                 </span>
               </div>
-              <img :src="iconChevronDown" alt="Dropdown" class="w-4 h-4" />
+              <ChevronDownIcon />
+            </div>
+
+            <!-- Dropdown Menu -->
+            <div
+              v-if="showDiscountTypeDropdown"
+              class="absolute top-full left-0 right-0 mt-1 bg-white border !border-gray-300 rounded-lg shadow-lg z-10"
+            >
+              <button
+                @click="selectDiscountType('percent')"
+                class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 rounded-t-lg transition-colors"
+                :class="
+                  form.discountType === 'percent'
+                    ? 'bg-teal-50 text-[#009689]'
+                    : 'text-neutral-950'
+                "
+              >
+                Giảm theo % (Phần trăm)
+              </button>
+              <button
+                @click="selectDiscountType('fixed')"
+                class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 rounded-b-lg transition-colors"
+                :class="
+                  form.discountType === 'fixed'
+                    ? 'bg-teal-50 text-[#009689]'
+                    : 'text-neutral-950'
+                "
+              >
+                Giảm theo số tiền cố định
+              </button>
             </div>
           </div>
 
@@ -231,11 +257,11 @@
                 v-model="form.discountValue"
                 type="number"
                 placeholder="VD: 20"
-                class="w-full px-3 py-2 pr-12 bg-[#f3f3f5] border border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
+                class="w-full px-3 py-2 pr-12 bg-[#f3f3f5] border !border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
                 :class="{ 'border-red-500': errors.discountValue }"
               />
               <span
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-[#6a7282]"
+                class="absolute right-10 top-1/2 -translate-y-1/2 text-[#6a7282]"
               >
                 {{ form.discountType === "percent" ? "%" : "đ" }}
               </span>
@@ -248,10 +274,10 @@
           <!-- Giảm tối đa (Max Cap) -->
           <div
             v-if="form.discountType === 'percent'"
-            class="flex flex-col gap-3 p-4 bg-amber-50 border border-[#fee685] rounded-[10px]"
+            class="flex flex-col gap-3 p-4 bg-amber-50 border !border-[#fee685] rounded-[10px]"
           >
             <div class="flex items-start gap-2">
-              <img :src="iconWarning" alt="Warning" class="w-5 h-5 mt-0.5" />
+              <!-- <img :src="iconWarning" alt="Warning" class="w-5 h-5 mt-0.5" /> -->
               <div class="flex flex-col gap-1">
                 <label class="text-sm font-medium text-neutral-950">
                   Giảm tối đa (Max Cap)
@@ -266,10 +292,10 @@
                 v-model="form.maxDiscount"
                 type="number"
                 placeholder="VD: 50000"
-                class="w-full px-3 py-2 pr-12 bg-white border border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
+                class="w-full px-3 py-2 pr-12 bg-white border !border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
               />
               <span
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-[#6a7282]"
+                class="absolute right-10 top-1/2 -translate-y-1/2 text-[#6a7282]"
                 >đ</span
               >
             </div>
@@ -278,23 +304,21 @@
       </div>
 
       <!-- Card 3: Điều kiện áp dụng -->
-      <div class="bg-white rounded-[14px] border border-[rgba(0,0,0,0.1)] p-6">
+      <div class="bg-white rounded-[14px] border !border-gray-300 p-6">
         <div class="flex items-center gap-2 mb-6">
-          <img :src="iconCondition" alt="Condition" class="w-5 h-5" />
-          <h2 class="text-base text-neutral-950">
-            3. Điều kiện áp dụng (Smart Logic)
-          </h2>
+          <!-- <img :src="iconCondition" alt="Condition" class="w-5 h-5" /> -->
+          <h2 class="text-base text-neutral-950">3. Điều kiện áp dụng</h2>
         </div>
 
         <div class="flex flex-col gap-4">
           <!-- Áp dụng cho -->
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-2 relative">
             <label class="text-sm font-medium text-neutral-950"
               >Áp dụng cho</label
             >
             <div
-              @click="toggleApplyTo"
-              class="flex items-center justify-between px-3 py-2 bg-[#f3f3f5] border border-transparent rounded-lg cursor-pointer hover:bg-gray-100"
+              @click="showApplyToDropdown = !showApplyToDropdown"
+              class="flex items-center justify-between px-3 py-2 bg-[#f3f3f5] border !border-transparent rounded-lg cursor-pointer hover:bg-gray-100"
             >
               <span class="text-sm text-neutral-950">
                 {{
@@ -303,14 +327,43 @@
                     : "Nhóm dịch vụ cụ thể"
                 }}
               </span>
-              <img :src="iconChevronDown" alt="Dropdown" class="w-4 h-4" />
+              <ChevronDownIcon />
+            </div>
+
+            <!-- Dropdown Menu -->
+            <div
+              v-if="showApplyToDropdown"
+              class="absolute top-full left-0 right-0 mt-1 bg-white border !border-gray-300 rounded-lg shadow-lg z-10"
+            >
+              <button
+                @click="selectApplyTo('all')"
+                class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 rounded-t-lg transition-colors"
+                :class="
+                  form.applyTo === 'all'
+                    ? 'bg-teal-50 text-[#009689]'
+                    : 'text-neutral-950'
+                "
+              >
+                Toàn bộ đơn hàng
+              </button>
+              <button
+                @click="selectApplyTo('specific')"
+                class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 rounded-b-lg transition-colors"
+                :class="
+                  form.applyTo === 'specific'
+                    ? 'bg-teal-50 text-[#009689]'
+                    : 'text-neutral-950'
+                "
+              >
+                Nhóm dịch vụ cụ thể
+              </button>
             </div>
           </div>
 
           <!-- Chọn dịch vụ áp dụng (chỉ hiện khi chọn specific) -->
           <div
             v-if="form.applyTo === 'specific'"
-            class="flex flex-col gap-3 p-4 bg-blue-50 border border-[#bedbff] rounded-[10px]"
+            class="flex flex-col gap-3 p-4 bg-blue-50 border !border-[#bedbff] rounded-[10px]"
           >
             <label class="text-sm font-medium text-neutral-950">
               Chọn dịch vụ áp dụng
@@ -379,7 +432,7 @@
               </label>
             </div>
             <p class="text-xs text-[#4a5565]">
-              💡 VD: Chỉ giảm cho Spa, không giảm cho Thuốc
+              VD: Chỉ giảm cho Spa, không giảm cho Thuốc
             </p>
           </div>
 
@@ -393,26 +446,25 @@
                 v-model="form.minOrderValue"
                 type="number"
                 placeholder="VD: 300000"
-                class="w-full px-3 py-2 pr-12 bg-[#f3f3f5] border border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
+                class="w-full px-3 py-2 pr-12 bg-[#f3f3f5] border !border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
               />
               <span
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-[#6a7282]"
+                class="absolute right-10 top-1/2 -translate-y-1/2 text-[#6a7282]"
                 >đ</span
               >
             </div>
           </div>
 
           <!-- Đối tượng khách hàng -->
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-2 relative">
             <label class="text-sm font-medium text-neutral-950"
               >Đối tượng khách hàng</label
             >
             <div
-              @click="toggleCustomerType"
-              class="flex items-center justify-between px-3 py-2 bg-[#f3f3f5] border border-transparent rounded-lg cursor-pointer hover:bg-gray-100"
+              @click="showCustomerTypeDropdown = !showCustomerTypeDropdown"
+              class="flex items-center justify-between px-3 py-2 bg-[#f3f3f5] border !border-transparent rounded-lg cursor-pointer hover:bg-gray-100"
             >
               <div class="flex items-center gap-2">
-                <img :src="iconUsers" alt="Users" class="w-4 h-4" />
                 <span class="text-sm text-neutral-950">
                   {{
                     form.customerType === "all"
@@ -421,16 +473,45 @@
                   }}
                 </span>
               </div>
-              <img :src="iconChevronDown" alt="Dropdown" class="w-4 h-4" />
+              <ChevronDownIcon />
+            </div>
+
+            <!-- Dropdown Menu -->
+            <div
+              v-if="showCustomerTypeDropdown"
+              class="absolute top-full left-0 right-0 mt-1 bg-white border !border-gray-300 rounded-lg shadow-lg z-10"
+            >
+              <button
+                @click="selectCustomerType('all')"
+                class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 rounded-t-lg transition-colors"
+                :class="
+                  form.customerType === 'all'
+                    ? 'bg-teal-50 text-[#009689]'
+                    : 'text-neutral-950'
+                "
+              >
+                Tất cả khách hàng
+              </button>
+              <button
+                @click="selectCustomerType('vip')"
+                class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 rounded-b-lg transition-colors"
+                :class="
+                  form.customerType === 'vip'
+                    ? 'bg-teal-50 text-[#009689]'
+                    : 'text-neutral-950'
+                "
+              >
+                Khách hàng VIP
+              </button>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Card 4: Giới hạn & Thời gian -->
-      <div class="bg-white rounded-[14px] border border-[rgba(0,0,0,0.1)] p-6">
+      <div class="bg-white rounded-[14px] border !border-gray-300 p-6">
         <div class="flex items-center gap-2 mb-6">
-          <img :src="iconCalendar" alt="Calendar" class="w-5 h-5" />
+          <!-- <img :src="iconCalendar" alt="Calendar" class="w-5 h-5" /> -->
           <h2 class="text-base text-neutral-950">4. Giới hạn & Thời gian</h2>
         </div>
 
@@ -449,7 +530,7 @@
                 <input
                   v-model="form.startDate"
                   type="date"
-                  class="px-3 py-2 bg-[#f3f3f5] border border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
+                  class="px-3 py-2 bg-[#f3f3f5] border !border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
                   :class="{ 'border-red-500': errors.startDate }"
                 />
                 <p v-if="errors.startDate" class="text-xs text-red-500">
@@ -463,7 +544,7 @@
                 <input
                   v-model="form.endDate"
                   type="date"
-                  class="px-3 py-2 bg-[#f3f3f5] border border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
+                  class="px-3 py-2 bg-[#f3f3f5] border !border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
                   :class="{ 'border-red-500': errors.endDate }"
                 />
                 <p v-if="errors.endDate" class="text-xs text-red-500">
@@ -483,7 +564,7 @@
               v-model="form.totalQuantity"
               type="number"
               placeholder="VD: 100"
-              class="w-full px-3 py-2 bg-[#f3f3f5] border border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
+              class="w-full px-3 py-2 bg-[#f3f3f5] border !border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
               :class="{ 'border-red-500': errors.totalQuantity }"
             />
             <p v-if="errors.totalQuantity" class="text-xs text-red-500">
@@ -504,7 +585,7 @@
               v-model="form.perCustomerLimit"
               type="number"
               placeholder="1"
-              class="w-full px-3 py-2 bg-[#f3f3f5] border border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
+              class="w-full px-3 py-2 bg-[#f3f3f5] border !border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#009689]"
               :class="{ 'border-red-500': errors.perCustomerLimit }"
             />
             <p v-if="errors.perCustomerLimit" class="text-xs text-red-500">
@@ -517,11 +598,9 @@
 
           <!-- Tóm tắt cấu hình -->
           <div
-            class="flex flex-col gap-2 p-4 bg-teal-50 border border-[#96f7e4] rounded-[10px]"
+            class="flex flex-col gap-2 p-4 bg-teal-50 border !border-[#96f7e4] rounded-[10px]"
           >
-            <p class="text-sm font-medium text-[#101828]">
-              📋 Tóm tắt cấu hình:
-            </p>
+            <p class="text-sm font-medium text-[#101828]">Tóm tắt cấu hình:</p>
             <ul class="flex flex-col gap-1 text-sm text-[#364153]">
               <li>
                 • Loại:
@@ -545,16 +624,16 @@
     <div class="flex items-center justify-end gap-3">
       <button
         @click="handleCancel"
-        class="px-4 py-2 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg text-sm font-medium text-neutral-950 hover:bg-gray-50 transition-colors"
+        class="px-4 py-2 bg-white border !border-gray-300 rounded-lg text-sm font-medium text-neutral-950 hover:bg-gray-50 transition-colors"
       >
         Hủy
       </button>
       <button
         @click="handleCreate"
         :disabled="loading"
-        class="flex items-center gap-2 px-4 py-2 bg-[#00a63e] text-white rounded-lg text-sm font-medium hover:bg-[#008c35] transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+        class="flex items-center gap-2 px-4 py-2 bg-[#5a9690] text-white rounded-lg text-sm font-medium hover:bg-[#5a9690]/80 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
       >
-        <img :src="iconSave" alt="Save" class="w-4 h-4" />
+        <!-- <img :src="iconSave" alt="Save" class="w-4 h-4" /> -->
         <span>{{ loading ? "Đang tạo..." : "Tạo chương trình" }}</span>
       </button>
     </div>
@@ -565,7 +644,9 @@
 import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { khuyenMaiAPI, dichVuAPI } from "@/utils/khuyenMai";
-
+//Icon SVG
+import ArrowLeftIcon from "@/assets/svg/arrow-left.svg";
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
 const router = useRouter();
 
 // Icons - Replace with your actual icon paths
@@ -599,6 +680,11 @@ const services = ref([]);
 const loading = ref(false);
 const loadingServices = ref(false);
 const errors = ref({});
+
+// Dropdown states
+const showDiscountTypeDropdown = ref(false);
+const showApplyToDropdown = ref(false);
+const showCustomerTypeDropdown = ref(false);
 
 // Form data
 const form = reactive({
@@ -740,6 +826,23 @@ const handleBack = () => {
   router.back();
 };
 
+// Dropdown select methods
+const selectDiscountType = (type) => {
+  form.discountType = type;
+  showDiscountTypeDropdown.value = false;
+};
+
+const selectApplyTo = (value) => {
+  form.applyTo = value;
+  showApplyToDropdown.value = false;
+};
+
+const selectCustomerType = (type) => {
+  form.customerType = type;
+  showCustomerTypeDropdown.value = false;
+};
+
+// Keep old toggle methods for compatibility
 const toggleDiscountType = () => {
   form.discountType = form.discountType === "percent" ? "fixed" : "percent";
 };

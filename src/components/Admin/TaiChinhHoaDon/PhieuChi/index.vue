@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-col gap-6 w-full font-nunito">
-    <!-- Header -->
-    <div class="flex flex-col">
-      <h1 class="text-2xl font-medium text-[#101828] leading-9">Phiếu Chi</h1>
-      <p class="text-base text-[#4a5565] leading-6">
+  <div class="w-full min-h-screen px-8 py-6 flex flex-col gap-6">
+    <!-- Page Header -->
+    <div class="flex flex-col gap-2">
+      <h1 class="text-2xl font-semibold text-black">Phiếu Chi</h1>
+      <p class="text-gray-500 font-medium text-base">
         Quản lý chi phí và công nợ nhà cung cấp
       </p>
     </div>
@@ -13,7 +13,7 @@
       <!-- Auto-refresh indicator -->
       <div
         v-if="isRefreshing"
-        class="absolute top-0 right-0 z-10 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg border border-[#009689]/20 flex items-center gap-2"
+        class="absolute top-0 right-0 z-10 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg border !border-[#009689] flex items-center gap-2"
       >
         <svg
           class="animate-spin h-4 w-4 text-[#009689]"
@@ -42,7 +42,7 @@
       <button
         @click="handleManualRefresh"
         :disabled="isRefreshing"
-        class="absolute top-0 right-0 z-10 bg-white hover:bg-gray-50 rounded-lg p-2 shadow-md border border-black/10 transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+        class="absolute top-0 right-0 z-10 bg-white hover:bg-gray-50 rounded-lg p-2 shadow-md border !border-[#009689] transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
         :class="{ 'opacity-0': isRefreshing }"
         title="Làm mới thống kê"
       >
@@ -65,7 +65,7 @@
       <div class="grid grid-cols-3 gap-6">
         <!-- Tổng chi tháng này -->
         <div
-          class="bg-white border border-black/10 rounded-[14px] p-[25px] transition-all duration-300"
+          class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6 transition-all duration-300"
           :class="{ 'animate-pulse-soft': isRefreshing }"
         >
           <div class="flex items-center justify-between">
@@ -99,14 +99,14 @@
             <div
               class="w-12 h-12 bg-[#ffe2e2] rounded-full flex items-center justify-center"
             >
-              <img :src="iconExpense" alt="" class="w-6 h-6" />
+              <ArrowDownIcon class="w-6 h-6 text-[#e7000b]" />
             </div>
           </div>
         </div>
 
         <!-- Nợ Nhà cung cấp -->
         <div
-          class="bg-white border border-black/10 rounded-[14px] p-[25px] transition-all duration-300"
+          class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6 transition-all duration-300"
           :class="{ 'animate-pulse-soft': isRefreshing }"
         >
           <div class="flex items-center justify-between">
@@ -136,14 +136,14 @@
             <div
               class="w-12 h-12 bg-[#ffedd4] rounded-full flex items-center justify-center"
             >
-              <img :src="iconDebt" alt="" class="w-6 h-6" />
+              <WarningIcon class="w-6 h-6 text-[#f54900]" />
             </div>
           </div>
         </div>
 
         <!-- Chi phí Vận hành -->
         <div
-          class="bg-white border border-black/10 rounded-[14px] p-[25px] transition-all duration-300"
+          class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6 transition-all duration-300"
           :class="{ 'animate-pulse-soft': isRefreshing }"
         >
           <div class="flex items-center justify-between">
@@ -175,7 +175,7 @@
             <div
               class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center"
             >
-              <img :src="iconOperating" alt="" class="w-6 h-6" />
+              <IdeaIcon class="w-6 h-6 text-[#ff6900]" />
             </div>
           </div>
         </div>
@@ -190,11 +190,11 @@
     </div>
 
     <!-- Search and Filters -->
-    <div class="bg-white border border-black/10 rounded-[14px] p-[25px]">
+    <div class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6">
       <div class="flex flex-col gap-4">
         <!-- Search Bar -->
         <div class="relative">
-          <img :src="iconSearch" alt="" class="absolute left-3 top-2 w-5 h-5" />
+          <SearchIcon class="absolute left-3 top-2 w-5 h-5" />
           <input
             type="text"
             v-model="searchQuery"
@@ -210,15 +210,15 @@
             class="bg-[#f3f3f5] border-0 rounded-lg px-3 py-1 flex items-center justify-between h-9 hover:bg-gray-200 transition-colors"
           >
             <span class="text-sm text-neutral-950">Tháng này</span>
-            <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+            <ChevronDownIcon />
           </button>
 
           <!-- Category Filter -->
           <button
             class="bg-[#f3f3f5] border-0 rounded-lg px-3 py-1 flex items-center justify-between h-9 hover:bg-gray-200 transition-colors"
           >
-            <span class="text-sm text-neutral-950">💰 Tất cả</span>
-            <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+            <span class="text-sm text-neutral-950">Tất cả</span>
+            <ChevronDownIcon />
           </button>
 
           <!-- Status Filter -->
@@ -226,7 +226,7 @@
             class="bg-[#f3f3f5] border-0 rounded-lg px-3 py-1 flex items-center justify-between h-9 hover:bg-gray-200 transition-colors"
           >
             <span class="text-sm text-neutral-950">Tất cả</span>
-            <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+            <ChevronDownIcon />
           </button>
 
           <!-- Create Button -->
@@ -234,7 +234,7 @@
             @click="isCreateExpenseModalOpen = true"
             class="bg-[#e7000b] text-white rounded-lg px-3 py-1 flex items-center justify-center gap-2 h-9 hover:bg-[#c4000a] transition-colors"
           >
-            <img :src="iconPlus" alt="" class="w-4 h-4" />
+            <AddIcon class="w-4 h-4" />
             <span class="text-sm font-medium">Tạo phiếu chi</span>
           </button>
         </div>
@@ -242,7 +242,7 @@
     </div>
 
     <!-- Expense Table -->
-    <div class="bg-white border border-black/10 rounded-[14px] p-[25px]">
+    <div class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6">
       <!-- Loading State -->
       <div v-if="loading" class="flex items-center justify-center py-12">
         <div class="flex flex-col items-center gap-3">
@@ -450,14 +450,14 @@
                     class="w-9 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
                     title="Thanh toán"
                   >
-                    <img :src="iconPayment" alt="" class="w-4 h-4" />
+                    <UpdateIcon class="w-4 h-4 text-[#e7000b]" />
                   </button>
                   <button
                     @click="handleViewExpense(expense)"
                     class="w-9 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
                     title="Xem chi tiết"
                   >
-                    <img :src="iconEye" alt="" class="w-4 h-4" />
+                    <EyeIcon class="w-4 h-4 text-[#009689]" />
                   </button>
                 </div>
               </td>
@@ -501,6 +501,15 @@ import { showErrorToast, showSuccessToast } from "@/utils/toast";
 import TaoPhieuChi from "./TaoPhieuChi/index.vue";
 import ChiTietPhieuChi from "./ChiTietPhieuChi/index.vue";
 import ThanhToanThem from "./ThanhToanThem/index.vue";
+//Icon SVG
+import IdeaIcon from "@/assets/svg/idea.svg";
+import EyeIcon from "@/assets/svg/eye.svg";
+import UpdateIcon from "@/assets/svg/update.svg";
+import ArrowDownIcon from "@/assets/svg/arrow-down.svg";
+import WarningIcon from "@/assets/svg/warning.svg";
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
+import AddIcon from "@/assets/svg/add.svg";
+import SearchIcon from "@/assets/svg/search.svg";
 
 // Icons
 const iconExpense =

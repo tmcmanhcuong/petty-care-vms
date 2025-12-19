@@ -344,23 +344,6 @@ import EyeIcon from "@/assets/svg/eye.svg";
 import AroundIcon from "@/assets/svg/around.svg";
 import InforIcon from "@/assets/svg/infor.svg";
 import DownloadIcon from "@/assets/svg/download.svg";
-// Icons (from Figma - expire in 7 days)
-const iconRevenue =
-  "https://www.figma.com/api/mcp/asset/9f1cb0c2-182d-4a3a-bb7b-2139013a45c5";
-const iconUnpaid =
-  "https://www.figma.com/api/mcp/asset/c13106c5-b275-4da8-a138-03801a16cd98";
-const iconRefund =
-  "https://www.figma.com/api/mcp/asset/359bdf8e-f1ba-4521-bde3-18ffe8839f89";
-const iconChevronDown =
-  "https://www.figma.com/api/mcp/asset/0177450d-db2e-45f6-82b3-d1a6deb55501";
-const iconExport =
-  "https://www.figma.com/api/mcp/asset/582dabfb-4982-4e22-b3f8-b5f959ef8b41";
-const iconSearch =
-  "https://www.figma.com/api/mcp/asset/22aa5763-66c1-47ab-b737-0e47a028f845";
-const iconEye =
-  "https://www.figma.com/api/mcp/asset/157e4595-5bbf-4983-9373-60ffb98cfae8";
-const iconPrint =
-  "https://www.figma.com/api/mcp/asset/89ca15b0-53cf-4c64-84b1-6d7cdcc94e1d";
 
 // Reactive state
 const searchQuery = ref("");
@@ -374,65 +357,167 @@ const invoices = ref([
     time: "10:30",
     date: "20/11/2025",
     customer: "Nguyễn Văn A",
+    phone: "0901234567",
     petName: "Milo",
+    doctor: "BS. Nguyễn Văn B",
+    department: "(Khoa Vận hành)",
+    collectorDepartment: "Khoa Vận hành",
     totalAmount: 1000000,
     paidAmount: 1000000,
     paymentMethod: "cash",
     status: "paid",
     collector: "Thu ngân Mai",
-    department: "(Khoa Vận hành)",
+    items: [
+      { name: "Khám tổng quát", quantity: 1, price: 150000, total: 150000 },
+      { name: "Siêu âm ổ bụng", quantity: 1, price: 300000, total: 300000 },
+      {
+        name: "Thuốc A (Omeprazole)",
+        quantity: 2,
+        price: 50000,
+        total: 100000,
+      },
+      {
+        name: "Thuốc B (Metronidazole)",
+        quantity: 1,
+        price: 450000,
+        total: 450000,
+      },
+    ],
+    transactions: [
+      {
+        time: "10:30",
+        date: "20/11/2025",
+        method: "Tiền mặt",
+        methodIcon: "💵",
+        amount: 900000,
+        note: "Thanh toán tại quầy",
+        status: "success",
+      },
+    ],
+    promotion: {
+      code: "NEWCUSTOMER2025",
+      description: "Khuyến mãi khách hàng mới",
+      type: "Giảm cố định",
+      discount: -100000,
+    },
   },
   {
     code: "HD001235",
     time: "11:15",
     date: "20/11/2025",
     customer: "Trần Thị B",
+    phone: "0912345678",
     petName: "Luna",
+    doctor: "BS. Trần Văn C",
+    department: "(Khoa Vận hành)",
+    collectorDepartment: "Khoa Vận hành",
     totalAmount: 800000,
     paidAmount: 0,
     paymentMethod: "cash",
     status: "unpaid",
     collector: "Thu ngân Mai",
-    department: "(Khoa Vận hành)",
+    items: [
+      { name: "Khám bệnh", quantity: 1, price: 200000, total: 200000 },
+      { name: "Xét nghiệm máu", quantity: 1, price: 600000, total: 600000 },
+    ],
+    transactions: [],
+    promotion: null,
   },
   {
     code: "HD001236",
     time: "14:20",
     date: "20/11/2025",
     customer: "Lê Văn C",
+    phone: "0923456789",
     petName: "Max",
+    doctor: "BS. Lê Thị D",
+    department: "(Khoa Vận hành)",
+    collectorDepartment: "Khoa Vận hành",
     totalAmount: 550000,
     paidAmount: 550000,
     paymentMethod: "vnpay",
     status: "paid",
     collector: "Thu ngân Lan",
-    department: "(Khoa Vận hành)",
+    items: [
+      { name: "Tiêm phòng", quantity: 1, price: 350000, total: 350000 },
+      { name: "Vitamin tổng hợp", quantity: 1, price: 200000, total: 200000 },
+    ],
+    transactions: [
+      {
+        time: "14:20",
+        date: "20/11/2025",
+        method: "VNPay",
+        methodIcon: "💳",
+        amount: 550000,
+        note: "Thanh toán qua VNPay",
+        status: "success",
+      },
+    ],
+    promotion: null,
   },
   {
     code: "HD001237",
     time: "15:45",
     date: "20/11/2025",
     customer: "Phạm Thị D",
+    phone: "0934567890",
     petName: "Bella",
+    doctor: "BS. Phạm Văn E",
+    department: "(Khoa Vận hành)",
+    collectorDepartment: "Khoa Vận hành",
     totalAmount: 2500000,
     paidAmount: 2500000,
     paymentMethod: "transfer",
     status: "refunded",
     collector: "Thu ngân Mai",
-    department: "(Khoa Vận hành)",
+    items: [
+      { name: "Phẫu thuật nhỏ", quantity: 1, price: 2000000, total: 2000000 },
+      { name: "Thuốc kháng sinh", quantity: 1, price: 500000, total: 500000 },
+    ],
+    transactions: [
+      {
+        time: "15:45",
+        date: "20/11/2025",
+        method: "Chuyển khoản",
+        methodIcon: "🏦",
+        amount: 2500000,
+        note: "Chuyển khoản ngân hàng",
+        status: "success",
+      },
+    ],
+    promotion: null,
   },
   {
     code: "HD001239",
     time: "16:30",
     date: "20/11/2025",
     customer: "Võ Thị F",
+    phone: "0945678901",
     petName: "Kitty",
+    doctor: "BS. Võ Văn G",
+    department: "(Khoa Vận hành)",
+    collectorDepartment: "Khoa Vận hành",
     totalAmount: 450000,
     paidAmount: 450000,
     paymentMethod: "cash",
     status: "refunding",
     collector: "Thu ngân Mai",
-    department: "(Khoa Vận hành)",
+    items: [
+      { name: "Tắm và vệ sinh", quantity: 1, price: 250000, total: 250000 },
+      { name: "Cắt móng", quantity: 1, price: 200000, total: 200000 },
+    ],
+    transactions: [
+      {
+        time: "16:30",
+        date: "20/11/2025",
+        method: "Tiền mặt",
+        methodIcon: "💵",
+        amount: 450000,
+        note: "Thanh toán tiền mặt",
+        status: "success",
+      },
+    ],
+    promotion: null,
   },
 ]);
 

@@ -9,7 +9,7 @@
           @click="router.back()"
           class="flex items-center justify-center w-9 h-9 hover:bg-gray-100 rounded-lg transition-colors"
         >
-          <img :src="iconBack" alt="Back" class="w-4 h-4" />
+          <ArrowLeftIcon />
         </button>
         <div class="border-l border-[#d1d5dc] h-6"></div>
         <h2 class="text-base font-normal text-[#101828]">Viết bài mới</h2>
@@ -18,15 +18,14 @@
 
     <!-- Content -->
     <div class="flex-1 overflow-y-auto">
-      <div class="flex gap-6 p-6">
+      <div class="flex gap-6 px-8 py-6">
         <!-- Main Content (Left) -->
-        <div class="flex-1 flex flex-col gap-6">
-          <!-- Title -->
+        <div class="flex-1 flex flex-col gap-4">
           <input
             v-model="title"
             type="text"
             placeholder="Nhập tiêu đề bài viết tại đây..."
-            class="w-full text-sm px-4 py-2 bg-[#f3f3f5] rounded-lg border-0 focus:ring-0 text-[#717182] placeholder:text-[#717182]"
+            class="w-full text-sm px-3 py-2 bg-[#f3f3f5] rounded-lg border-0 focus:ring-0 text-[#717182] placeholder:text-[#717182]"
           />
 
           <!-- Slug -->
@@ -45,84 +44,80 @@
               />
             </div>
             <p class="text-xs text-[#6a7282]">
-              💡 Slug sẽ tự động tạo từ tiêu đề. Nhập tiêu đề để cập nhật.
+              Slug sẽ tự động tạo từ tiêu đề. Nhập tiêu đề để cập nhật.
             </p>
           </div>
 
           <!-- Editor -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] flex flex-col"
+            class="bg-white border !border-gray-400 rounded-[14px] flex flex-col"
           >
             <!-- Toolbar -->
-            <div class="flex items-center gap-3 p-[25px] pb-[30px]">
+            <div class="flex items-center gap-2 p-4 pb-3">
               <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img :src="iconBold" alt="Bold" class="w-4 h-4" />
+                <BoldIcon />
               </button>
               <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img :src="iconItalic" alt="Italic" class="w-4 h-4" />
+                <ItalicIcon />
               </button>
               <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img :src="iconUnderline" alt="Underline" class="w-4 h-4" />
-              </button>
-              <div class="border-l border-[#d1d5dc] h-6"></div>
-              <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
-              >
-                <img :src="iconH1" alt="H1" class="w-4 h-4" />
-              </button>
-              <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
-              >
-                <img :src="iconH2" alt="H2" class="w-4 h-4" />
-              </button>
-              <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
-              >
-                <img :src="iconH3" alt="H3" class="w-4 h-4" />
+                <UnderlineIcon />
               </button>
               <div class="border-l border-[#d1d5dc] h-6"></div>
               <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img :src="iconList" alt="List" class="w-4 h-4" />
+                <H1Icon />
               </button>
               <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img :src="iconNumberList" alt="Number List" class="w-4 h-4" />
-              </button>
-              <div class="border-l border-[#d1d5dc] h-6"></div>
-              <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
-              >
-                <img :src="iconAlignLeft" alt="Align Left" class="w-4 h-4" />
+                <H2Icon />
               </button>
               <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img
-                  :src="iconAlignCenter"
-                  alt="Align Center"
-                  class="w-4 h-4"
-                />
-              </button>
-              <button
-                class="w-[38px] h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center hover:bg-gray-50"
-              >
-                <img :src="iconAlignRight" alt="Align Right" class="w-4 h-4" />
+                <H3Icon />
               </button>
               <div class="border-l border-[#d1d5dc] h-6"></div>
               <button
-                class="h-8 px-[10px] bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center gap-2 hover:bg-gray-50"
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
               >
-                <img :src="iconImage" alt="Image" class="w-4 h-4" />
-                <span class="text-sm font-medium text-neutral-950"
+                <ListIcon />
+              </button>
+              <button
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
+              >
+                <NumberListIcon />
+              </button>
+              <div class="border-l border-[#d1d5dc] h-6"></div>
+              <button
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
+              >
+                <AlignLeftIcon />
+              </button>
+              <button
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
+              >
+                <AlignCenterIcon />
+              </button>
+              <button
+                class="w-8 h-7 bg-white border !border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
+              >
+                <AlignRightIcon />
+              </button>
+              <div class="border-l border-[#d1d5dc] h-6"></div>
+              <button
+                class="h-7 px-2 bg-white border !border-gray-300 rounded-lg flex items-center justify-center gap-1.5 hover:bg-gray-50"
+              >
+                <ImageIcon class="w-4 h-4" />
+                <span class="text-xs font-medium text-neutral-950"
                   >Chèn ảnh/Video</span
                 >
               </button>
@@ -130,7 +125,7 @@
             <!-- Textarea -->
             <textarea
               v-model="content"
-              class="flex-1 min-h-[525px] px-[25px] pb-[25px] resize-none bg-[#f3f3f5] rounded-b-[14px] border-0 focus:ring-0 text-sm text-[#717182] placeholder:text-[#717182] font-['Tinos']"
+              class="flex-1 min-h-[320px] px-4 pb-4 resize-none bg-[#f3f3f5] rounded-b-[14px] border-0 focus:ring-0 text-sm text-[#717182] placeholder:text-[#717182] font-['Tinos']"
               placeholder="Nhập nội dung bài viết..."
             ></textarea>
           </div>
@@ -153,12 +148,12 @@
         </div>
 
         <!-- Sidebar (Right) -->
-        <div class="w-[353px] flex flex-col gap-6">
+        <div class="w-[320px] flex flex-col gap-4">
           <!-- Publish Status -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-6 flex flex-col gap-4"
+            class="bg-white border !border-gray-400 rounded-[14px] p-4 flex flex-col gap-3"
           >
-            <h3 class="text-base font-medium text-neutral-950">
+            <h3 class="text-sm font-semibold text-neutral-950">
               Đăng (Publish)
             </h3>
 
@@ -181,22 +176,21 @@
             <button
               @click="publishArticle"
               :disabled="isPublishing || !canPublish"
-              class="w-full h-9 bg-[#00a63e] text-white rounded-lg flex items-center justify-center gap-2 text-sm font-medium hover:bg-[#008c35] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              class="w-full h-9 bg-[#5a9690] text-white rounded-lg flex items-center justify-center gap-2 text-sm font-medium hover:bg-[#5a9690]/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span v-if="isPublishing" class="inline-block animate-spin"
                 >⏳</span
               >
-              <img v-else :src="iconCheck" alt="Check" class="w-4 h-4" />
               {{ isPublishing ? "Đang xuất bản..." : "Xuất bản" }}
             </button>
           </div>
 
           <!-- Categories -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-6 flex flex-col gap-4"
+            class="bg-white border !border-gray-400 rounded-[14px] p-4 flex flex-col gap-3"
           >
-            <h3 class="text-base font-medium text-neutral-950">Phân loại</h3>
-            <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-neutral-950">Phân loại</h3>
+            <div class="flex flex-col gap-2">
               <!-- Loading state -->
               <div v-if="isLoadingCategories" class="text-sm text-[#6a7282]">
                 Đang tải danh mục...
@@ -241,9 +235,9 @@
 
               <button
                 @click="isAddCategoryModalOpen = true"
-                class="w-full h-8 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center gap-2 text-sm font-medium text-neutral-950 hover:bg-gray-50 transition-colors mt-2"
+                class="w-full h-8 bg-white border !border-gray-400 rounded-lg flex items-center justify-center gap-2 text-sm font-medium text-neutral-950 hover:bg-gray-50 transition-colors mt-2"
               >
-                <img :src="iconPlus" alt="Plus" class="w-4 h-4" />
+                <AddIcon />
                 Thêm danh mục mới
               </button>
             </div>
@@ -251,23 +245,22 @@
 
           <!-- Featured Image -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-6 flex flex-col gap-4"
+            class="bg-white border !border-gray-400 rounded-[14px] p-4 flex flex-col gap-3"
           >
-            <h3 class="text-base font-medium text-neutral-950">Ảnh đại diện</h3>
+            <h3 class="text-sm font-semibold text-neutral-950">Ảnh đại diện</h3>
 
             <!-- Image Preview or Upload Area -->
             <div
               v-if="!featuredImage"
-              class="border-2 border-dashed border-[#d1d5dc] rounded-[10px] h-[152px] flex flex-col items-center justify-center gap-2"
+              class="border-2 border-dashed border-[#d1d5dc] rounded-[10px] h-[120px] flex flex-col items-center justify-center gap-2"
             >
-              <img :src="iconImagePlaceholder" alt="Image" class="w-8 h-8" />
+              <ImageIcon class="w-8 h-8 text-gray-400" />
               <p class="text-sm text-[#4a5565]">Chưa có ảnh</p>
               <button
                 @click="$refs.imageInput.click()"
                 type="button"
-                class="h-8 px-[10px] bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center justify-center gap-2 text-sm font-medium text-neutral-950 hover:bg-gray-50 transition-colors"
+                class="h-8 px-[10px] bg-white border !border-gray-400 rounded-lg flex items-center justify-center gap-2 text-sm font-medium text-neutral-950 hover:bg-gray-50 transition-colors"
               >
-                <img :src="iconUpload" alt="Upload" class="w-4 h-4" />
                 Upload ảnh
               </button>
             </div>
@@ -277,7 +270,7 @@
               <img
                 :src="featuredImage"
                 alt="Featured"
-                class="w-full h-[152px] object-cover rounded-[10px]"
+                class="w-full h-[120px] object-cover rounded-[10px]"
               />
               <button
                 @click="removeFeaturedImage"
@@ -350,8 +343,22 @@ import { ref, onMounted, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import ThemDanhMuc from "../ThemDanhMuc/index.vue";
 import client from "../../../../../utils/api.js";
+//Icon SVG
+import ArrowLeftIcon from "@/assets/svg/arrow-left.svg";
+import AddIcon from "@/assets/svg/add.svg";
+import BoldIcon from "@/assets/svg/bold.svg";
+import ItalicIcon from "@/assets/svg/italic.svg";
+import UnderlineIcon from "@/assets/svg/underline.svg";
+import H1Icon from "@/assets/svg/heading1.svg";
+import H2Icon from "@/assets/svg/heading2.svg";
+import H3Icon from "@/assets/svg/heading3.svg";
+import ListIcon from "@/assets/svg/list.svg";
+import NumberListIcon from "@/assets/svg/list-number.svg";
+import AlignLeftIcon from "@/assets/svg/align-left.svg";
+import AlignCenterIcon from "@/assets/svg/align-center.svg";
+import AlignRightIcon from "@/assets/svg/align-right.svg";
+import ImageIcon from "@/assets/svg/image.svg";
 
-// Router
 const router = useRouter();
 
 // Form data
@@ -791,42 +798,6 @@ const publishArticle = async () => {
 const generateSlug = (text) => {
   return convertToSlug(text);
 };
-
-// Icons
-const iconBack =
-  "https://www.figma.com/api/mcp/asset/3f2733ca-4f38-4210-90ec-78d179d5943f";
-const iconBold =
-  "https://www.figma.com/api/mcp/asset/a9ebc27f-fb29-4cc3-9bd9-d71281cb979d";
-const iconItalic =
-  "https://www.figma.com/api/mcp/asset/e873520f-d287-4e8e-aa6b-bafc41b07232";
-const iconUnderline =
-  "https://www.figma.com/api/mcp/asset/dd034119-b589-49c1-b1a6-db5ae7beb58a";
-const iconH1 =
-  "https://www.figma.com/api/mcp/asset/c4bb48d6-0103-497d-98d1-a066a7a82382";
-const iconH2 =
-  "https://www.figma.com/api/mcp/asset/e8bad410-b603-468c-a7a3-23c69acdac18";
-const iconH3 =
-  "https://www.figma.com/api/mcp/asset/e6fb0145-609a-444e-a031-79afea4d1e52";
-const iconList =
-  "https://www.figma.com/api/mcp/asset/7b36897b-4f6c-4519-872f-69ae2ab6ad43";
-const iconNumberList =
-  "https://www.figma.com/api/mcp/asset/37f78a34-fdb6-41fa-b41f-2482a89d698a";
-const iconAlignLeft =
-  "https://www.figma.com/api/mcp/asset/3eec9697-b1ab-435e-b5a6-90b5891dab81";
-const iconAlignCenter =
-  "https://www.figma.com/api/mcp/asset/fe17cbd3-498e-4b94-8855-5bf75c4acf67";
-const iconAlignRight =
-  "https://www.figma.com/api/mcp/asset/d26f0125-27f8-47a1-8868-97faf295882e";
-const iconImage =
-  "https://www.figma.com/api/mcp/asset/5b841a31-c583-4c0c-a90a-fc5729e8b925";
-const iconCheck =
-  "https://www.figma.com/api/mcp/asset/dc075e9b-6178-427a-8248-ea72269f0dd7";
-const iconPlus =
-  "https://www.figma.com/api/mcp/asset/22db2fab-bc29-456a-925e-825a449a2093";
-const iconImagePlaceholder =
-  "https://www.figma.com/api/mcp/asset/4d6b4eb6-b356-40ad-bcb8-8cacf5aafb16";
-const iconUpload =
-  "https://www.figma.com/api/mcp/asset/d4889db0-d37e-4fa6-bcd4-66afa1cdc4b6";
 </script>
 
 <style scoped>

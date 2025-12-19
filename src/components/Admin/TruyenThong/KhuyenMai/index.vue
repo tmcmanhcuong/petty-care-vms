@@ -1,34 +1,30 @@
 <template>
-  <div class="flex flex-col gap-6 w-full font-nunito h-full">
-    <!-- Header -->
+  <div class="w-full min-h-screen px-8 py-6 flex flex-col gap-6">
+    <!-- Page Header -->
     <div class="flex items-center justify-between">
-      <div class="flex flex-col">
-        <h1 class="text-2xl font-medium text-[#101828] leading-9">
+      <div class="flex flex-col gap-2">
+        <h1 class="text-2xl font-semibold text-black">
           Quản lý Mã giảm giá & CTKM
         </h1>
-        <p class="text-base text-[#4a5565] leading-6">
+        <p class="text-gray-500 font-medium text-base">
           Tạo và quản lý các chương trình khuyến mãi
         </p>
       </div>
       <button
         @click="router.push('/admin/khuyen-mai/them-moi')"
-        class="bg-[#00a63e] text-white rounded-lg px-4 py-2 h-9 flex items-center gap-2 text-sm font-medium hover:bg-[#008c35] transition-colors"
+        class="bg-[#5a9690] text-white rounded-lg px-4 py-2 h-9 flex items-center gap-2 text-sm font-medium hover:bg-[#5a9690]/80 transition-colors"
       >
-        <img :src="iconPlus" alt="" class="w-4 h-4" />
+        <AddIcon class="w-4 h-4" />
         Tạo khuyến mãi mới
       </button>
     </div>
 
     <!-- Search and Filters -->
-    <div class="bg-white border border-black/10 rounded-[14px] p-[25px]">
+    <div class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6">
       <div class="flex flex-col gap-4">
         <!-- Search Bar -->
         <div class="relative w-full">
-          <img
-            :src="iconSearch"
-            alt=""
-            class="absolute left-3 top-2.5 w-5 h-5"
-          />
+          <SearchIcon class="absolute left-3 top-2.5 w-5 h-5" />
           <input
             type="text"
             v-model="searchQuery"
@@ -44,7 +40,7 @@
             class="bg-[#f3f3f5] border-0 rounded-lg px-3 py-1 flex items-center justify-between h-9 hover:bg-gray-200 transition-colors"
           >
             <span class="text-sm text-neutral-950">Tất cả trạng thái</span>
-            <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+            <ChevronDownIcon />
           </button>
 
           <!-- Type Filter -->
@@ -52,14 +48,14 @@
             class="bg-[#f3f3f5] border-0 rounded-lg px-3 py-1 flex items-center justify-between h-9 hover:bg-gray-200 transition-colors"
           >
             <span class="text-sm text-neutral-950">Tất cả loại hình</span>
-            <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+            <ChevronDownIcon />
           </button>
         </div>
       </div>
     </div>
 
     <!-- Promotions Table -->
-    <div class="bg-white border border-black/10 rounded-[14px] p-[25px]">
+    <div class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6">
       <!-- Loading State -->
       <div v-if="loading" class="flex items-center justify-center py-12">
         <svg
@@ -89,18 +85,18 @@
         v-else-if="promotions.length === 0"
         class="flex flex-col items-center justify-center py-12"
       >
-        <img :src="iconVoucher" alt="" class="w-16 h-16 opacity-30 mb-4" />
+        <!-- <img :src="iconVoucher" alt="" class="w-16 h-16 opacity-30 mb-4" /> -->
         <p class="text-lg text-gray-500 mb-2">Chưa có khuyến mãi nào</p>
-        <p class="text-sm text-gray-400 mb-4">
+        <!-- <p class="text-sm text-gray-400 mb-4">
           Tạo khuyến mãi đầu tiên để bắt đầu
         </p>
         <button
           @click="router.push('/admin/khuyen-mai/them-moi')"
           class="bg-[#00a63e] text-white rounded-lg px-4 py-2 flex items-center gap-2 text-sm font-medium hover:bg-[#008c35] transition-colors"
         >
-          <img :src="iconPlus" alt="" class="w-4 h-4" />
+          <AddIcon class="w-4 h-4" />
           Tạo khuyến mãi mới
-        </button>
+        </button> -->
       </div>
 
       <!-- Table with Data -->
@@ -188,11 +184,11 @@
                   class="inline-flex items-center gap-2 px-2 py-1 rounded-lg border text-xs font-medium h-[22px]"
                   :class="getTypeClass(promo.type)"
                 >
-                  <img
+                  <!-- <img
                     :src="promo.type === 'voucher' ? iconVoucher : iconAuto"
                     alt=""
                     class="w-3 h-3"
-                  />
+                  /> -->
                   {{ promo.typeLabel }}
                 </span>
               </td>
@@ -200,7 +196,6 @@
               <!-- Date -->
               <td class="py-4 px-2 align-top">
                 <div class="flex items-start gap-2">
-                  <img :src="iconCalendar" alt="" class="w-4 h-4 mt-0.5" />
                   <span class="text-sm text-[#4a5565] leading-5">{{
                     promo.dateRange
                   }}</span>
@@ -263,12 +258,12 @@
               <!-- Actions -->
               <td class="py-4 px-2 align-top">
                 <div class="flex items-center justify-end gap-2">
-                  <button
+                  <!-- <button
                     class="w-9 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
                     title="Xem chi tiết"
                   >
-                    <img :src="iconEye" alt="" class="w-4 h-4" />
-                  </button>
+                    <EyeIcon class="w-4 h-4" />
+                  </button> -->
                   <button
                     @click="
                       router.push(`/admin/khuyen-mai/chinh-sua/${promo.id}`)
@@ -276,7 +271,7 @@
                     class="w-9 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
                     title="Chỉnh sửa"
                   >
-                    <img :src="iconEdit" alt="" class="w-4 h-4" />
+                    <UpdateIcon class="w-4 h-4" />
                   </button>
                   <!-- <button 
                     @click="handleDelete(promo)"
@@ -352,6 +347,13 @@
 import { ref, onMounted, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { khuyenMaiAPI } from "@/utils/khuyenMai";
+
+// Icon SVG
+import AddIcon from "@/assets/svg/add.svg";
+import SearchIcon from "@/assets/svg/search.svg";
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
+import EyeIcon from "@/assets/svg/eye.svg";
+import UpdateIcon from "@/assets/svg/update.svg";
 
 // Icons from Figma
 const iconPlus =

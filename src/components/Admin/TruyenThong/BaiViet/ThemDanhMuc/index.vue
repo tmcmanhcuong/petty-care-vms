@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-white border border-black/10 rounded-[10px] shadow-lg w-full max-w-[510px] relative"
+    class="bg-white border !border-gray-300 rounded-[10px] shadow-lg w-full max-w-[510px] relative"
     role="dialog"
     aria-labelledby="dialog-title"
     aria-describedby="dialog-description"
@@ -17,16 +17,6 @@
         Tạo danh mục mới cho bài viết
       </p>
     </div>
-
-    <!-- Close Button -->
-    <button
-      @click="closeDialog"
-      class="absolute top-4 right-4 w-4 h-4 opacity-70 hover:opacity-100 transition-opacity"
-      aria-label="Close"
-      :disabled="isLoading"
-    >
-      <img :src="iconClose" alt="Close" class="w-full h-full" />
-    </button>
 
     <!-- Content -->
     <div class="flex flex-col gap-5 px-6 mt-8">
@@ -91,7 +81,7 @@
       <button
         @click="closeDialog"
         :disabled="isLoading"
-        class="h-9 px-4 bg-white border border-black/10 rounded-lg text-sm font-medium text-neutral-950 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        class="h-9 px-4 bg-white border !border-gray-300 rounded-lg text-sm font-medium text-neutral-950 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Hủy
       </button>
@@ -101,7 +91,6 @@
         class="h-9 px-4 bg-[#009689] rounded-lg text-sm font-medium text-white hover:bg-[#008177] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
       >
         <span v-if="isLoading" class="inline-block animate-spin">⏳</span>
-        <img v-else :src="iconPlus" alt="Plus" class="w-4 h-4" />
         {{ isLoading ? "Đang thêm..." : "Thêm danh mục" }}
       </button>
     </div>

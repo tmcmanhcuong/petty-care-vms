@@ -1,24 +1,22 @@
 <template>
-  <div class="flex flex-col gap-6 w-full max-w-screen-xl mx-auto p-4">
+  <div class="w-full min-h-screen px-8 py-6 flex flex-col gap-6">
     <!-- Header -->
-    <div class="flex flex-col">
-      <h1 class="font-medium text-2xl leading-9 text-[#101828]">
-        Bệnh nhân chờ khám
-      </h1>
-      <p class="text-base text-[#4a5565]">
+    <div class="flex flex-col gap-2">
+      <h1 class="text-2xl font-semibold text-black">Bệnh nhân chờ khám</h1>
+      <p class="text-gray-500 font-medium text-base">
         Danh sách bệnh nhân đã check-in và chờ được khám bệnh
       </p>
     </div>
 
     <!-- Toolbar -->
-    <div class="bg-white border border-[rgba(0,0,0,0.1)] rounded-2xl p-4">
+    <div class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-4">
       <div class="flex items-center gap-3 mb-4">
         <button
           @click="previousDay"
           :disabled="loading"
-          class="w-10 h-10 rounded-lg border border-[rgba(0,0,0,0.1)] hover:bg-gray-50 flex items-center justify-center"
+          class="w-10 h-10 rounded-lg border !border-gray-300 hover:bg-gray-50 flex items-center justify-center"
         >
-          <img src="@/assets/svg/chevron-left.svg" class="w-5 h-5" />
+          <!-- <img src="@/assets/svg/chevron-left.svg" class="w-5 h-5" /> -->
         </button>
 
         <div class="flex-1 bg-gray-50 rounded-xl px-8 py-3 text-center">
@@ -28,9 +26,9 @@
         <button
           @click="nextDay"
           :disabled="loading"
-          class="w-10 h-10 rounded-lg border border-[rgba(0,0,0,0.1)] hover:bg-gray-50 flex items-center justify-center"
+          class="w-10 h-10 rounded-lg border !border-gray-300 hover:bg-gray-50 flex items-center justify-center"
         >
-          <img src="@/assets/svg/chevron-right.svg" class="w-5 h-5" />
+          <!-- <img src="@/assets/svg/chevron-right.svg" class="w-5 h-5" /> -->
         </button>
 
         <button
@@ -75,19 +73,21 @@
       <div
         v-for="appt in displayAppointments"
         :key="appt.id"
-        class="bg-white rounded-2xl border overflow-hidden"
+        class="bg-white rounded-[14px] border overflow-hidden"
         :class="{
-          'border-l-4 border-[#60a5fa] border-t border-r border-b border-[rgba(0,0,0,0.1)]':
+          'border-l-4 border-l-[#60a5fa] !border-t !border-r !border-b !border-gray-300':
             appt.displayStatus.type === 'late',
-          'border-l-4 border-[#fb923c] border-t border-r border-b border-[rgba(0,0,0,0.1)]':
+          'border-l-4 border-l-[#fb923c] !border-t !border-r !border-b !border-gray-300':
             appt.displayStatus.type === 'examining',
-          'border border-[rgba(0,0,0,0.1)]': true,
+          '!border-gray-300':
+            appt.displayStatus.type !== 'late' &&
+            appt.displayStatus.type !== 'examining',
         }"
       >
-        <div class="flex items-stretch h-48">
+        <div class="flex items-stretch min-h-[200px]">
           <!-- Time Column -->
           <div
-            class="w-44 border-r border-[rgba(0,0,0,0.1)] p-6 flex flex-col justify-between"
+            class="w-44 border-r !border-gray-300 p-6 flex flex-col justify-between"
           >
             <div>
               <!-- Giờ hẹn -->
@@ -97,10 +97,10 @@
 
               <!-- Giờ check-in -->
               <div class="mt-3 flex items-center gap-2 text-sm">
-                <img
+                <!-- <img
                   src="@/assets/svg/clock.svg"
                   class="w-4 h-4 brightness-75 hue-rotate-[270deg]"
-                />
+                /> -->
                 <span class="text-[#9810fa]">
                   Check-in: {{ formatTime(appt.thoi_gian_checkin) }}
                 </span>
@@ -136,11 +136,11 @@
                     appt.displayStatus.type === 'completed',
                 }"
               >
-                <img
+                <!-- <img
                   v-if="appt.displayStatus.type === 'completed'"
                   src="@/assets/svg/tick.svg"
                   class="w-4 h-4"
-                />
+                /> -->
                 {{ appt.displayStatus.label }}
               </div>
 
@@ -165,7 +165,7 @@
           <!-- Pet & Customer Info -->
           <div class="flex-1 p-6 flex gap-6">
             <div
-              class="w-28 h-28 border-2 border-gray-200 rounded-2xl overflow-hidden flex-shrink-0"
+              class="w-28 h-28 border-2 !border-gray-300 rounded-2xl overflow-hidden flex-shrink-0"
             >
               <img
                 v-if="appt.thu_cung?.anh_dai_dien"
@@ -176,12 +176,12 @@
                 v-else
                 class="w-full h-full bg-gray-50 flex items-center justify-center text-6xl"
               >
-                🐾
+                <!-- Emoji removed -->
               </div>
             </div>
 
-            <div class="flex-1">
-              <div class="flex items-center gap-3 flex-wrap mb-3">
+            <div class="flex-1 flex flex-col gap-3">
+              <div class="flex items-center gap-3 flex-wrap">
                 <h3 class="text-xl font-bold text-[#101828]">
                   {{ appt.thu_cung?.ten_thu_cung || "Chưa có tên" }}
                 </h3>
@@ -200,7 +200,7 @@
                       : 'bg-[#dbe7ff] text-[#1447e6]'
                   "
                 >
-                  <img
+                  <!-- <img
                     v-if="!appt.la_khach_vang_lai"
                     src="@/assets/svg/calendar.svg"
                     class="w-4 h-4"
@@ -209,17 +209,17 @@
                     v-else
                     src="@/assets/svg/user-round.svg"
                     class="w-4 h-4"
-                  />
+                  /> -->
                   {{ appt.la_khach_vang_lai ? "Vãng lai" : "Đặt trước" }}
                 </span>
               </div>
 
-              <div class="flex items-center gap-3 text-sm mb-3">
+              <div class="flex items-center gap-3 text-sm">
                 <span class="text-[#364153]">Chủ:</span>
                 <span class="font-bold">{{ appt.khach_hang }}</span>
                 <span class="text-[#99a1af]">•</span>
                 <div class="flex items-center gap-1">
-                  <img src="@/assets/svg/phonecall.svg" class="w-4 h-4" />
+                  <!-- <img src="@/assets/svg/phonecall.svg" class="w-4 h-4" /> -->
                   <span class="text-[#4a5565]">{{
                     appt.khach_hang?.so_dien_thoai || "Chưa có"
                   }}</span>
@@ -227,7 +227,7 @@
               </div>
 
               <div
-                class="inline-flex px-3 py-1 bg-blue-50 border border-[#bedbff] rounded-lg text-xs text-[#1447e6]"
+                class="inline-flex px-3 py-1 bg-blue-50 border !border-[#bedbff] rounded-lg text-xs text-[#1447e6] w-fit"
               >
                 {{ appt.dich_vu?.ten || "Khám tổng quát" }}
               </div>
@@ -235,13 +235,13 @@
               <!-- Ghi chú -->
               <div
                 v-if="appt.ghi_chu"
-                class="mt-4 p-3 bg-amber-50 border border-[#fee685] rounded-xl"
+                class="p-3 bg-amber-50 border !border-[#fee685] rounded-xl"
               >
                 <div class="flex gap-3 text-sm text-[#7b3306]">
-                  <img
+                  <!-- <img
                     src="@/assets/svg/info-circle.svg"
                     class="w-5 h-5 flex-shrink-0"
-                  />
+                  /> -->
                   <p>
                     <span class="font-bold">Ghi chú:</span> {{ appt.ghi_chu }}
                   </p>
@@ -265,9 +265,9 @@
             <button
               v-else-if="appt.displayStatus.type === 'completed'"
               @click="viewExamDetail(appt.id)"
-              class="w-full h-11 border border-[rgba(0,0,0,0.1)] rounded-xl flex items-center justify-center gap-2 text-gray-700 hover:bg-gray-50"
+              class="w-full h-11 border !border-gray-300 rounded-xl flex items-center justify-center gap-2 text-gray-700 hover:bg-gray-50"
             >
-              <img src="@/assets/svg/eye.svg" class="w-5 h-5" />
+              <!-- <img src="@/assets/svg/eye.svg" class="w-5 h-5" /> -->
               Xem kết quả
             </button>
 

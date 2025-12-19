@@ -3,14 +3,14 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-[9999] pt-24 font-nunito"
   >
     <div
-      class="bg-white border border-black/10 rounded-[10px] shadow-xl w-full max-w-[510px] relative"
+      class="bg-white border !border-gray-300 rounded-[10px] shadow-xl w-full max-w-[510px] relative"
     >
       <!-- Close Button -->
       <button
         @click="handleClose"
         class="absolute right-4 top-4 opacity-70 hover:opacity-100 transition-opacity"
       >
-        <img :src="iconClose" alt="Close" class="w-4 h-4" />
+        <CloseIcon class="text-black"></CloseIcon>
       </button>
 
       <div class="p-6 flex flex-col gap-4">
@@ -28,7 +28,7 @@
         <div class="flex flex-col gap-4">
           <!-- Debt Info Card -->
           <div
-            class="bg-orange-50 border border-[#ffd6a7] rounded-[10px] p-4 flex flex-col gap-2"
+            class="bg-orange-50 border !border-[#ffd6a7] rounded-[10px] p-4 flex flex-col gap-2"
           >
             <p class="text-sm text-[#4a5565] leading-5">Thông tin công nợ:</p>
             <div class="flex flex-col gap-1">
@@ -82,7 +82,7 @@
                 <span class="text-sm text-neutral-950">
                   {{ formData.paymentMethodLabel }}
                 </span>
-                <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+                <ChevronDownIcon />
               </button>
 
               <!-- Dropdown menu -->
@@ -113,8 +113,8 @@
           >
             <div class="flex gap-2">
               <div class="flex-1 flex flex-col gap-2">
-                <label class="text-sm font-medium text-neutral-950"
-                  >💵 Tiền mặt</label
+                <label class="text-sm font-medium text-neutral-950">
+                  Tiền mặt</label
                 >
                 <input
                   type="text"
@@ -126,7 +126,7 @@
               </div>
               <div class="flex-1 flex flex-col gap-2">
                 <label class="text-sm font-medium text-neutral-950"
-                  >🏦 Chuyển khoản</label
+                  >Chuyển khoản</label
                 >
                 <input
                   type="text"
@@ -161,7 +161,7 @@
           <button
             @click="handleClose"
             :disabled="isSubmitting"
-            class="bg-white border border-black/10 rounded-lg px-4 py-2 h-9 text-sm font-medium text-neutral-950 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            class="bg-white border !border-gray-300 rounded-lg px-4 py-2 h-9 text-sm font-medium text-neutral-950 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Hủy
           </button>
@@ -196,7 +196,6 @@
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               ></path>
             </svg>
-            <img v-else :src="iconCheck" alt="" class="w-4 h-4" />
             <span>{{
               isSubmitting ? "Đang xử lý..." : "Xác nhận thanh toán"
             }}</span>
@@ -211,14 +210,9 @@
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { updatePhieuChi, getPhieuChiById } from "@/utils/phieuChi";
 import { showErrorToast, showSuccessToast } from "@/utils/toast";
-
-// Icons
-const iconClose =
-  "https://www.figma.com/api/mcp/asset/680fc8ee-e948-449d-bd13-15f4801eef7c";
-const iconChevronDown =
-  "https://www.figma.com/api/mcp/asset/3434a214-9724-4afc-9e36-22e86de4bfa7";
-const iconCheck =
-  "https://www.figma.com/api/mcp/asset/360cc4f0-d95e-45b3-9917-3c10fc9fb323";
+//Icon SVG
+import CloseIcon from "@/assets/svg/close.svg";
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
 
 // Props
 const props = defineProps({
@@ -260,7 +254,7 @@ const emit = defineEmits(["close", "submit"]);
 const formData = ref({
   amount: "",
   paymentMethod: "cash", // 'cash', 'transfer', 'both'
-  paymentMethodLabel: "💵 Tiền mặt",
+  paymentMethodLabel: "Tiền mặt",
   cashAmount: "",
   transferAmount: "",
   note: "",
@@ -277,9 +271,8 @@ const showPaymentMethodDropdown = ref(false);
 
 // Payment method options
 const paymentMethods = [
-  { value: "cash", label: "💵 Tiền mặt" },
-  { value: "transfer", label: "🏦 Chuyển khoản" },
-  { value: "both", label: "💳 Cả hai (Tiền mặt + Chuyển khoản)" },
+  { value: "cash", label: "Tiền mặt" },
+  { value: "transfer", label: "Chuyển khoản" },
 ];
 
 // Load phiếu chi details
@@ -288,10 +281,10 @@ const loadPhieuChiDetails = async () => {
     const response = await getPhieuChiById(props.expenseId);
     if (response && response.status) {
       phieuChiDetails.value = response.data;
-      console.log("✅ Đã tải chi tiết phiếu chi:", response.data);
+      console.log("Đã tải chi tiết phiếu chi:", response.data);
     }
   } catch (error) {
-    console.error("❌ Lỗi tải chi tiết phiếu chi:", error);
+    console.error(" Lỗi tải chi tiết phiếu chi:", error);
     showErrorToast("Không thể tải thông tin phiếu chi");
   }
 };

@@ -3,7 +3,7 @@
     class="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-[9999] pt-24 font-nunito"
   >
     <div
-      class="bg-white border border-black/10 rounded-[10px] shadow-xl w-full max-w-[510px] max-h-[85vh] flex flex-col"
+      class="bg-white border !border-gray-300 rounded-[10px] shadow-xl w-full max-w-[510px] max-h-[85vh] flex flex-col"
     >
       <!-- Header -->
       <div class="flex items-start justify-between px-6 pt-6 pb-4">
@@ -19,7 +19,7 @@
           @click="$emit('close')"
           class="opacity-70 hover:opacity-100 transition-opacity"
         >
-          <img :src="iconClose" alt="Close" class="w-4 h-4" />
+          <CloseIcon class="text-black" />
         </button>
       </div>
 
@@ -40,7 +40,7 @@
                   class="w-4 h-4 text-[#009689] focus:ring-[#009689]"
                 />
                 <span class="text-sm font-medium text-neutral-950"
-                  >📦 Chi nhập hàng (Liên kết với Kho)</span
+                  >Chi nhập hàng (Liên kết với Kho)</span
                 >
               </label>
               <label class="flex items-center gap-2 cursor-pointer">
@@ -51,7 +51,7 @@
                   class="w-4 h-4 text-[#009689] focus:ring-[#009689]"
                 />
                 <span class="text-sm font-medium text-neutral-950"
-                  >💡 Chi phí vận hành (Điện, nước, thuê nhà...)</span
+                  >Chi phí vận hành (Điện, nước, thuê nhà...)</span
                 >
               </label>
             </div>
@@ -77,7 +77,7 @@
                 >
                   {{ formData.supplier || "Chọn nhà cung cấp" }}
                 </span>
-                <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+                <ChevronDownIcon />
               </button>
 
               <!-- Supplier Dropdown List -->
@@ -172,8 +172,8 @@
               class="w-full bg-[#f3f3f5] border-0 rounded-lg px-3 py-1 h-9 text-sm text-neutral-950 placeholder:text-[#717182] focus:outline-none focus:ring-2 focus:ring-[#009689]"
             />
             <p class="text-xs text-[#6a7282] leading-4">
-              💡 Tip: Nếu nhập ít hơn Tổng tiền, hệ thống sẽ tự động ghi nhận
-              phần còn lại là Nợ
+              Tip: Nếu nhập ít hơn Tổng tiền, hệ thống sẽ tự động ghi nhận phần
+              còn lại là Nợ
             </p>
           </div>
 
@@ -191,7 +191,7 @@
                 <span class="text-sm text-neutral-950">
                   {{ getPaymentSourceLabel }}
                 </span>
-                <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+                <ChevronDownIcon />
               </button>
 
               <!-- Payment Source Dropdown -->
@@ -219,7 +219,7 @@
           <div v-if="formData.paymentSource === 'both'" class="flex gap-2">
             <div class="flex-1 flex flex-col gap-2">
               <label class="text-sm font-medium text-neutral-950"
-                >💵 Tiền mặt</label
+                >Tiền mặt</label
               >
               <input
                 type="text"
@@ -231,7 +231,7 @@
             </div>
             <div class="flex-1 flex flex-col gap-2">
               <label class="text-sm font-medium text-neutral-950"
-                >🏦 Chuyển khoản</label
+                >Chuyển khoản</label
               >
               <input
                 type="text"
@@ -253,7 +253,7 @@
               type="button"
               class="w-full bg-white border border-black/10 rounded-lg h-9 flex items-center justify-center gap-2 hover:bg-gray-50 transition-colors"
             >
-              <img :src="iconUpload" alt="" class="w-4 h-4" />
+              <UploadIcon class="text-neutral-950 w-4 h-4" />
               <span class="text-sm font-medium text-neutral-950">
                 {{
                   formData.attachments.length > 0
@@ -290,7 +290,7 @@
           @click="$emit('close')"
           type="button"
           :disabled="isSubmitting"
-          class="bg-white border border-black/10 rounded-lg px-4 py-2 h-9 text-sm font-medium text-neutral-950 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          class="bg-white border !border-gray-300 rounded-lg px-4 py-2 h-9 text-sm font-medium text-neutral-950 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Hủy
         </button>
@@ -338,6 +338,10 @@ import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
 import { createPhieuChi } from "@/utils/phieuChi";
 import { getNhaCungCaps } from "@/utils/nhaCungCap";
 import { showErrorToast, showSuccessToast } from "@/utils/toast";
+// Icon SVG
+import CloseIcon from "@/assets/svg/close.svg";
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
+import UploadIcon from "@/assets/svg/upload.svg";
 
 // Icons
 const iconClose =
@@ -467,9 +471,8 @@ const selectSupplier = (supplier) => {
 
 // Chọn nguồn tiền
 const paymentSources = [
-  { value: "cash", label: "💵 Tiền mặt tại két" },
-  { value: "transfer", label: "🏦 Chuyển khoản" },
-  { value: "both", label: "💳 Cả hai (Tiền mặt + Chuyển khoản)" },
+  { value: "cash", label: "Tiền mặt tại két" },
+  { value: "transfer", label: "Chuyển khoản" },
 ];
 
 const selectPaymentSource = (source) => {
@@ -494,7 +497,7 @@ const getPaymentSourceLabel = computed(() => {
   const source = paymentSources.find(
     (s) => s.value === formData.value.paymentSource
   );
-  return source ? source.label : "💵 Tiền mặt tại két";
+  return source ? source.label : "Tiền mặt tại két";
 });
 
 // Format number input

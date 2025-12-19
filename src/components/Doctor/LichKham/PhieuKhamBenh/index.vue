@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col w-full">
+  <div class="w-full min-h-screen px-8 py-6 flex flex-col">
     <!-- Loading State -->
     <div v-if="loading" class="flex items-center justify-center py-20">
       <div class="text-center">
@@ -12,29 +12,22 @@
 
     <!-- Main Content -->
     <div v-else>
-      <!-- Header -->
-      <div class="flex items-center justify-between h-[60px] mb-6">
+      <div class="flex items-center justify-between mb-6">
         <!-- Left: Back button & Title -->
         <div class="flex items-center gap-4">
           <button
-            class="h-9 px-3 bg-white border border-[rgba(0,0,0,0.1)] rounded-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
+            class="h-9 px-3 bg-white border !border-gray-300 rounded-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
             @click="handleBack"
           >
-            <img :src="icons.arrowLeft" alt="" class="w-4 h-4" />
+            <!-- <img :src="icons.arrowLeft" alt="" class="w-4 h-4" /> -->
             <span
               class="font-medium text-sm leading-5 text-gray-900 tracking-[-0.1504px]"
               >Quay lại</span
             >
           </button>
-          <div class="flex flex-col">
-            <h1
-              class="font-medium text-2xl leading-9 text-[#101828] tracking-[0.0703px]"
-            >
-              Khám bệnh
-            </h1>
-            <p
-              class="font-normal text-base leading-6 text-[#4a5565] tracking-[-0.3125px]"
-            >
+          <div class="flex flex-col gap-2">
+            <h1 class="text-2xl font-semibold text-black">Khám bệnh</h1>
+            <p class="text-gray-500 font-medium text-base">
               Nhập chẩn đoán và kê đơn thuốc
             </p>
           </div>
@@ -50,7 +43,7 @@
             v-if="saving"
             class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"
           ></div>
-          <img v-else :src="icons.save" alt="" class="w-4 h-4" />
+          <!-- <img v-else :src="icons.save" alt="" class="w-4 h-4" /> -->
           <span class="font-medium text-sm leading-5 tracking-[-0.1504px]">
             {{ saving ? "Đang lưu..." : "Lưu hồ sơ" }}
           </span>
@@ -59,7 +52,7 @@
 
       <!-- Patient Info Card (Blue highlight) -->
       <div
-        class="bg-blue-50 border-2 border-[#bedbff] rounded-[14px] p-[26px] mb-6"
+        class="bg-blue-50 border-2 !border-[#bedbff] rounded-[14px] p-[26px] mb-6"
       >
         <div class="flex items-start gap-6">
           <!-- Pet Image -->
@@ -83,9 +76,9 @@
                 {{ patientInfo.petName }}
               </h2>
               <div
-                class="bg-purple-50 border border-[#e9d4ff] rounded-lg px-2 py-1 flex items-center gap-2"
+                class="bg-purple-50 border !border-[#e9d4ff] rounded-lg px-2 py-1 flex items-center gap-2"
               >
-                <img :src="icons.userPurple" alt="" class="w-3 h-3" />
+                <!-- <img :src="icons.userPurple" alt="" class="w-4 h-4" /> -->
                 <span class="font-medium text-xs leading-4 text-[#8200db]">{{
                   patientInfo.badge
                 }}</span>
@@ -127,7 +120,7 @@
                   {{ patientInfo.ownerName }}
                 </p>
                 <div class="flex items-center gap-2">
-                  <img :src="icons.phone" alt="" class="w-4 h-4" />
+                  <!-- <img :src="icons.phone" alt="" class="w-4 h-4" /> -->
                   <span
                     class="font-normal text-sm leading-5 text-[#4a5565] tracking-[-0.1504px]"
                     >{{ patientInfo.ownerPhone }}</span
@@ -144,14 +137,14 @@
                 </p>
                 <div class="flex items-center gap-4">
                   <div class="flex items-center gap-1.5">
-                    <img :src="icons.calendar" alt="" class="w-4 h-4" />
+                    <!-- <img :src="icons.calendar" alt="" class="w-4 h-4" /> -->
                     <span
                       class="font-normal text-sm leading-5 text-[#364153] tracking-[-0.1504px]"
                       >{{ patientInfo.appointmentDate }}</span
                     >
                   </div>
                   <div class="flex items-center gap-1.5">
-                    <img :src="icons.clock" alt="" class="w-4 h-4" />
+                    <!-- <img :src="icons.clock" alt="" class="w-4 h-4" /> -->
                     <span
                       class="font-normal text-sm leading-5 text-[#364153] tracking-[-0.1504px]"
                       >{{ patientInfo.appointmentTime }}</span
@@ -159,9 +152,9 @@
                   </div>
                 </div>
                 <div
-                  class="bg-white border border-[rgba(0,0,0,0.1)] rounded-lg px-2 py-1 inline-flex items-center gap-2 w-fit"
+                  class="bg-white border !border-gray-300 rounded-lg px-2 py-1 inline-flex items-center gap-2 w-fit"
                 >
-                  <img :src="icons.stethoscope" alt="" class="w-3 h-3" />
+                  <!-- <img :src="icons.stethoscope" alt="" class="w-4 h-4" /> -->
                   <span class="font-medium text-xs leading-4 text-gray-900">{{
                     patientInfo.service
                   }}</span>
@@ -178,10 +171,10 @@
         <div class="flex flex-col gap-6 flex-1">
           <!-- Vital Signs Card -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-[25px]"
+            class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-[25px]"
           >
             <div class="flex items-center gap-2 mb-[30px]">
-              <img :src="icons.activity" alt="" class="w-5 h-5" />
+              <!-- <img :src="icons.activity" alt="" class="w-4 h-4" /> -->
               <h3
                 class="font-normal text-base leading-4 text-gray-900 tracking-[-0.3125px]"
               >
@@ -194,7 +187,7 @@
                 <label
                   class="flex items-center gap-1 text-sm leading-5 text-[#364153] tracking-[-0.1504px]"
                 >
-                  <img :src="icons.thermometer" alt="" class="w-4 h-4" />
+                  <!-- <img :src="icons.thermometer" alt="" class="w-4 h-4" /> -->
                   Nhiệt độ (°C)
                 </label>
                 <input
@@ -209,7 +202,7 @@
                 <label
                   class="flex items-center gap-1 text-sm leading-5 text-[#364153] tracking-[-0.1504px]"
                 >
-                  <img :src="icons.weight" alt="" class="w-4 h-4" />
+                  <!-- <img :src="icons.weight" alt="" class="w-4 h-4" /> -->
                   Cân nặng (kg)
                 </label>
                 <input
@@ -224,7 +217,7 @@
                 <label
                   class="flex items-center gap-1 text-sm leading-5 text-[#364153] tracking-[-0.1504px]"
                 >
-                  <img :src="icons.heartbeat" alt="" class="w-4 h-4" />
+                  <!-- <img :src="icons.heartbeat" alt="" class="w-4 h-4" /> -->
                   Nhịp tim (bpm)
                 </label>
                 <input
@@ -239,7 +232,7 @@
                 <label
                   class="flex items-center gap-1 text-sm leading-5 text-[#364153] tracking-[-0.1504px]"
                 >
-                  <img :src="icons.lungs" alt="" class="w-4 h-4" />
+                  <!-- <img :src="icons.lungs" alt="" class="w-4 h-4" /> -->
                   Nhịp thở (/phút)
                 </label>
                 <input
@@ -253,10 +246,10 @@
 
           <!-- Reason for Visit Card -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-[25px]"
+            class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-[25px]"
           >
             <div class="flex items-center gap-2 mb-[30px]">
-              <img :src="icons.reason" alt="" class="w-6 h-6" />
+              <!-- <img :src="icons.reason" alt="" class="w-4 h-4" /> -->
               <h3
                 class="font-normal text-base leading-4 text-gray-900 tracking-[-0.3125px]"
               >
@@ -273,10 +266,10 @@
 
           <!-- Symptoms Card -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-[25px]"
+            class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-[25px]"
           >
             <div class="flex items-center gap-2 mb-[30px]">
-              <img :src="icons.symptoms" alt="" class="w-5 h-5" />
+              <!-- <img :src="icons.symptoms" alt="" class="w-4 h-4" /> -->
               <h3
                 class="font-normal text-base leading-4 text-gray-900 tracking-[-0.3125px]"
               >
@@ -296,7 +289,7 @@
             class="bg-blue-50 border-2 border-[#bedbff] rounded-[14px] p-[26px]"
           >
             <div class="flex items-center gap-2 mb-[30px]">
-              <img :src="icons.activity" alt="" class="w-5 h-5" />
+              <!-- <img :src="icons.activity" alt="" class="w-4 h-4" /> -->
               <h3
                 class="font-normal text-base leading-4 text-gray-900 tracking-[-0.3125px]"
               >
@@ -329,10 +322,10 @@
 
           <!-- Diagnosis Card (Required) -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-[25px]"
+            class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-[25px]"
           >
             <div class="flex items-center gap-2 mb-[30px]">
-              <img :src="icons.diagnosis" alt="" class="w-5 h-5" />
+              <!-- <img :src="icons.diagnosis" alt="" class="w-4 h-4" /> -->
               <h3
                 class="font-normal text-base leading-4 text-gray-900 tracking-[-0.3125px]"
               >
@@ -352,7 +345,7 @@
 
           <!-- Notes Card -->
           <div
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-[25px]"
+            class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-[25px]"
           >
             <div class="flex items-center gap-2 mb-[30px]">
               <h3
@@ -379,10 +372,10 @@
               'h-9 rounded-lg flex items-center justify-center gap-2 text-sm font-medium tracking-[-0.1504px] transition-colors',
               selectedPrescriptionType === 'chi_dinh_can_lam_sang'
                 ? 'bg-[#dab2ff] border-2 border-[#8200db] text-[#8200db]'
-                : 'bg-white border-2 border-[#dab2ff] text-[#8200db] hover:bg-purple-50'
+                : 'bg-white border-2 !border-[#dab2ff] text-[#8200db] hover:bg-purple-50',
             ]"
           >
-            <img :src="icons.labTest" alt="" class="w-4 h-4" />
+            <!-- <img :src="icons.labTest" alt="" class="w-4 h-4" /> -->
             Chỉ định cận lâm sàng
           </button>
 
@@ -393,10 +386,10 @@
               'h-9 rounded-lg flex items-center justify-center gap-2 text-sm font-medium tracking-[-0.1504px] transition-colors',
               selectedPrescriptionType === 'don_thuoc'
                 ? 'bg-[#7bf1a8] border-2 border-[#008236] text-[#008236]'
-                : 'bg-white border-2 border-[#7bf1a8] text-[#008236] hover:bg-green-50'
+                : 'bg-white border-2 !border-[#7bf1a8] text-[#008236] hover:bg-green-50',
             ]"
           >
-            <img :src="icons.prescription" alt="" class="w-4 h-4" />
+            <!-- <img :src="icons.prescription" alt="" class="w-4 h-4" /> -->
             Đơn thuốc
           </button>
 
@@ -407,10 +400,10 @@
               'h-9 rounded-lg flex items-center justify-center gap-2 text-sm font-medium tracking-[-0.1504px] transition-colors',
               selectedPrescriptionType === 'hen_tai_kham'
                 ? 'bg-[#53eafd] border-2 border-[#007595] text-[#007595]'
-                : 'bg-white border-2 border-[#53eafd] text-[#007595] hover:bg-cyan-50'
+                : 'bg-white border-2 !border-[#53eafd] text-[#007595] hover:bg-cyan-50',
             ]"
           >
-            <img :src="icons.followUp" alt="" class="w-4 h-4" />
+            <!-- <img :src="icons.followUp" alt="" class="w-4 h-4" /> -->
             Hẹn Tái Khám
           </button>
 
@@ -686,16 +679,16 @@ const handleSave = async () => {
     console.log("Response:", response.data);
 
     if (response.data.status || response.status === 201) {
-      showSuccessToast(response.data.message || "Lưu hồ sơ khám bệnh thành công!");
-      
+      showSuccessToast(
+        response.data.message || "Lưu hồ sơ khám bệnh thành công!"
+      );
+
       // Optionally redirect after saving
       setTimeout(() => {
         router.push("/doctor/lich-kham");
       }, 1500);
     } else {
-      showErrorToast(
-        response.data.message || "Lỗi khi lưu hồ sơ khám bệnh"
-      );
+      showErrorToast(response.data.message || "Lỗi khi lưu hồ sơ khám bệnh");
     }
   } catch (error) {
     console.error("=== Error Saving Examination ===");

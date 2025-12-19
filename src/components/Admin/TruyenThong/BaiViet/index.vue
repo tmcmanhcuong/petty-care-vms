@@ -1,30 +1,28 @@
 <template>
-  <div class="flex flex-col gap-6 w-full font-nunito">
-    <!-- Header -->
+  <div class="w-full min-h-screen px-8 py-6 flex flex-col gap-6">
+    <!-- Page Header -->
     <div class="flex items-center justify-between">
-      <div class="flex flex-col">
-        <h1 class="text-2xl font-medium text-[#101828] leading-9">
-          Quản lý Bài viết
-        </h1>
-        <p class="text-base text-[#4a5565] leading-6">
+      <div class="flex flex-col gap-2">
+        <h1 class="text-2xl font-semibold text-black">Quản lý Bài viết</h1>
+        <p class="text-gray-500 font-medium text-base">
           Tạo và quản lý nội dung cho website
         </p>
       </div>
       <button
         @click="router.push('/admin/bai-viet/them-moi')"
-        class="bg-[#00a63e] text-white rounded-lg px-4 py-2 h-9 flex items-center gap-2 text-sm font-medium hover:bg-[#008c35] transition-colors"
+        class="bg-[#5a9690] text-white rounded-lg px-4 py-2 h-9 flex items-center gap-2 text-sm font-medium hover:bg-[#5a9690]/80 transition-colors"
       >
-        <img :src="iconPlus" alt="" class="w-4 h-4" />
+        <AddIcon class="w-4 h-4" />
         Viết bài mới
       </button>
     </div>
 
     <!-- Search and Filters -->
-    <div class="bg-white border border-black/10 rounded-[14px] p-[25px]">
+    <div class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6">
       <div class="flex flex-col gap-4">
         <!-- Search Bar -->
         <div class="relative">
-          <img :src="iconSearch" alt="" class="absolute left-3 top-2 w-5 h-5" />
+          <SearchIcon class="absolute left-3 top-2 w-5 h-5" />
           <input
             type="text"
             v-model="searchQuery"
@@ -40,7 +38,7 @@
             class="bg-[#f3f3f5] border-0 rounded-lg px-3 py-1 flex items-center justify-between h-9 hover:bg-gray-200 transition-colors"
           >
             <span class="text-sm text-neutral-950">Tất cả danh mục</span>
-            <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+            <ChevronDownIcon />
           </button>
 
           <!-- Status Filter -->
@@ -48,14 +46,14 @@
             class="bg-[#f3f3f5] border-0 rounded-lg px-3 py-1 flex items-center justify-between h-9 hover:bg-gray-200 transition-colors"
           >
             <span class="text-sm text-neutral-950">Tất cả</span>
-            <img :src="iconChevronDown" alt="" class="w-4 h-4" />
+            <ChevronDownIcon />
           </button>
         </div>
       </div>
     </div>
 
     <!-- Posts Table -->
-    <div class="bg-white border border-black/10 rounded-[14px] p-[25px]">
+    <div class="bg-white border !border-gray-300 shadow-sm rounded-[14px] p-6">
       <div v-if="isLoading" class="text-center py-8">
         <p class="text-gray-500">Đang tải dữ liệu...</p>
       </div>
@@ -157,14 +155,14 @@
                     class="w-9 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
                     title="Chỉnh sửa"
                   >
-                    <img :src="iconEdit" alt="" class="w-4 h-4" />
+                    <UpdateIcon class="w-4 h-4 text-[#009689]" />
                   </button>
                   <button
                     @click="handleDeletePost(post)"
                     class="w-9 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors"
                     title="Xóa"
                   >
-                    <img :src="iconDelete" alt="" class="w-4 h-4" />
+                    <TrashIcon class="w-4 h-4 text-[#e7000b]" />
                   </button>
                 </div>
               </td>
@@ -189,18 +187,12 @@ import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import XoaBaiViet from "./XoaBaiViet/index.vue";
 import client from "../../../../utils/api.js";
-
-// Icons
-const iconPlus =
-  "https://www.figma.com/api/mcp/asset/bd491dc9-ee5e-4b10-88a8-62b03bef9093";
-const iconSearch =
-  "https://www.figma.com/api/mcp/asset/8df55cc2-682a-4eaf-baa1-55b3c1c1c558";
-const iconChevronDown =
-  "https://www.figma.com/api/mcp/asset/8d066934-07ff-48dd-abfa-6acf31386f7a";
-const iconEdit =
-  "https://www.figma.com/api/mcp/asset/ded66c3e-db3c-4c02-965a-702a4c0fdca8";
-const iconDelete =
-  "https://www.figma.com/api/mcp/asset/9c38866f-8dd6-447a-84f8-060c94dd483b";
+// Icon SVG
+import AddIcon from "@/assets/svg/add.svg";
+import SearchIcon from "@/assets/svg/search.svg";
+import ChevronDownIcon from "@/assets/svg/chevron-down.svg";
+import UpdateIcon from "@/assets/svg/update.svg";
+import TrashIcon from "@/assets/svg/trash.svg";
 
 // Router
 const router = useRouter();
