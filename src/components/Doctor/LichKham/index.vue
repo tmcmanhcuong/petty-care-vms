@@ -16,7 +16,7 @@
           :disabled="loading"
           class="w-10 h-10 rounded-lg border !border-gray-300 hover:bg-gray-50 flex items-center justify-center"
         >
-          <!-- <img src="@/assets/svg/chevron-left.svg" class="w-5 h-5" /> -->
+          <ChevronLeftIcon />
         </button>
 
         <div class="flex-1 bg-gray-50 rounded-xl px-8 py-3 text-center">
@@ -28,7 +28,7 @@
           :disabled="loading"
           class="w-10 h-10 rounded-lg border !border-gray-300 hover:bg-gray-50 flex items-center justify-center"
         >
-          <!-- <img src="@/assets/svg/chevron-right.svg" class="w-5 h-5" /> -->
+          <ChevronRightIcon />
         </button>
 
         <button
@@ -307,6 +307,9 @@ import { useRouter } from "vue-router";
 import api from "@/utils/api";
 import { format, differenceInMinutes, parseISO } from "date-fns";
 import { vi } from "date-fns/locale";
+//Icon SVG
+import ChevronRightIcon from "@/assets/svg/chevron-right.svg";
+import ChevronLeftIcon from "@/assets/svg/chevron-left.svg";
 
 // State
 const router = useRouter();

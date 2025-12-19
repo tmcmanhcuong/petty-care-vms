@@ -16,10 +16,10 @@
         <!-- Left: Back button & Title -->
         <div class="flex items-center gap-4">
           <button
-            class="h-9 px-3 bg-white border !border-gray-300 rounded-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
+            class="h-9 px-3 rounded-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
             @click="handleBack"
           >
-            <!-- <img :src="icons.arrowLeft" alt="" class="w-4 h-4" /> -->
+            <ArrowLeftIcon />
             <span
               class="font-medium text-sm leading-5 text-gray-900 tracking-[-0.1504px]"
               >Quay lại</span
@@ -296,7 +296,7 @@
                 KẾT QUẢ CẬN LÂM SÀNG
               </h3>
             </div>
-            <div class="bg-white border border-[#bedbff] rounded-[10px] p-3">
+            <div class="bg-white border !border-[#bedbff] rounded-[10px] p-3">
               <div class="flex flex-col gap-1.5 mb-3">
                 <p
                   class="font-bold text-sm leading-5 text-[#101828] tracking-[-0.1504px]"
@@ -313,7 +313,8 @@
                 </p>
               </div>
               <button
-                class="bg-white border border-[#8ec5ff] rounded-lg px-4 py-1.5 text-sm font-medium text-[#155dfc] tracking-[-0.1504px] hover:bg-blue-50 transition-colors"
+                @click="isKQCanLamSangModalOpen = true"
+                class="bg-white border !border-[#8ec5ff] rounded-lg px-4 py-1.5 text-sm font-medium text-[#155dfc] tracking-[-0.1504px] hover:bg-blue-50 transition-colors"
               >
                 Xem ảnh (2)
               </button>
@@ -367,7 +368,7 @@
         <div class="flex flex-col gap-6 w-[358px]">
           <!-- Lab Test Order Button -->
           <button
-            @click="selectedPrescriptionType = 'chi_dinh_can_lam_sang'"
+            @click="isChiDinhModalOpen = true"
             :class="[
               'h-9 rounded-lg flex items-center justify-center gap-2 text-sm font-medium tracking-[-0.1504px] transition-colors',
               selectedPrescriptionType === 'chi_dinh_can_lam_sang'
@@ -381,7 +382,7 @@
 
           <!-- Prescription Button -->
           <button
-            @click="selectedPrescriptionType = 'don_thuoc'"
+            @click="isDonThuocModalOpen = true"
             :class="[
               'h-9 rounded-lg flex items-center justify-center gap-2 text-sm font-medium tracking-[-0.1504px] transition-colors',
               selectedPrescriptionType === 'don_thuoc'
@@ -395,7 +396,7 @@
 
           <!-- Follow-up Appointment Button -->
           <button
-            @click="selectedPrescriptionType = 'hen_tai_kham'"
+            @click="isHenTaiKhamModalOpen = true"
             :class="[
               'h-9 rounded-lg flex items-center justify-center gap-2 text-sm font-medium tracking-[-0.1504px] transition-colors',
               selectedPrescriptionType === 'hen_tai_kham'
@@ -417,6 +418,59 @@
       </div>
     </div>
     <!-- End of v-else -->
+
+    <!-- Chi Dinh Modal -->
+    <div
+      v-if="isChiDinhModalOpen"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      @click.self="isChiDinhModalOpen = false"
+    >
+      <div class="w-full max-w-2xl mx-4">
+        <ChiDinh
+          @close="isChiDinhModalOpen = false"
+          @save="handleChiDinhSave"
+        />
+      </div>
+    </div>
+
+    <!-- Don Thuoc Modal -->
+    <div
+      v-if="isDonThuocModalOpen"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      @click.self="isDonThuocModalOpen = false"
+    >
+      <div class="w-full max-w-2xl mx-4">
+        <DonThuoc
+          @close="isDonThuocModalOpen = false"
+          @save="handleDonThuocSave"
+        />
+      </div>
+    </div>
+
+    <!-- Hen Tai Kham Modal -->
+    <div
+      v-if="isHenTaiKhamModalOpen"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      @click.self="isHenTaiKhamModalOpen = false"
+    >
+      <div class="w-full max-w-2xl mx-4">
+        <HenTaiKham
+          @close="isHenTaiKhamModalOpen = false"
+          @save="handleHenTaiKhamSave"
+        />
+      </div>
+    </div>
+
+    <!-- KQ Can Lam Sang Modal -->
+    <div
+      v-if="isKQCanLamSangModalOpen"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      @click.self="isKQCanLamSangModalOpen = false"
+    >
+      <div class="w-full max-w-2xl mx-4">
+        <KQCanLamSang @close="isKQCanLamSangModalOpen = false" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -427,6 +481,12 @@ import api from "@/utils/api";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
+import ChiDinh from "./ChiDinh/index.vue";
+import DonThuoc from "./DonThuoc/index.vue";
+import HenTaiKham from "./HenTaiKham/index.vue";
+import KQCanLamSang from "./KQCanLamSang/index.vue";
+//Icon SVG
+import ArrowLeftIcon from "@/assets/svg/arrow-left.svg";
 
 const router = useRouter();
 const route = useRoute();
@@ -508,6 +568,12 @@ const notes = ref("");
 
 // Loại chỉ định được chọn
 const selectedPrescriptionType = ref("don_thuoc"); // default to prescription
+
+// Modal states
+const isChiDinhModalOpen = ref(false);
+const isDonThuocModalOpen = ref(false);
+const isHenTaiKhamModalOpen = ref(false);
+const isKQCanLamSangModalOpen = ref(false);
 
 // Helper function to parse datetime
 const parseDateTime = (dateString) => {
@@ -704,6 +770,30 @@ const handleSave = async () => {
   } finally {
     saving.value = false;
   }
+};
+
+// Handle Chi Dinh modal save
+const handleChiDinhSave = (data) => {
+  console.log("Chi Dinh saved:", data);
+  selectedPrescriptionType.value = "chi_dinh_can_lam_sang";
+  isChiDinhModalOpen.value = false;
+  showSuccessToast("Đã lưu chỉ định cận lâm sàng");
+};
+
+// Handle Don Thuoc modal save
+const handleDonThuocSave = (data) => {
+  console.log("Don Thuoc saved:", data);
+  selectedPrescriptionType.value = "don_thuoc";
+  isDonThuocModalOpen.value = false;
+  showSuccessToast("Đã lưu đơn thuốc");
+};
+
+// Handle Hen Tai Kham modal save
+const handleHenTaiKhamSave = (data) => {
+  console.log("Hen Tai Kham saved:", data);
+  selectedPrescriptionType.value = "hen_tai_kham";
+  isHenTaiKhamModalOpen.value = false;
+  showSuccessToast("Đã lưu lịch hẹn tái khám");
 };
 
 // Load data on mount

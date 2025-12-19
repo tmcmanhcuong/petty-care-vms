@@ -15,7 +15,7 @@
           <div
             class="bg-teal-100 rounded-xl w-12 h-12 flex items-center justify-center flex-shrink-0"
           >
-            <PhoneCallIcon />
+            <PhoneCallIcon class="w-6 h-6 text-teal-700" />
           </div>
           <div>
             <h3 class="font-bold text-base">Hotline</h3>
@@ -30,7 +30,7 @@
           <div
             class="bg-teal-100 text-[#5A9690] rounded-xl w-12 h-12 flex items-center justify-center flex-shrink-0"
           >
-            <EmailAddressIcon />
+            <EmailAddressIcon class="text-teal-700" />
           </div>
           <div>
             <h3 class="font-bold text-base">Email</h3>
@@ -45,7 +45,7 @@
           <div
             class="bg-teal-100 rounded-xl w-12 h-12 flex items-center justify-center flex-shrink-0"
           >
-            <QAMessIcon />
+            <QAMessIcon class="w-6 h-6 text-teal-700" />
           </div>
           <div>
             <h3 class="font-bold text-base">Zalo OA</h3>
@@ -193,7 +193,7 @@
 
             <div class="space-y-4">
               <div class="flex gap-3">
-                <MapIcon />
+                <MapIcon class="w-6 h-6 text-teal-700" />
                 <div>
                   <h4 class="font-semibold">
                     Phòng khám Pettty - Chi nhánh Quận 1
@@ -204,7 +204,7 @@
                 </div>
               </div>
               <div class="flex gap-3">
-                <ClockIcon class="text-[#5a9690] stroke-2 w-5 h-5" />
+                <ClockIcon class="w-6 h-6 text-teal-700" />
                 <div>
                   <h4 class="font-semibold">Giờ làm việc</h4>
                   <p class="font-semibold text-gray-700">

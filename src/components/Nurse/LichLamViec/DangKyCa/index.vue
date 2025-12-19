@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <teleport to="body">
     <transition name="fade">
       <div
@@ -10,8 +10,8 @@
             class="bg-white rounded-2xl w-full max-w-md shadow-xl overflow-hidden"
           >
             <!-- Header -->
-            <div class="bg-blue-600 px-6 py-6 text-white">
-              <h2 class="text-2xl font-bold">Đăng ký ca trực</h2>
+            <div class="bg-[#5a9690] px-6 py-6">
+              <h2 class="text-2xl font-bold text-white">Đăng ký ca trực</h2>
             </div>
 
             <!-- Close Button -->
@@ -69,7 +69,7 @@
                   <button
                     type="button"
                     @click="closeModal"
-                    class="flex-1 px-4 py-3 bg-gray-300 text-gray-900 font-bold rounded-lg hover:bg-gray-400 transition-all"
+                    class="flex-1 px-4 py-3 bg-gray-200 text-gray-900 font-bold rounded-lg hover:bg-gray-300 transition-all"
                   >
                     Hủy
                   </button>
@@ -80,7 +80,7 @@
                       'flex-1 px-4 py-3 rounded-lg font-bold transition-all text-white',
                       isSubmitting
                         ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-blue-600 hover:bg-blue-700',
+                        : 'bg-[#5a9690] hover:bg-[#5a9690]/80',
                     ]"
                   >
                     {{ isSubmitting ? "Đang gửi..." : "Đăng ký" }}
@@ -100,7 +100,7 @@ import { ref } from "vue";
 import api from "@/utils/api";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
 
-const props = defineProps({
+defineProps({
   isOpen: {
     type: Boolean,
     default: false,

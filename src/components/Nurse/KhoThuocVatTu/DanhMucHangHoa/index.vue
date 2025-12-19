@@ -1,117 +1,96 @@
 <template>
   <div
-    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-[1000] pt-24"
     @click.self="$emit('close')"
   >
     <div
-      class="bg-white border border-black/10 rounded-[10px] shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1),0px_4px_6px_-4px_rgba(0,0,0,0.1)] w-[510px] h-[671px] relative"
+      class="w-[512px] max-h-[85vh] bg-white rounded-[10px] overflow-hidden flex flex-col shadow-xl"
     >
-      <!-- Close Button -->
-      <button
-        @click="$emit('close')"
-        class="absolute right-4 top-4 w-4 h-4 opacity-70 hover:opacity-100 transition-opacity"
-      >
-        <img :src="iconClose" alt="Close" class="w-full h-full" />
-      </button>
-
-      <!-- Dialog Header -->
-      <div class="flex flex-col gap-2 h-12 px-6 pt-6">
-        <div class="h-5 flex items-center gap-2">
-          <img :src="iconFolder" alt="" class="w-5 h-5" />
-          <h2
-            class="font-nunitoSans font-semibold text-lg leading-[18px] text-neutral-950 tracking-[-0.4395px]"
-          >
-            Quản lý Danh Mục Hàng Hoá
-          </h2>
+      <div class="flex flex-col w-full h-full overflow-hidden p-6 gap-4">
+        <!-- Header -->
+        <div class="flex flex-col gap-2 shrink-0">
+          <div class="flex items-center gap-2">
+            <h2 class="font-semibold text-lg text-gray-900">
+              Quản lý Danh Mục Hàng Hoá
+            </h2>
+          </div>
+          <p class="text-sm text-gray-600">
+            Tạo và quản lý các danh mục để phân loại hàng hóa trong kho
+          </p>
         </div>
-        <p
-          class="font-nunitoSans text-sm leading-5 text-[#717182] tracking-[-0.1504px]"
-        >
-          Tạo và quản lý các danh mục để phân loại hàng hóa trong kho
-        </p>
-      </div>
 
-      <!-- Main Content -->
-      <div class="flex flex-col gap-6 px-6 pt-4">
         <!-- Categories List -->
         <div
-          class="bg-gray-50 border border-black/10 rounded-[10px] h-[320px] overflow-hidden"
+          class="flex-1 bg-gray-50 border !border-gray-200 rounded-lg overflow-hidden flex flex-col min-h-0 p-4"
         >
-          <div class="flex flex-col gap-2 p-[17px] pr-8 h-full overflow-y-auto">
-            <!-- Category Item -->
+          <div class="flex-1 overflow-y-auto space-y-2 custom-scrollbar">
             <div
               v-for="category in categories"
               :key="category.id"
-              class="bg-white border border-black/10 rounded-[10px] flex items-center justify-between px-[13px] py-[13px] min-h-[66px]"
+              class="bg-white border border-gray-200 rounded-lg p-3 flex items-center justify-between hover:border-teal-600/30 hover:bg-teal-50/30 transition-all"
             >
-              <div class="flex flex-col gap-0 flex-1">
-                <p
-                  class="font-nunitoSans text-base leading-6 text-[#101828] tracking-[-0.3125px]"
-                >
-                  {{ category.name }}
-                </p>
-                <p class="font-nunitoSans text-xs leading-4 text-[#6a7282]">
-                  {{ category.description }} 
-                </p>
+              <div class="flex flex-col flex-1">
+                <span class="font-normal text-base text-gray-900 leading-6">{{
+                  category.name
+                }}</span>
+                <span class="text-xs text-gray-600">{{
+                  category.description
+                }}</span>
               </div>
               <button
+                class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 @click="handleDeleteCategory(category.id)"
-                class="w-9 h-8 rounded-lg flex items-center justify-center hover:bg-red-50 transition-colors group"
+                :disabled="deleting.has(category.id)"
+                title="Xóa nhóm"
               >
-                <img :src="iconDelete" alt="" class="w-4 h-4" />
+                <TrashIcon v-if="!deleting.has(category.id)" class="w-4 h-4" />
+                <span v-else class="text-xs text-gray-500">Đang xóa...</span>
               </button>
+            </div>
+
+            <!-- Empty State -->
+            <div
+              v-if="categories.length === 0"
+              class="flex flex-col items-center justify-center h-full text-gray-400 py-8 gap-2"
+            >
+              <div class="w-12 h-12 flex items-center justify-center">
+                <FolderIcon class="text-gray-400" />
+              </div>
+              <p class="text-sm">Chưa có danh mục nào</p>
             </div>
           </div>
         </div>
 
-        <!-- Add New Category Section -->
-        <div class="border-t border-black/10 pt-[17px] flex flex-col gap-2">
-          <label
-            class="font-nunitoSans font-medium text-sm leading-[14px] text-neutral-950 tracking-[-0.1504px]"
-          >
+        <!-- Footer - Add New Category -->
+        <div class="border-t border-gray-200 pt-4 shrink-0 space-y-2">
+          <label class="font-nunito font-medium text-sm text-gray-900">
             Thêm danh mục mới
           </label>
-          <div class="flex flex-col gap-3">
+          <div class="space-y-3">
             <input
               v-model="newCategoryName"
               type="text"
               placeholder="Tên danh mục..."
-              class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunitoSans text-sm text-neutral-950 tracking-[-0.1504px] outline-none placeholder:text-[#717182]"
+              class="w-full bg-gray-100 border-0 text-gray-700 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block p-2.5 font-nunito outline-none transition-all"
+              @keyup.enter="handleAddCategory"
             />
             <input
               v-model="newCategoryDescription"
               type="text"
               placeholder="Mô tả (tùy chọn)..."
-              class="bg-[#f3f3f5] border-none rounded-lg h-9 px-3 py-1 font-nunitoSans text-sm text-neutral-950 tracking-[-0.1504px] outline-none placeholder:text-[#717182]"
+              class="w-full bg-gray-100 border-0 text-gray-700 text-sm rounded-lg focus:ring-teal-600 focus:border-teal-600 block p-2.5 font-nunito outline-none transition-all"
+              @keyup.enter="handleAddCategory"
             />
             <button
+              class="w-full py-2 bg-[#5a9690] hover:bg-[#5a9690]/80 text-white rounded-lg font-medium text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed font-nunito"
+              :disabled="!newCategoryName.trim() || saving"
               @click="handleAddCategory"
-              :disabled="!newCategoryName.trim()"
-              class="bg-[#009689] hover:bg-[#007d72] disabled:opacity-50 disabled:cursor-not-allowed rounded-lg h-9 w-full flex items-center justify-center gap-2 transition-colors"
             >
-              <img :src="iconPlus" alt="" class="w-4 h-4" />
-              <span
-                class="font-nunitoSans font-medium text-sm leading-5 text-white text-center tracking-[-0.1504px]"
-              >
-                Thêm danh mục
-              </span>
+              <span v-if="!saving">Thêm danh mục</span>
+              <span v-else>Đang tạo...</span>
             </button>
           </div>
         </div>
-      </div>
-
-      <!-- Close Button at Bottom -->
-      <div class="absolute bottom-6 right-6">
-        <button
-          @click="$emit('close')"
-          class="bg-white border border-black/10 rounded-lg h-9 px-[17px] py-[9px] hover:bg-gray-50 transition-colors"
-        >
-          <span
-            class="font-nunitoSans font-medium text-sm leading-5 text-center text-neutral-950 tracking-[-0.1504px]"
-          >
-            Đóng
-          </span>
-        </button>
       </div>
     </div>
   </div>
@@ -126,6 +105,10 @@ import {
 } from "@/utils/danhMucHangHoa";
 import { showSuccessToast, showErrorToast } from "@/utils/toast";
 
+// Icon SVG
+import FolderIcon from "@/assets/svg/folder.svg";
+import TrashIcon from "@/assets/svg/trash.svg";
+
 // Emits
 const emit = defineEmits(["close", "add", "delete"]);
 
@@ -137,16 +120,6 @@ const loading = ref(false);
 const saving = ref(false);
 const deleting = ref(new Set());
 
-// Icon URLs from Figma (expire in 7 days)
-const iconFolder =
-  "https://www.figma.com/api/mcp/asset/f0df365a-f0f1-4058-8ad8-46797b406a2f";
-const iconDelete =
-  "https://www.figma.com/api/mcp/asset/f2cb3d48-4a4e-4b60-a490-ea671074f9bc";
-const iconPlus =
-  "https://www.figma.com/api/mcp/asset/d0a73c79-526d-485d-b19f-ba509b9e608b";
-const iconClose =
-  "https://www.figma.com/api/mcp/asset/ba87382a-a238-4bc0-a0dc-55ef3aa6b507";
-
 async function loadCategories() {
   loading.value = true;
   try {
@@ -156,7 +129,7 @@ async function loadCategories() {
     const map = (b) => ({
       id: b.id ?? b._id ?? null,
       name: b.ten_danh_muc_hang_hoa || b.name || b.ten || "",
-      description: b.mo_ta || b.description || b.mota || "",
+      description: b.mo_ta || b.description || b.mota || "Chưa có mô tả",
       count: b.count ?? b.so_luong ?? 0,
       // keep raw payload in case other fields needed
       raw: b,
@@ -189,7 +162,11 @@ const handleAddCategory = async () => {
         id: created.id ?? created._id ?? null,
         name:
           created.ten_danh_muc_hang_hoa || created.name || created.ten || "",
-        description: created.mo_ta || created.description || created.mota || "",
+        description:
+          created.mo_ta ||
+          created.description ||
+          created.mota ||
+          "Chưa có mô tả",
         count: created.count ?? created.so_luong ?? 0,
         raw: created,
       };
@@ -240,20 +217,20 @@ const handleDeleteCategory = async (categoryId) => {
 
 <style scoped>
 /* Custom scrollbar for categories list */
-.overflow-y-auto::-webkit-scrollbar {
+.custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
 
-.overflow-y-auto::-webkit-scrollbar-track {
+.custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.overflow-y-auto::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 3px;
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
 }
 
-.overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
 }
 </style>

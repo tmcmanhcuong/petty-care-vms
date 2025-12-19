@@ -1,43 +1,32 @@
 <template>
-  <div class="flex flex-col gap-6 size-full">
-    <!-- Header Section -->
-    <div class="flex flex-col h-[105px]">
-      <!-- Title -->
-      <h1
-        class="text-base font-normal text-[#101828] leading-6 tracking-[-0.3125px]"
-        style="font-family: 'Nunito Sans', sans-serif"
-      >
-        Lịch làm việc
-      </h1>
-      <!-- Subtitle -->
-      <p
-        class="text-base font-normal text-[#4a5565] leading-6 tracking-[-0.3125px]"
-        style="font-family: 'Inter', sans-serif"
-      >
+  <div class="relative w-full h-full px-8 py-6">
+    <!-- Page Header -->
+    <div class="flex flex-col gap-1 mb-6">
+      <h1 class="text-2xl font-semibold text-black">Lịch làm việc</h1>
+      <p class="text-base font-medium text-gray-500">
         Quản lý lịch trực và đăng ký ca làm việc
       </p>
-      <!-- Tabs -->
-      <div class="border-b border-gray-200 h-[41px] relative mt-auto">
+    </div>
+
+    <!-- Tabs -->
+    <div class="border-b !border-gray-300 mb-6">
+      <div class="flex gap-8 relative">
         <button
           v-for="tab in tabs"
           :key="tab.id"
           @click="activeTab = tab.id"
           :class="[
-            'absolute top-0 h-10 px-4 pt-2 pb-0 flex items-center gap-2',
-            tab.id === activeTab ? 'text-[#155dfc]' : 'text-[#4a5565]',
+            'pb-3 flex items-center gap-2 relative',
+            tab.id === activeTab ? 'text-[#155dfc]' : 'text-gray-600',
           ]"
-          :style="{ left: tab.left }"
         >
-          <img :src="icons[tab.icon]" alt="" class="w-4 h-4" />
-          <span
-            class="text-base font-normal leading-6 tracking-[-0.3125px]"
-            style="font-family: 'Inter', sans-serif"
-          >
+          <!-- <img :src="icons[tab.icon]" alt="" class="w-4 h-4" /> -->
+          <span class="text-base font-medium">
             {{ tab.label }}
           </span>
           <div
             v-if="tab.id === activeTab"
-            class="absolute left-0 bottom-[-1px] w-full h-0.5 bg-[#155dfc]"
+            class="absolute left-0 bottom-0 w-full h-0.5 bg-[#155dfc]"
           />
         </button>
       </div>
@@ -46,48 +35,35 @@
     <!-- My Schedule Card -->
     <div
       v-if="activeTab === 'my-schedule'"
-      class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[14px] p-px h-[717px]"
+      class="bg-white border !border-gray-300 rounded-[14px] shadow-sm overflow-hidden"
     >
       <!-- Header with gradient background -->
       <div
-        class="bg-gradient-to-r from-[#f0fdfa] to-[#f0fdf4] h-auto px-6 pt-4 pb-4 flex flex-col gap-3"
+        class="bg-gradient-to-r from-[#f0fdfa] to-[#f0fdf4] px-6 pt-4 pb-4 flex flex-col gap-3"
       >
         <!-- Week Navigation -->
         <div class="flex items-center justify-between">
           <button
             @click="goToPreviousWeek"
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-lg h-8 px-3 flex items-center gap-2"
+            class="bg-white border !border-gray-300 rounded-lg h-9 px-4 flex items-center gap-2 hover:bg-gray-50 transition-colors"
           >
-            <img :src="icons.chevronLeft" alt="" class="w-4 h-4" />
-            <span
-              class="text-sm font-medium text-neutral-950 leading-5 tracking-[-0.1504px]"
-              style="font-family: 'Inter', sans-serif"
-            >
-              Tuần trước
-            </span>
+            <!-- <img :src="icons.chevronLeft" alt="" class="w-4 h-4" /> -->
+            <span class="text-sm font-medium text-black"> ← Tuần trước </span>
           </button>
 
           <div class="flex items-center gap-2">
-            <img :src="icons.calendar" alt="" class="w-5 h-5" />
-            <span
-              class="text-base font-normal text-neutral-950 leading-4 tracking-[-0.3125px]"
-              style="font-family: 'Inter', sans-serif"
-            >
+            <!-- <img :src="icons.calendar" alt="" class="w-5 h-5" /> -->
+            <span class="text-base font-semibold text-black">
               Tuần {{ weekNumber }} ({{ weekRange }})
             </span>
           </div>
 
           <button
             @click="goToNextWeek"
-            class="bg-white border border-[rgba(0,0,0,0.1)] rounded-lg h-8 px-3 flex items-center gap-2"
+            class="bg-white border !border-gray-300 rounded-lg h-9 px-4 flex items-center gap-2 hover:bg-gray-50 transition-colors"
           >
-            <span
-              class="text-sm font-medium text-neutral-950 leading-5 tracking-[-0.1504px]"
-              style="font-family: 'Inter', sans-serif"
-            >
-              Tuần sau
-            </span>
-            <img :src="icons.chevronRight" alt="" class="w-4 h-4" />
+            <span class="text-sm font-medium text-black"> Tuần sau → </span>
+            <!-- <img :src="icons.chevronRight" alt="" class="w-4 h-4" /> -->
           </button>
         </div>
 
@@ -95,31 +71,19 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4">
             <div class="flex items-center gap-2">
-              <span
-                class="text-sm font-normal text-[#4a5565] leading-5 tracking-[-0.1504px]"
-                style="font-family: 'Inter', sans-serif"
-              >
+              <span class="text-sm font-normal text-gray-600">
                 Ca tuần này:
               </span>
-              <span
-                class="text-sm font-normal text-[#009689] leading-5 tracking-[-0.1504px]"
-                style="font-family: 'Inter', sans-serif"
-              >
+              <span class="text-sm font-semibold text-[#009689]">
                 {{ weekShifts }}
               </span>
             </div>
-            <div class="w-px h-4 bg-[#d1d5dc]" />
+            <div class="w-px h-4 bg-gray-300" />
             <div class="flex items-center gap-2">
-              <span
-                class="text-sm font-normal text-[#4a5565] leading-5 tracking-[-0.1504px]"
-                style="font-family: 'Inter', sans-serif"
-              >
+              <span class="text-sm font-normal text-gray-600">
                 Tổng giờ làm:
               </span>
-              <span
-                class="text-sm font-normal text-[#009689] leading-5 tracking-[-0.1504px]"
-                style="font-family: 'Inter', sans-serif"
-              >
+              <span class="text-sm font-semibold text-[#009689]">
                 {{ totalHours }}h
               </span>
             </div>
@@ -130,13 +94,13 @@
             <button
               @click="viewMode = 'week'"
               :class="[
-                'h-8 px-4 rounded-lg flex items-center gap-2',
+                'h-9 px-4 rounded-lg flex items-center gap-2 transition-colors',
                 viewMode === 'week'
                   ? 'bg-[#030213] text-white'
-                  : 'bg-white border border-[rgba(0,0,0,0.1)] text-neutral-950',
+                  : 'bg-white border !border-gray-300 text-black hover:bg-gray-50',
               ]"
             >
-              <img
+              <!-- <img
                 :src="
                   viewMode === 'week'
                     ? icons.calendarWhite
@@ -144,21 +108,16 @@
                 "
                 alt=""
                 class="w-4 h-4"
-              />
-              <span
-                class="text-sm font-medium leading-5 tracking-[-0.1504px]"
-                style="font-family: 'Inter', sans-serif"
-              >
-                Lịch Tuần
-              </span>
+              /> -->
+              <span class="text-sm font-medium"> Lịch Tuần </span>
             </button>
-            <button
+            <!-- <button
               @click="viewMode = 'list'"
               :class="[
-                'h-8 px-4 rounded-lg flex items-center gap-2',
+                'h-9 px-4 rounded-lg flex items-center gap-2 transition-colors',
                 viewMode === 'list'
                   ? 'bg-[#030213] text-white'
-                  : 'bg-white border border-[rgba(0,0,0,0.1)] text-neutral-950',
+                  : 'bg-white border !border-gray-300 text-black hover:bg-gray-50',
               ]"
             >
               <img
@@ -166,13 +125,8 @@
                 alt=""
                 class="w-4 h-4"
               />
-              <span
-                class="text-sm font-medium leading-5 tracking-[-0.1504px]"
-                style="font-family: 'Inter', sans-serif"
-              >
-                Danh sách
-              </span>
-            </button>
+              <span class="text-sm font-medium"> Danh sách </span>
+            </button> -->
           </div>
         </div>
       </div>
@@ -191,30 +145,24 @@
             <thead>
               <tr>
                 <th
-                  class="bg-gray-50 border border-[#d1d5dc] h-20 px-2 text-center text-xs font-bold text-[#364153] tracking-[-0.1504px]"
-                  style="font-family: 'Inter', sans-serif; width: 90px"
+                  class="bg-gray-50 border !border-gray-300 h-20 px-2 text-center text-xs font-bold text-gray-700"
+                  style="width: 90px"
                 >
                   Giờ / Ngày
                 </th>
                 <th
                   v-for="day in calendarDays"
                   :key="day.label"
-                  class="bg-gray-50 border border-[#d1d5dc] h-20 px-2 text-center"
+                  class="bg-gray-50 border !border-gray-300 h-20 px-2 text-center"
                   :style="{ width: day.width }"
                 >
                   <div
                     class="flex flex-col items-center justify-center gap-0.5"
                   >
-                    <span
-                      class="text-xs font-bold text-[#101828] leading-4 tracking-[-0.1504px]"
-                      style="font-family: 'Inter', sans-serif"
-                    >
+                    <span class="text-xs font-bold text-black">
                       {{ day.label }}
                     </span>
-                    <span
-                      class="text-xs font-semibold text-[#6a7282] leading-3"
-                      style="font-family: 'Inter', sans-serif"
-                    >
+                    <span class="text-xs font-semibold text-gray-500">
                       {{ day.date }}
                     </span>
                   </div>
@@ -223,20 +171,14 @@
             </thead>
             <tbody>
               <tr v-for="timeSlot in timeSlots" :key="timeSlot.name">
-                <td class="bg-gray-50 border border-[#d1d5dc] h-24 text-center">
+                <td class="bg-gray-50 border !border-gray-300 h-24 text-center">
                   <div
                     class="flex flex-col items-center justify-center gap-0.5"
                   >
-                    <span
-                      class="text-xs font-semibold text-[#101828] leading-4 tracking-[-0.1504px]"
-                      style="font-family: 'Inter', sans-serif"
-                    >
+                    <span class="text-xs font-semibold text-black">
                       {{ timeSlot.name }}
                     </span>
-                    <span
-                      class="text-xs font-normal text-[#6a7282] leading-3"
-                      style="font-family: 'Inter', sans-serif"
-                    >
+                    <span class="text-xs font-normal text-gray-500">
                       {{ timeSlot.time }}
                     </span>
                   </div>
@@ -244,9 +186,9 @@
                 <td
                   v-for="(daySchedule, dayIndex) in timeSlot.schedule"
                   :key="dayIndex"
-                  class="border border-[#d1d5dc] h-24 p-1.5"
+                  class="border !border-gray-300 h-24 p-1.5"
                 >
-                  <!-- ✅ FIX: Xử lý cả single shift và multiple shifts (array) -->
+                  <!-- FIX: Xử lý cả single shift và multiple shifts (array) -->
                   <template v-if="daySchedule">
                     <!-- Single shift -->
                     <div
@@ -330,20 +272,20 @@
     <!-- Important Notes Card -->
     <div
       v-if="activeTab === 'my-schedule'"
-      class="border border-[#b9f8cf] rounded-[14px] px-6 py-4"
+      class="bg-teal-50 border !border-[#b9f8cf] rounded-[14px] px-6 py-4 mt-4"
     >
       <div class="flex gap-3">
-        <div
+        <!-- <div
           class="bg-green-100 rounded-[10px] w-8 h-8 flex items-center justify-center shrink-0 mt-0.5"
         >
-          <img :src="icons.lightbulb" alt="" class="w-4 h-4" />
-        </div>
+           <img :src="icons.lightbulb" alt="" class="w-4 h-4" /> 
+        </div> -->
         <div>
           <p
             class="text-sm font-bold text-[#364153] leading-5 tracking-[-0.3125px] mb-1.5"
             style="font-family: 'Inter', sans-serif"
           >
-            💡 Hướng dẫn sử dụng:
+            Hướng dẫn sử dụng:
           </p>
           <ul class="flex flex-col gap-0.5 pl-2">
             <li
@@ -376,46 +318,46 @@
     <div v-else-if="activeTab === 'register-shift'" class="space-y-6">
       <!-- Registration Guide Card -->
       <div
-        class="border border-[#96f7e4] rounded-[14px] px-6 py-6 bg-gradient-to-r from-cyan-50 to-teal-50"
+        class="border !border-[#96f7e4] rounded-[14px] px-6 py-6 bg-gradient-to-r from-cyan-50 to-teal-50"
       >
         <div class="flex gap-4">
-          <div
+          <!-- <div
             class="bg-[#cbfbf1] rounded-[10px] w-10 h-10 flex items-center justify-center shrink-0"
           >
             <img :src="icons.infoCircle" alt="" class="w-5 h-5" />
-          </div>
+          </div> -->
           <div>
             <p
               class="text-base font-bold text-[#364153] leading-6 tracking-[-0.3125px] mb-3"
               style="font-family: 'Inter', sans-serif"
             >
-              📋 Hướng dẫn đăng ký ca làm việc:
+              Hướng dẫn đăng ký ca làm việc:
             </p>
             <ul class="flex flex-col gap-2 pl-2">
               <li
                 class="text-sm font-normal text-[#364153] leading-5 tracking-[-0.1504px]"
                 style="font-family: 'Inter', sans-serif"
               >
-                ✅ Chọn ca làm việc từ danh sách có sẵn
+                Chọn ca làm việc từ danh sách có sẵn
               </li>
               <li
                 class="text-sm font-normal text-[#364153] leading-5 tracking-[-0.1504px]"
                 style="font-family: 'Inter', sans-serif"
               >
-                ⏰ Hạn đăng ký: <span class="font-bold">Thứ 6, 17:00</span>
+                Hạn đăng ký: <span class="font-bold">Thứ 6, 17:00</span>
               </li>
               <li
                 class="text-sm font-normal text-[#364153] leading-5 tracking-[-0.1504px]"
                 style="font-family: 'Inter', sans-serif"
               >
-                ⏳ Admin sẽ phê duyệt trong
+                Admin sẽ phê duyệt trong
                 <span class="font-bold">24 giờ</span>
               </li>
               <li
                 class="text-sm font-normal text-[#364153] leading-5 tracking-[-0.1504px]"
                 style="font-family: 'Inter', sans-serif"
               >
-                📌 Một khi phê duyệt, không thể thay đổi
+                Một khi phê duyệt, không thể thay đổi
               </li>
             </ul>
           </div>
@@ -423,18 +365,20 @@
       </div>
 
       <!-- Available Shifts Quick Preview -->
-      <div class="bg-white border border-[#d1d5dc] rounded-[14px] px-6 py-6">
+      <div
+        class="bg-white border !border-gray-300 shadow-sm rounded-[14px] px-6 py-6"
+      >
         <div class="flex items-center justify-between mb-4">
           <h3
             class="text-lg font-bold text-[#101828]"
             style="font-family: 'Inter', sans-serif"
           >
-            ⚡ Ca trống sắp tới
+            Ca trống sắp tới
           </h3>
           <button
             type="button"
             @click="openRegistrationModal"
-            class="z-10 cursor-pointer px-4 py-2 bg-gradient-to-r from-[#155dfc] to-cyan-500 text-white rounded-lg text-sm font-bold hover:shadow-lg transition"
+            class="z-10 cursor-pointer px-4 py-2 bg-[#5a9690] hover:bg-[#5a9690]/80 text-white rounded-lg text-sm font-bold hover:shadow-lg transition"
           >
             + Đăng ký ngay
           </button>
@@ -448,38 +392,35 @@
       </div>
 
       <!-- Tips Card -->
-      <div class="border border-[#fef3c7] rounded-[14px] px-6 py-6 bg-amber-50">
+      <div
+        class="border !border-[#fef3c7] rounded-[14px] px-6 py-6 bg-amber-50"
+      >
         <div class="flex gap-4">
-          <div
-            class="bg-amber-100 rounded-[10px] w-10 h-10 flex items-center justify-center shrink-0"
-          >
-            <span class="text-lg">💡</span>
-          </div>
           <div>
             <p
               class="text-base font-bold text-[#92400e] leading-6 tracking-[-0.3125px] mb-2"
               style="font-family: 'Inter', sans-serif"
             >
-              💪 Mẹo để có lịch tốt:
+              Mẹo để có lịch tốt:
             </p>
             <ul class="flex flex-col gap-1.5 pl-2">
               <li
                 class="text-sm font-normal text-[#92400e] leading-5 tracking-[-0.1504px]"
                 style="font-family: 'Inter', sans-serif"
               >
-                🎯 Đăng ký sớm vào Thứ 2 để có lựa chọn nhiều
+                Đăng ký sớm vào Thứ 2 để có lựa chọn nhiều
               </li>
               <li
                 class="text-sm font-normal text-[#92400e] leading-5 tracking-[-0.1504px]"
                 style="font-family: 'Inter', sans-serif"
               >
-                🔄 Kiểm tra thường xuyên những ca mới
+                Kiểm tra thường xuyên những ca mới
               </li>
               <li
                 class="text-sm font-normal text-[#92400e] leading-5 tracking-[-0.1504px]"
                 style="font-family: 'Inter', sans-serif"
               >
-                📞 Liên hệ Admin nếu có vấn đề
+                Liên hệ Admin nếu có vấn đề
               </li>
             </ul>
           </div>
@@ -488,14 +429,14 @@
 
       <!-- Registered Shifts Table (Ca đã đăng ký) -->
       <div
-        class="bg-white border border-[#d1d5dc] rounded-[14px] overflow-hidden"
+        class="bg-white border !border-gray-300 shadow-sm rounded-[14px] overflow-hidden"
       >
-        <div class="px-6 py-6 border-b border-[#e5e7eb]">
+        <div class="px-6 py-6 border-b !border-gray-300">
           <h3
             class="text-lg font-bold text-[#101828]"
             style="font-family: 'Inter', sans-serif"
           >
-            📌 Ca đã đăng ký
+            Ca đã đăng ký
           </h3>
           <p
             class="text-sm text-[#6a7282] mt-1"
