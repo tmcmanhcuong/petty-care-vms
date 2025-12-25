@@ -5,6 +5,7 @@ import router from "./router";
 import Default from "./layout/wrapper/index.vue";
 import trangchu from "./layout/wrapper/layout_rong.vue";
 import dangki_dangnhap from "./layout/wrapper/layout_dangki_dangnhap.vue";
+import MainLayout from "./layout/wrapper/MainLayout.vue";
 // import sidebar from "./layout/wrapper/layout_sidebar.vue"; // ❌ Deprecated - Use AdminLayout/DoctorLayout instead
 
 import "./assets/css/main.css";
@@ -54,6 +55,7 @@ app.config.globalProperties.$auth = {
 app.component("default-layout", Default);
 app.component("trangchu-layout", trangchu);
 app.component("dangki_dangnhap-layout", dangki_dangnhap);
+app.component("main-layout", MainLayout);
 // app.component("sidebar-layout", sidebar); // ❌ Deprecated - Use AdminLayout/DoctorLayout instead
 
 app.mount("#app");

@@ -457,25 +457,25 @@
                     class="px-6 py-4 text-left text-sm font-bold text-[#101828]"
                     style="font-family: 'Inter', sans-serif"
                   >
-                    📅 Ngày giờ
+                    Ngày giờ
                   </th>
                   <th
                     class="px-6 py-4 text-left text-sm font-bold text-[#101828]"
                     style="font-family: 'Inter', sans-serif"
                   >
-                    📝 Ghi chú
+                    Ghi chú
                   </th>
                   <th
                     class="px-6 py-4 text-left text-sm font-bold text-[#101828]"
                     style="font-family: 'Inter', sans-serif"
                   >
-                    👤 Nhân viên
+                    Nhân viên
                   </th>
                   <th
                     class="px-6 py-4 text-left text-sm font-bold text-[#101828]"
                     style="font-family: 'Inter', sans-serif"
                   >
-                    ⏳ Trạng thái
+                    Trạng thái
                   </th>
                 </tr>
               </thead>
@@ -536,16 +536,16 @@
                         shift.trang_thai === "pending" ||
                         shift.trang_thai === "chưa_xác_nhận" ||
                         shift.trang_thai === "chua_xac_nhan"
-                          ? "⏳ Chờ duyệt"
+                          ? "Chờ duyệt"
                           : shift.trang_thai === "approved" ||
                             shift.trang_thai === "confirmed" ||
                             shift.trang_thai === "da_xac_nhan" ||
                             shift.trang_thai === "đã_xác_nhận"
-                          ? "✅ Đã duyệt"
+                          ? "Đã duyệt"
                           : shift.trang_thai === "rejected" ||
                             shift.trang_thai === "tu_choi" ||
                             shift.trang_thai === "từ_chối"
-                          ? "❌ Từ chối"
+                          ? "Từ chối"
                           : shift.trang_thai
                       }}
                     </span>
